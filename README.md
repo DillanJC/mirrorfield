@@ -63,20 +63,23 @@ Prints statistical snapshots and (optionally) plots variance histograms.
 - Borderline slice rule locked
 - Tier-2 suite rules defined
 
-**Phase A (Evidence Pack):** 🔄 In Progress
+**Phase A (Evidence Pack):** ✅ Complete
 - Artifact structure: `experiments/results/<experiment>/<run_id>/`
-- Run ledger seeded with baseline runs
-- Next: Timestamped runs with full environment snapshots
+- All baseline experiments producing timestamped artifacts
+- Full environment snapshots (torch, CUDA, device, git)
+- Run ledger with 5 documented runs
+- See: [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md)
 
-**Phase B (Tier-2 Semantic Discriminator):** ⏸️ Blocked (awaits Phase 0+A completion)
+**Phase B (Tier-2 Semantic Discriminator):** ⏸️ Ready (awaiting kickoff)
 
 ---
 
 ## Documentation
 
-- **Definitions:** [`docs/DEFINITIONS_FREEZE_v0.1.md`](docs/DEFINITIONS_FREEZE_v0.1.md)
-- **Run Ledger:** [`runs/RUN_LEDGER.md`](runs/RUN_LEDGER.md)
-- **Tools README:** [`tools/README.md`](tools/README.md)
+- **Phase A Summary:** [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md) — Evidence pack completion report
+- **Definitions:** [`docs/DEFINITIONS_FREEZE_v0.1.md`](docs/DEFINITIONS_FREEZE_v0.1.md) — Canonical definitions (Phase 0 lock)
+- **Run Ledger:** [`runs/RUN_LEDGER.md`](runs/RUN_LEDGER.md) — Reproducible run tracking
+- **Tools README:** [`tools/README.md`](tools/README.md) — GPU playground documentation
 
 ---
 
