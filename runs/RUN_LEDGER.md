@@ -254,6 +254,101 @@ First git-tracked Phase A run. Captures proper commit hash (b17bfc6) and clean w
 
 ---
 
+### Run: gpu_playground_20251227_093447
+**Date:** 2025-12-27 (Sydney)
+**Git Commit:** e9d7d5e2fc41 [dirty] _(script updates in progress)_
+**Command(s):**
+```powershell
+python experiments\gpu_playground.py
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Determinism flags: TF32=false
+**Dataset/Suite:**
+- Synthetic regression (10,000 samples, 32-dim input, 64-dim hidden)
+- 3-layer MLP
+**Thresholds:**
+- N/A (regression task)
+**Artifacts Produced:**
+- `experiments/results/gpu_playground/20251227_093447/summary.json`
+**Headline Results:**
+- Final training loss: 0.163
+- Training time: 0.285 s
+- Steps: 160
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- TF32: false
+- Git: e9d7d5e2fc41 [dirty]
+**Notes:**
+First Phase A run for gpu_playground with timestamped artifacts. Basic training harness validation successful. Working tree dirty due to script updates (Phase A completion).
+
+---
+
+### Run: toy_graph_20251227_093456
+**Date:** 2025-12-27 (Sydney)
+**Git Commit:** e9d7d5e2fc41 [dirty] _(script updates in progress)_
+**Command(s):**
+```powershell
+python experiments\toy_graph_playground.py
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Determinism flags: TF32=false
+**Dataset/Suite:**
+- 4×4 grid graph (16 nodes, 8-feature nodes)
+- 3-class node classification
+**Thresholds:**
+- N/A (classification task)
+**Artifacts Produced:**
+- `experiments/results/toy_graph/20251227_093456/summary.json`
+**Headline Results:**
+- Final loss: 8.20e-08 (converged)
+- Training time: 0.594 s
+- Predicted class counts: [4, 8, 4] (matches labels)
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- TF32: false
+- Git: e9d7d5e2fc41 [dirty]
+**Notes:**
+First Phase A run for toy_graph with timestamped artifacts. Perfect convergence and correct class predictions. Working tree dirty due to script updates (Phase A completion).
+
+---
+
+### Run: gpu_sanity_check_20251227_093440
+**Date:** 2025-12-27 (Sydney)
+**Git Commit:** e9d7d5e2fc41 [dirty] _(script updates in progress)_
+**Command(s):**
+```powershell
+python tools\gpu_sanity_check.py
+```
+**Seeds/Determinism:**
+- N/A (deterministic matmul test)
+**Dataset/Suite:**
+- 4096×4096 random matrix multiplication
+**Thresholds:**
+- Pass: < 1.0s for matmul
+**Artifacts Produced:**
+- `tools/gpu_sanity_check_result.json`
+**Headline Results:**
+- CUDA available: True
+- 4096×4096 matmul: 0.070 s
+- Status: pass
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.0 GB)
+- Git: e9d7d5e2fc41 [dirty]
+**Notes:**
+GPU sanity check with artifact output. Validates CUDA installation and GPU performance. Working tree dirty due to script updates (Phase A completion).
+
+---
+
 ## Phase B Tier-2 Runs (Future)
 
 _Tier-2 semantic discriminator runs will be logged here after Phase B implementation._

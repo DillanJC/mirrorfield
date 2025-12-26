@@ -1,8 +1,55 @@
+import json
+import subprocess
 import time
+from datetime import datetime
+from pathlib import Path
 from typing import List, Tuple
 
 import torch
 from torch import nn
+
+DEFAULT_SEED = 42
+
+
+def get_git_info():
+    """Get git commit hash and dirty status."""
+    try:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=Path(__file__).parent.parent,
+            stderr=subprocess.DEVNULL,
+            text=True
+        ).strip()
+
+        dirty_check = subprocess.call(
+            ["git", "diff-index", "--quiet", "HEAD", "--"],
+            cwd=Path(__file__).parent.parent,
+            stderr=subprocess.DEVNULL
+        )
+        dirty = "dirty" if dirty_check != 0 else "clean"
+
+        return {"commit": commit[:12], "status": dirty}
+    except Exception:
+        return {"commit": "unknown", "status": "unknown"}
+
+
+def get_environment_snapshot(device: torch.device):
+    """Capture environment details for reproducibility."""
+    env = {
+        "torch_version": torch.__version__,
+        "cuda_available": torch.cuda.is_available(),
+        "device_type": device.type,
+    }
+
+    if torch.cuda.is_available():
+        env["cuda_version"] = torch.version.cuda
+        env["device_name"] = torch.cuda.get_device_name(0)
+        env["device_memory_gb"] = torch.cuda.get_device_properties(0).total_memory / 1e9
+        env["tf32_enabled"] = torch.backends.cuda.matmul.allow_tf32
+
+    env["git"] = get_git_info()
+
+    return env
 
 
 def build_grid_edges() -> List[Tuple[int, int]]:
@@ -22,10 +69,10 @@ def build_grid_edges() -> List[Tuple[int, int]]:
     return edges
 
 
-def make_graph(device: torch.device):
+def make_graph(device: torch.device, seed: int = DEFAULT_SEED):
     edges = build_grid_edges()
     edge_index = torch.tensor(edges, dtype=torch.long, device=device).t().contiguous()
-    torch.manual_seed(42)
+    torch.manual_seed(seed)
     x = torch.randn(16, 8, device=device)
     labels = torch.tensor([0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2], device=device)
     return edge_index, x, labels
@@ -64,10 +111,10 @@ class ToyGraphNet(nn.Module):
         return self.head(x)
 
 
-def train(device: torch.device):
+def train(device: torch.device, seed: int = DEFAULT_SEED):
     print(f"Using device: {device}")
 
-    edge_index, x, labels = make_graph(device)
+    edge_index, x, labels = make_graph(device, seed=seed)
     model = ToyGraphNet().to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
@@ -105,10 +152,57 @@ def train(device: torch.device):
     for cls, cnt in enumerate(counts.tolist()):
         print(f"  class {cls}: {cnt}")
 
+    return loss.item(), elapsed, counts.tolist()
+
+
+def save_summary(final_loss: float, elapsed: float, class_counts: list, env: dict, seed: int, path: Path):
+    """Save run summary with config and environment snapshot."""
+    payload = {
+        "run_id": path.parent.name,
+        "timestamp": datetime.now().isoformat(),
+        "environment": env,
+        "config": {
+            "graph_size": "4x4_grid",
+            "num_nodes": 16,
+            "node_features": 8,
+            "num_classes": 3,
+            "steps": 200,
+            "lr": 1e-2,
+            "seed": seed,
+        },
+        "training": {
+            "final_loss": final_loss,
+            "elapsed_seconds": elapsed,
+        },
+        "results": {
+            "predicted_class_counts": class_counts,
+        },
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(payload, handle, indent=2)
+    print(f"Summary saved to {path.as_posix()}")
+
 
 def main():
+    seed = DEFAULT_SEED
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train(device)
+
+    # Generate timestamped run_id
+    run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_dir = Path("experiments/results/toy_graph") / run_id
+    summary_path = results_dir / "summary.json"
+
+    print(f"Seed: {seed}")
+    print(f"Run ID: {run_id}")
+    print(f"Output: {results_dir.as_posix()}")
+
+    # Capture environment
+    env = get_environment_snapshot(device)
+
+    # Train and save results
+    final_loss, elapsed, class_counts = train(device, seed=seed)
+    save_summary(final_loss, elapsed, class_counts, env, seed, summary_path)
 
 
 if __name__ == "__main__":

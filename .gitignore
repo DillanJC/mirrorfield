@@ -72,6 +72,10 @@ Thumbs.db
 experiments/results/*/
 experiments/*.json
 
+# Tool outputs
+tools/*_result.json
+tools/*.json
+
 # Temporary files
 *.tmp
 *.log
