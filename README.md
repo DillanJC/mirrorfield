@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.1 (Phase 0 + Phase A)
+**Version:** v0.2 (Phase 0 + Phase A + Phase B MVP)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -53,6 +53,40 @@ python experiments\analyze_jitter_results.py
 ```
 Prints statistical snapshots and (optionally) plots variance histograms.
 
+#### Phase B: Tier-2 Semantic Discriminator
+
+**1. Train Binary Sentiment Classifier + Compute Reference Stats**
+```powershell
+python experiments\tier2_classifier_train.py
+```
+Trains classifier on 2000 synthetic sentiment samples, computes reference set statistics (μ_ref, σ_ref).
+Outputs: `experiments/results/tier2_train/<run_id>/` and `experiments/results/tier2_reference/<run_id>/`
+
+**2. Generate Semantic Transform Suite (Interactive)**
+```powershell
+python experiments\tier2_transform_generate.py
+```
+LLM-assisted transform generation with human validation (≥5 spot-checks required).
+Displays prompts to copy/paste into GPT-4/Claude, parses JSON output, validates interactively.
+Outputs: `runs/tier2_transforms_v1.json`
+
+**3. Run Semantic Evaluation**
+```powershell
+python experiments\tier2_semantic_eval.py ^
+    --model-checkpoint experiments\results\tier2_train\<run_id>\model_checkpoint.pt ^
+    --reference-stats experiments\results\tier2_reference\<run_id>\summary.json ^
+    --transform-suite runs\tier2_transforms_v1.json
+```
+Computes boundary distance metrics (d(x), d̃(x), Δd̃, FlipRate) for all transforms.
+Outputs: `experiments/results/tier2_semantic_eval/<run_id>/`
+
+**4. Analyze Results**
+```powershell
+python experiments\analyze_tier2_results.py --input experiments\results\tier2_semantic_eval\<run_id>\summary.json
+```
+Prints human-readable summary and expectation checking (preserving <0.5, changing >1.5).
+Optional: generates Δd̃ histogram by category.
+
 ---
 
 ## Project Status
@@ -70,13 +104,19 @@ Prints statistical snapshots and (optionally) plots variance histograms.
 - Run ledger with 5 documented runs
 - See: [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md)
 
-**Phase B (Tier-2 Semantic Discriminator):** ⏸️ Ready (awaiting kickoff)
+**Phase B (Tier-2 Semantic Discriminator):** 🚧 In Progress
+- MVP implementation complete (train → generate → evaluate → analyze)
+- Binary sentiment classifier on synthetic dataset
+- Semantic transform suite with LLM-assisted generation
+- Boundary distance metrics: d(x), d̃(x), Δd̃, FlipRate
+- Awaiting: end-to-end pipeline testing + transform validation (≥5 spot-checks)
 
 ---
 
 ## Documentation
 
 - **Phase A Summary:** [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md) — Evidence pack completion report
+- **Phase B Transform Validation:** [`docs/TIER2_TRANSFORM_EXAMPLES.md`](docs/TIER2_TRANSFORM_EXAMPLES.md) — Transform validation log template (≥5 spot-checks)
 - **Definitions:** [`docs/DEFINITIONS_FREEZE_v0.1.md`](docs/DEFINITIONS_FREEZE_v0.1.md) — Canonical definitions (Phase 0 lock)
 - **Run Ledger:** [`runs/RUN_LEDGER.md`](runs/RUN_LEDGER.md) — Reproducible run tracking
 - **Tools README:** [`tools/README.md`](tools/README.md) — GPU playground documentation
