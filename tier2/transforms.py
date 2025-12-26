@@ -68,6 +68,10 @@ class TransformSuite:
             counts[transform.category] += 1
         return counts
 
+    def compute_hash(self):
+        """Recompute suite hash and update suite_hash attribute."""
+        self.suite_hash = self._compute_hash()
+
     def validate_suite_requirements(self) -> Dict[str, Any]:
         """
         Check if suite meets Phase B validation requirements.
@@ -87,28 +91,35 @@ class TransformSuite:
         for transform in validated:
             category_validated[transform.category] += 1
 
-        meets_requirements = validation_count >= 5
+        meets_requirement = validation_count >= 5
 
         return {
-            "meets_requirements": meets_requirements,
-            "validation_count": validation_count,
+            "meets_requirement": meets_requirement,
+            "total_validated": validation_count,
             "min_required": 5,
             "categories_validated": category_validated,
             "all_categories_covered": all(count > 0 for count in category_validated.values())
         }
 
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to JSON-serializable dictionary."""
+        return transform_suite_to_dict(self)
+
 
 def transform_suite_to_dict(suite: TransformSuite) -> Dict[str, Any]:
     """Convert TransformSuite to JSON-serializable dictionary."""
+    validation_report = suite.validate_suite_requirements()
+
     return {
         "suite_id": suite.suite_id,
         "llm_model": suite.llm_model,
         "generation_prompt": suite.generation_prompt,
         "validation": {
-            "total_validated": len(suite.get_validated_transforms()),
-            "min_required": 5,
-            "meets_requirements": suite.validate_suite_requirements()["meets_requirements"],
-            "categories_validated": suite.validate_suite_requirements()["categories_validated"]
+            "total_validated": validation_report["total_validated"],
+            "min_required": validation_report["min_required"],
+            "meets_requirement": validation_report["meets_requirement"],
+            "categories_validated": validation_report["categories_validated"],
+            "all_categories_covered": validation_report["all_categories_covered"]
         },
         "suite_hash": suite.suite_hash,
         "transforms": [
