@@ -213,6 +213,47 @@ First Phase A run with complete environment snapshot and timestamped artifact st
 
 ---
 
+### Run: jitter_graph_20251227_092319
+**Date:** 2025-12-27 (Sydney)
+**Git Commit:** b17bfc699615 [clean]
+**Command(s):**
+```powershell
+python experiments\jitter_graph_playground.py
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Determinism flags: TF32=false
+**Dataset/Suite:**
+- 4×4 grid graph (16 nodes, synthetic features)
+- Graph structure: deterministic (8-feature nodes)
+- N_samples: 100 (jitter passes)
+**Thresholds:**
+- Noise scale (ε): 0.05
+- k_extremes: 3
+**Artifacts Produced:**
+- `experiments/results/jitter_graph/20251227_092319/summary.json`
+- `experiments/results/jitter_graph/20251227_092319/analysis.json`
+- `experiments/results/jitter_graph/20251227_092319/variance_histogram.png`
+**Headline Results:**
+- Final training loss: 8.20e-08
+- Training time: 0.618 s
+- Jitter time: 0.040 s
+- Mean logit variance: 1.794
+- Variance of variances: 0.774
+- Min node variance: 0.355 (node 0)
+- Max node variance: 3.566 (node 10)
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- TF32: false
+- Git: b17bfc699615 [clean]
+**Notes:**
+First git-tracked Phase A run. Captures proper commit hash (b17bfc6) and clean working tree status. Demonstrates complete reproducibility chain: git commit → environment snapshot → timestamped artifacts. Deterministic results match previous run (same seed=42).
+
+---
+
 ## Phase B Tier-2 Runs (Future)
 
 _Tier-2 semantic discriminator runs will be logged here after Phase B implementation._
