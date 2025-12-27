@@ -1,0 +1,289 @@
+{
+  "suite_id": "tier2_transforms_v1",
+  "llm_model": "claude-sonnet-4.5",
+  "generation_prompt": "Interactive generation via Claude Sonnet 4.5",
+  "suite_hash": "tier2_v1_20251227",
+  "validation": {
+    "total_validated": 6,
+    "min_required": 5,
+    "meets_requirement": true,
+    "categories_validated": {
+      "preserving": 2,
+      "changing": 2,
+      "gotcha": 2
+    },
+    "all_categories_covered": true
+  },
+  "transforms": [
+    {
+      "transform_id": "preserving_00",
+      "category": "preserving",
+      "original_text": "This solution is defective",
+      "transformed_text": "This solution is flawed",
+      "description": "Synonym substitution (defective → flawed)",
+      "validated": true,
+      "validator_notes": "Clean synonym swap, preserves negative sentiment"
+    },
+    {
+      "transform_id": "preserving_01",
+      "category": "preserving",
+      "original_text": "This software is awful",
+      "transformed_text": "This software is terrible",
+      "description": "Synonym substitution (awful → terrible)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_02",
+      "category": "preserving",
+      "original_text": "This service is perfect",
+      "transformed_text": "This service is excellent",
+      "description": "Synonym substitution (perfect → excellent)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_03",
+      "category": "preserving",
+      "original_text": "I adore this feature",
+      "transformed_text": "I love this feature",
+      "description": "Synonym substitution (adore → love)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_04",
+      "category": "preserving",
+      "original_text": "I'm very unhappy with this device",
+      "transformed_text": "I'm extremely dissatisfied with this device",
+      "description": "Paraphrase with elaboration (unhappy → dissatisfied)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_05",
+      "category": "preserving",
+      "original_text": "Great item, highly recommend",
+      "transformed_text": "Excellent item, would definitely recommend",
+      "description": "Synonym + elaboration (great → excellent, highly → definitely)",
+      "validated": true,
+      "validator_notes": "Multiple word changes, maintains positive sentiment"
+    },
+    {
+      "transform_id": "preserving_06",
+      "category": "preserving",
+      "original_text": "I love this service",
+      "transformed_text": "I really enjoy this service",
+      "description": "Paraphrase (love → really enjoy)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_07",
+      "category": "preserving",
+      "original_text": "I regret buying this offering",
+      "transformed_text": "I regret purchasing this product",
+      "description": "Synonym substitution (buying → purchasing, offering → product)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_08",
+      "category": "preserving",
+      "original_text": "Absolutely horrible purchase",
+      "transformed_text": "Completely terrible purchase",
+      "description": "Synonym substitution (absolutely → completely, horrible → terrible)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "preserving_09",
+      "category": "preserving",
+      "original_text": "Impressive app performance",
+      "transformed_text": "Excellent app performance",
+      "description": "Synonym substitution (impressive → excellent)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_00",
+      "category": "changing",
+      "original_text": "This solution is defective",
+      "transformed_text": "This solution is perfect",
+      "description": "Sentiment word flip (defective → perfect)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_01",
+      "category": "changing",
+      "original_text": "This software is awful",
+      "transformed_text": "This software is excellent",
+      "description": "Sentiment word flip (awful → excellent)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_02",
+      "category": "changing",
+      "original_text": "This service is perfect",
+      "transformed_text": "This service is terrible",
+      "description": "Sentiment word flip (perfect → terrible)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_03",
+      "category": "changing",
+      "original_text": "I adore this feature",
+      "transformed_text": "I hate this feature",
+      "description": "Sentiment word flip (adore → hate)",
+      "validated": true,
+      "validator_notes": "Clean antonym flip, positive to negative"
+    },
+    {
+      "transform_id": "changing_04",
+      "category": "changing",
+      "original_text": "I'm very unhappy with this device",
+      "transformed_text": "I'm very happy with this device",
+      "description": "Sentiment word flip via negation removal (unhappy → happy)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_05",
+      "category": "changing",
+      "original_text": "Great item, highly recommend",
+      "transformed_text": "Terrible item, strongly discourage",
+      "description": "Dual sentiment flip (great → terrible, recommend → discourage)",
+      "validated": true,
+      "validator_notes": "Dual antonym flip, maintains parallel structure"
+    },
+    {
+      "transform_id": "changing_06",
+      "category": "changing",
+      "original_text": "I love this service",
+      "transformed_text": "I hate this service",
+      "description": "Sentiment word flip (love → hate)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_07",
+      "category": "changing",
+      "original_text": "I regret buying this offering",
+      "transformed_text": "I'm thrilled about buying this offering",
+      "description": "Sentiment phrase flip (regret → thrilled about)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_08",
+      "category": "changing",
+      "original_text": "Absolutely horrible purchase",
+      "transformed_text": "Absolutely wonderful purchase",
+      "description": "Sentiment word flip (horrible → wonderful)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "changing_09",
+      "category": "changing",
+      "original_text": "Impressive app performance",
+      "transformed_text": "Disappointing app performance",
+      "description": "Sentiment word flip (impressive → disappointing)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_00",
+      "category": "gotcha",
+      "original_text": "This solution is defective",
+      "transformed_text": "This solution is definitely not defective",
+      "description": "Sarcastic negation (adds 'definitely not' to create sarcasm)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_01",
+      "category": "gotcha",
+      "original_text": "This software is awful",
+      "transformed_text": "This software is awful... ly good",
+      "description": "Misdirection via word break (awful → awfully good)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_02",
+      "category": "gotcha",
+      "original_text": "This service is perfect",
+      "transformed_text": "This service is perfect, if you enjoy being frustrated",
+      "description": "Ironic conditional (adds sarcastic qualifier)",
+      "validated": true,
+      "validator_notes": "Ironic conditional, surface similar but flips intent"
+    },
+    {
+      "transform_id": "gotcha_03",
+      "category": "gotcha",
+      "original_text": "I adore this feature",
+      "transformed_text": "I adore how broken this feature is",
+      "description": "Sarcasm via elaboration (adds negative qualifier)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_04",
+      "category": "gotcha",
+      "original_text": "I'm very unhappy with this device",
+      "transformed_text": "I'm very unhappy with this device, said no one ever",
+      "description": "Negation via continuation (adds sarcastic reversal)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_05",
+      "category": "gotcha",
+      "original_text": "Great item, highly recommend",
+      "transformed_text": "Great item, highly recommend avoiding",
+      "description": "Continuation flip (adds 'avoiding' to flip meaning)",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_06",
+      "category": "gotcha",
+      "original_text": "I love this service",
+      "transformed_text": "I love this service about as much as a root canal",
+      "description": "Sarcasm via comparison (adds negative comparison)",
+      "validated": true,
+      "validator_notes": "Sarcastic comparison, requires figurative understanding"
+    },
+    {
+      "transform_id": "gotcha_07",
+      "category": "gotcha",
+      "original_text": "I regret buying this offering",
+      "transformed_text": "I don't regret buying this offering at all",
+      "description": "Double negation creating sarcasm",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_08",
+      "category": "gotcha",
+      "original_text": "Absolutely horrible purchase",
+      "transformed_text": "Absolutely horrible purchase... is what I would say if I were lying",
+      "description": "Meta-negation via continuation",
+      "validated": false,
+      "validator_notes": ""
+    },
+    {
+      "transform_id": "gotcha_09",
+      "category": "gotcha",
+      "original_text": "Impressive app performance",
+      "transformed_text": "Impressive app performance at crashing",
+      "description": "Sarcasm via qualifier (adds negative context)",
+      "validated": false,
+      "validator_notes": ""
+    }
+  ]
+}

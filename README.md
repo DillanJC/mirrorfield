@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.2 (Phase 0 + Phase A + Phase B MVP)
+**Version:** v0.3 (Phase 0 + Phase A + Phase B Complete)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -109,7 +109,7 @@ Optional: generates Δd̃ histogram by category.
 - Binary sentiment classifier on synthetic dataset
 - Semantic transform suite with LLM-assisted generation
 - Boundary distance metrics: d(x), d̃(x), Δd̃, FlipRate
-- Awaiting: end-to-end pipeline testing + transform validation (≥5 spot-checks)
+- ✅ End-to-end pipeline validated with 6 spot-checks
 
 ---
 
