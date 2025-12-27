@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.3 (Phase 0 + Phase A + Phase B Complete)
+**Version:** v0.4 (Phase 0 + Phase A + Phase B + Phase C Complete)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -104,12 +104,22 @@ Optional: generates Δd̃ histogram by category.
 - Run ledger with 5 documented runs
 - See: [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md)
 
-**Phase B (Tier-2 Semantic Discriminator):** 🚧 In Progress
+**Phase B (Tier-2 Semantic Discriminator):** ✅ Complete
 - MVP implementation complete (train → generate → evaluate → analyze)
 - Binary sentiment classifier on synthetic dataset
 - Semantic transform suite with LLM-assisted generation
 - Boundary distance metrics: d(x), d̃(x), Δd̃, FlipRate
-- ✅ End-to-end pipeline validated with 6 spot-checks
+- End-to-end pipeline validated with 6 spot-checks
+
+**Phase C (Calibration + Friction Tagging):** ✅ Complete
+- Perturbation calibration: Binary search finds ε achieving 5-10% flip rate
+  - Calibrated ε = 0.0166 (flip rate 8.3%)
+  - 3-way dataset split (train/calib/eval: 60/20/20)
+- Friction tagging: Categorizes samples by expected difficulty
+  - Low friction: 64.3% (|d̃(x)| ≥ 0.5)
+  - Medium friction: 18.1% (0.25 ≤ |d̃(x)| < 0.5)
+  - High friction: 17.6% (|d̃(x)| < 0.25)
+- Canonical artifacts: `runs/calibration_tau_*.json`, `runs/friction_tags_*.json`
 
 ---
 
