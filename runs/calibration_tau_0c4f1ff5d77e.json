@@ -1,0 +1,56 @@
+{
+  "calibration_id": "tau_calib_0c4f1ff5d77e",
+  "timestamp": "2025-12-27T16:47:58.251135",
+  "reference_set": {
+    "ref_name": "tier2_baseline_v1_c7c5c14f39ca",
+    "ref_hash": "c7c5c14f39ca",
+    "mu_ref": 8.15147876739502,
+    "sigma_ref": 1.2823017835617065,
+    "n_samples": 2000
+  },
+  "calibration_config": {
+    "target_flip_rate_min": 0.05,
+    "target_flip_rate_max": 0.1,
+    "epsilon_min": 0.001,
+    "epsilon_max": 0.5,
+    "max_iterations": 20,
+    "n_perturbation_samples": 10,
+    "seed": 42
+  },
+  "calibration_result": {
+    "epsilon_calibrated": 0.01659375,
+    "flip_rate_achieved": 0.0835,
+    "n_samples": 400,
+    "n_flips_total": 334,
+    "converged": true,
+    "iterations_used": 5,
+    "calibration_hash": "0c4f1ff5d77e",
+    "search_history": [
+      {
+        "iteration": 1,
+        "epsilon": 0.2505,
+        "flip_rate": 0.44525
+      },
+      {
+        "iteration": 2,
+        "epsilon": 0.12575,
+        "flip_rate": 0.36525
+      },
+      {
+        "iteration": 3,
+        "epsilon": 0.063375,
+        "flip_rate": 0.273
+      },
+      {
+        "iteration": 4,
+        "epsilon": 0.0321875,
+        "flip_rate": 0.17175
+      },
+      {
+        "iteration": 5,
+        "epsilon": 0.01659375,
+        "flip_rate": 0.0835
+      }
+    ]
+  }
+}

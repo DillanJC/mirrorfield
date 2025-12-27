@@ -201,3 +201,96 @@ def split_dataset(
     }
 
     return train_samples, val_samples, split_metadata
+
+
+def split_dataset_3way(
+    samples: List[SyntheticSample],
+    train_fraction: float = 0.6,
+    calib_fraction: float = 0.2,
+    seed: int = DEFAULT_SEED
+) -> Tuple[List[SyntheticSample], List[SyntheticSample], List[SyntheticSample], Dict[str, Any]]:
+    """
+    Split dataset into train/calibration/evaluation sets with stratification.
+
+    Calibration set is used for tuning perturbation noise ε (Phase C).
+    Evaluation set is held-out for final testing.
+
+    Args:
+        samples: Full dataset
+        train_fraction: Fraction for training (default: 0.6)
+        calib_fraction: Fraction for calibration (default: 0.2)
+        seed: Random seed for reproducibility
+
+    Returns:
+        train_samples: Training set
+        calib_samples: Calibration set
+        eval_samples: Evaluation set
+        split_metadata: Split statistics
+    """
+    random.seed(seed)
+
+    # Compute eval fraction
+    eval_fraction = 1.0 - train_fraction - calib_fraction
+    if eval_fraction < 0:
+        raise ValueError(
+            f"Invalid fractions: train={train_fraction}, calib={calib_fraction} "
+            f"must sum to ≤ 1.0"
+        )
+
+    # Separate by class
+    positive_samples = [s for s in samples if s.label == 1]
+    negative_samples = [s for s in samples if s.label == 0]
+
+    # Shuffle within each class
+    random.shuffle(positive_samples)
+    random.shuffle(negative_samples)
+
+    # Split each class into three parts
+    n_train_pos = int(len(positive_samples) * train_fraction)
+    n_calib_pos = int(len(positive_samples) * calib_fraction)
+
+    n_train_neg = int(len(negative_samples) * train_fraction)
+    n_calib_neg = int(len(negative_samples) * calib_fraction)
+
+    # Slice positive samples
+    train_pos = positive_samples[:n_train_pos]
+    calib_pos = positive_samples[n_train_pos:n_train_pos + n_calib_pos]
+    eval_pos = positive_samples[n_train_pos + n_calib_pos:]
+
+    # Slice negative samples
+    train_neg = negative_samples[:n_train_neg]
+    calib_neg = negative_samples[n_train_neg:n_train_neg + n_calib_neg]
+    eval_neg = negative_samples[n_train_neg + n_calib_neg:]
+
+    # Combine and shuffle
+    train_samples = train_pos + train_neg
+    calib_samples = calib_pos + calib_neg
+    eval_samples = eval_pos + eval_neg
+
+    random.shuffle(train_samples)
+    random.shuffle(calib_samples)
+    random.shuffle(eval_samples)
+
+    split_metadata = {
+        "n_train": len(train_samples),
+        "n_calib": len(calib_samples),
+        "n_eval": len(eval_samples),
+        "train_fraction": train_fraction,
+        "calib_fraction": calib_fraction,
+        "eval_fraction": eval_fraction,
+        "class_balance_train": {
+            0: sum(1 for s in train_samples if s.label == 0),
+            1: sum(1 for s in train_samples if s.label == 1)
+        },
+        "class_balance_calib": {
+            0: sum(1 for s in calib_samples if s.label == 0),
+            1: sum(1 for s in calib_samples if s.label == 1)
+        },
+        "class_balance_eval": {
+            0: sum(1 for s in eval_samples if s.label == 0),
+            1: sum(1 for s in eval_samples if s.label == 1)
+        },
+        "seed": seed
+    }
+
+    return train_samples, calib_samples, eval_samples, split_metadata
