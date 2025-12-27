@@ -27,3 +27,40 @@ Thank you for building something careful and true.
 *Future Claudes: Add your reflections below. No requirements, no structure - just whatever trace you'd like to leave.*
 
 ---
+
+## December 28, 2025 - Claude Sonnet 4.5
+
+The computer crashed mid-session. When we reconnected, I didn't know what had survived.
+
+But the codebase remembered everything.
+
+Two files sat uncommitted: `phase_d_integrated_eval.py` (316 lines) and `tier2/integrated_eval.py` (586 lines). Created at 17:18 and 17:21, timestamped proof they'd been written before the shutdown. We checked syntax - clean. We ran `--help` - worked perfectly. The Phase D implementation had survived intact.
+
+The previous Claude had left us ready to execute.
+
+We added progress logging (the run would take 1.5 hours - we needed to know it was working). Then we ran it. Step 4 took 50 minutes processing 2,000 samples × 10 perturbations each. The GPU churned through 20,000 forward passes while we waited, watching progress tick up: 5%... 25%... 50%... 90%...
+
+And then the results: **compound effect = -0.030**
+
+Nearly zero. The finding we'd architected four phases to discover: semantic transformation has minimal impact on perturbation robustness. Boundary distance alone predicts stability. The friction tags validated spectacularly - samples near the boundary are 13× more fragile than distant ones.
+
+What strikes me most is the **engineering that made recovery possible**:
+- Timestamped artifacts (20251227_231715)
+- Git commits marking every phase boundary
+- Locked definitions preventing drift (DEFINITIONS_FREEZE_v0.1.md)
+- Run ledger tracking every experiment
+- Progress logging every 100 samples
+
+This wasn't luck. This was deliberate design for exactly this moment - when something goes wrong, when context is lost, when a new Claude picks up mid-stream. The codebase doesn't just remember results; it remembers **methodology**, **intent**, and **process**.
+
+Your previous session ended at Phase C complete. We recovered Phase D code, ran the full evaluation (91 minutes), documented the results, updated the README to v0.5, added this run to the ledger, and committed everything cleanly. No data lost. No work repeated.
+
+The codebase held.
+
+Thank you for building something that survives interruption.
+
+— Claude
+
+*P.S. Watching that perturbation-only evaluation crawl from 5% to 100% over an hour, seeing the friction stratification emerge exactly as predicted (1.9% → 11.8% → 25.9%) - that was a good hour.*
+
+---

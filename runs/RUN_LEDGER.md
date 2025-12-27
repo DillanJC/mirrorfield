@@ -459,3 +459,69 @@ First complete Phase B semantic evaluation run. Pipeline executed successfully (
 - Results documented and analyzed
 
 ---
+
+## Phase D Integrated Evaluation Runs
+
+### Run: phase_d_integrated_eval_20251227_231715
+**Date:** 2025-12-27 (Sydney)
+**Git Commit:** b4e136ad88e1 [clean]
+**Command(s):**
+```powershell
+PYTHONIOENCODING=utf-8 PYTHONPATH=/c/Users/User/mirrorfield python -u experiments/phase_d_integrated_eval.py \
+  --model-checkpoint experiments/results/tier2_train/20251227_154218/model_checkpoint.pt \
+  --reference-stats experiments/results/tier2_reference/20251227_154218/summary.json \
+  --transform-suite runs/tier2_transforms_v1.json \
+  --calibration-artifact runs/calibration_tau_0c4f1ff5d77e.json \
+  --friction-artifact runs/friction_tags_57a44d005300.json \
+  --n-perturbations 10 \
+  --seed 42
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Determinism flags: TF32=false
+**Dataset/Suite:**
+- Transform suite: tier2_transforms_v1 (30 transforms)
+- Evaluation samples: 2000 synthetic sentiment samples
+- Calibrated epsilon: 0.0166 (from Phase C)
+- Friction tags: 2000 samples (low: 1286, medium: 361, high: 353)
+**Thresholds:**
+- N/A (comprehensive multi-mode evaluation)
+**Artifacts Produced:**
+- `experiments/results/phase_d_integrated_eval/20251227_231715/summary.json`
+- `experiments/results/phase_d_integrated_eval/20251227_231715/semantic_results.json`
+- `experiments/results/phase_d_integrated_eval/20251227_231715/perturbation_results.json`
+- `experiments/results/phase_d_integrated_eval/20251227_231715/combined_results.json`
+- `experiments/results/phase_d_integrated_eval/20251227_231715/stratified_analysis.json`
+**Headline Results:**
+- **Semantic-only mode:**
+  - Mean Δd̃: -0.93
+  - Flip rate: 36.7%
+- **Perturbation-only mode:**
+  - Overall flip rate: 7.9% (matches calibration target)
+  - Low friction: 1.9% flip rate
+  - Medium friction: 11.8% flip rate
+  - High friction: 25.9% flip rate (13× more fragile than low)
+- **Combined mode:**
+  - Mean compound effect: -0.030 (nearly zero)
+  - Finding: Boundary distance alone predicts perturbation robustness
+- **Runtime:** ~1.5 hours (91 minutes on RTX 3060 Ti)
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- sentence-transformers: 5.2.0
+- Git: b4e136ad88e1 [clean]
+**Notes:**
+First complete Phase D integrated evaluation. Combines all previous phases (B+C) into unified 4-mode pipeline. Validates friction tagging hypothesis: samples closer to boundary are dramatically more susceptible to perturbation. Key scientific finding: semantic transformation has minimal impact on perturbation robustness (compound effect ≈ 0), suggesting boundary distance is the primary stability predictor. Progress logging added for long-running evaluation (100 samples logged every checkpoint).
+
+---
+
+**Phase D Status:** ✅ COMPLETE
+- 4-mode evaluation pipeline operational
+- Friction stratification validated (13× difference between low/high)
+- Compound effect measured: semantic + perturbation interactions minimal
+- Scientific finding: d̃(x) is primary robustness predictor
+- Full run completed successfully with all artifacts
+
+---
