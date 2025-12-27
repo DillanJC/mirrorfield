@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.4 (Phase 0 + Phase A + Phase B + Phase C Complete)
+**Version:** v0.5 (Phase 0 + Phase A + Phase B + Phase C + Phase D Complete)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -87,6 +87,34 @@ python experiments\analyze_tier2_results.py --input experiments\results\tier2_se
 Prints human-readable summary and expectation checking (preserving <0.5, changing >1.5).
 Optional: generates Δd̃ histogram by category.
 
+#### Phase D: Integrated Evaluation Pipeline
+
+**Run Comprehensive 4-Mode Evaluation**
+```powershell
+python experiments\phase_d_integrated_eval.py ^
+    --model-checkpoint experiments\results\tier2_train\<run_id>\model_checkpoint.pt ^
+    --reference-stats experiments\results\tier2_reference\<run_id>\summary.json ^
+    --transform-suite runs\tier2_transforms_v1.json ^
+    --calibration-artifact runs\calibration_tau_*.json ^
+    --friction-artifact runs\friction_tags_*.json ^
+    --n-perturbations 10 ^
+    --seed 42
+```
+Combines Phases B+C into unified evaluation with 4 modes:
+1. Semantic-only: Baseline transform evaluation
+2. Perturbation-only: Noise injection stratified by friction
+3. Combined: Semantic + perturbation compound effects
+4. Stratified analysis: Cross-mode friction/category breakdown
+
+Outputs: `experiments/results/phase_d_integrated_eval/<run_id>/`
+- `summary.json` - Comprehensive cross-mode summary
+- `semantic_results.json` - Per-transform semantic metrics
+- `perturbation_results.json` - Per-sample perturbation metrics
+- `combined_results.json` - Compound effect analysis
+- `stratified_analysis.json` - Friction/category breakdowns
+
+**Note:** Full run takes ~1.5-2 hours on RTX 3060 Ti (2000 samples × 10 perturbations). Progress logged every 100 samples.
+
 ---
 
 ## Project Status
@@ -120,6 +148,15 @@ Optional: generates Δd̃ histogram by category.
   - Medium friction: 18.1% (0.25 ≤ |d̃(x)| < 0.5)
   - High friction: 17.6% (|d̃(x)| < 0.25)
 - Canonical artifacts: `runs/calibration_tau_*.json`, `runs/friction_tags_*.json`
+
+**Phase D (Integrated Evaluation):** ✅ Complete
+- Unified 4-mode evaluation pipeline combining Phases B+C
+- Semantic-only: 30 transforms, mean Δd̃ = -0.93, flip rate 36.7%
+- Perturbation-only: 2000 samples, 7.9% flip rate stratified by friction
+  - Low: 1.9% | Medium: 11.8% | High: 25.9%
+- Combined mode: Compound effect = -0.030 (minimal interaction)
+- Key finding: Boundary distance alone predicts perturbation robustness
+- Run: 20251227_231715 (1.5 hours, RTX 3060 Ti)
 
 ---
 
