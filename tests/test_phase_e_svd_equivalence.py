@@ -128,4 +128,4 @@ if __name__ == "__main__":
     test_svd_equivalence_edge_case_r0()
     test_svd_equivalence_edge_case_r_max()
     test_svd_equivalence_multiple_seeds()
-    print("✓ All SVD equivalence tests passed")
+    print("PASS: All SVD equivalence tests passed")

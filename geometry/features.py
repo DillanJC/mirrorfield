@@ -67,8 +67,8 @@ def local_curvature_svd_gpu(
 
     # Setup device
     dev = torch.device(device if (device == "cuda" and torch.cuda.is_available()) else "cpu")
-    ref_t = torch.from_numpy(ref_points).to(dev=dev, dtype=torch.float32)
-    idx_t = torch.from_numpy(neighbor_indices).to(dev=dev, dtype=torch.long)
+    ref_t = torch.from_numpy(ref_points).to(device=dev, dtype=torch.float32)
+    idx_t = torch.from_numpy(neighbor_indices).to(device=dev, dtype=torch.long)
 
     # Preallocate output
     out = np.empty((n_query,), dtype=np.float32)

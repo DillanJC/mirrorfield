@@ -162,4 +162,4 @@ if __name__ == "__main__":
     test_phase_d_produces_required_fields()
     test_boundary_distance_shape_compatibility()
     test_phase_e_can_consume_phase_d_format()
-    print("\n✓ All Phase D → E integration tests passed")
+    print("\nPASS: All Phase D -> E integration tests passed")

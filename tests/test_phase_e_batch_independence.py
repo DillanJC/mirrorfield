@@ -268,4 +268,4 @@ if __name__ == "__main__":
     test_curvature_duplicate_queries()
     test_ridge_batch_independence()
     test_bundle_batch_independence()
-    print("✓ All batch independence tests passed")
+    print("PASS: All batch independence tests passed")
