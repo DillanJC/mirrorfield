@@ -13,10 +13,12 @@ from geometry.features import (
     local_curvature_svd_gpu,
     ridge_proximity_from_knn_distances,
 )
+from geometry.bundle import GeometryBundle
 
 __all__ = [
     "NAMES",
     "SectionFNames",
     "local_curvature_svd_gpu",
     "ridge_proximity_from_knn_distances",
+    "GeometryBundle",
 ]
