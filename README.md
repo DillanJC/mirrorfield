@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.5 (Phase 0 + Phase A + Phase B + Phase C + Phase D Complete)
+**Version:** v0.6 (Phase 0 + Phase A + Phase B + Phase C + Phase D Complete + Validated)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -89,9 +89,9 @@ Optional: generates Δd̃ histogram by category.
 
 #### Phase D: Integrated Evaluation Pipeline
 
-**Run Comprehensive 4-Mode Evaluation**
+**Run Comprehensive 4-Mode Evaluation (OPTIMIZED - 302× faster)**
 ```powershell
-python experiments\phase_d_integrated_eval.py ^
+python experiments\phase_d_integrated_eval_fast.py ^
     --model-checkpoint experiments\results\tier2_train\<run_id>\model_checkpoint.pt ^
     --reference-stats experiments\results\tier2_reference\<run_id>\summary.json ^
     --transform-suite runs\tier2_transforms_v1.json ^
@@ -113,7 +113,9 @@ Outputs: `experiments/results/phase_d_integrated_eval/<run_id>/`
 - `combined_results.json` - Compound effect analysis
 - `stratified_analysis.json` - Friction/category breakdowns
 
-**Note:** Full run takes ~1.5-2 hours on RTX 3060 Ti (2000 samples × 10 perturbations). Progress logged every 100 samples.
+**Performance:** ~23 seconds per run on RTX 3060 Ti (302× speedup from batched embeddings)
+
+**Validation:** Validated across 20 independent seeds (100% consistency). See `runs/phase_d_validation_manifest.json` and `docs/PHASE_D_DEEP_ANALYSIS_v1.0.md`.
 
 ---
 
@@ -149,14 +151,19 @@ Outputs: `experiments/results/phase_d_integrated_eval/<run_id>/`
   - High friction: 17.6% (|d̃(x)| < 0.25)
 - Canonical artifacts: `runs/calibration_tau_*.json`, `runs/friction_tags_*.json`
 
-**Phase D (Integrated Evaluation):** ✅ Complete
+**Phase D (Integrated Evaluation):** ✅ Complete + Validated (20 seeds)
 - Unified 4-mode evaluation pipeline combining Phases B+C
-- Semantic-only: 30 transforms, mean Δd̃ = -0.93, flip rate 36.7%
-- Perturbation-only: 2000 samples, 7.9% flip rate stratified by friction
-  - Low: 1.9% | Medium: 11.8% | High: 25.9%
-- Combined mode: Compound effect = -0.030 (minimal interaction)
-- Key finding: Boundary distance alone predicts perturbation robustness
-- Run: 20251227_231715 (1.5 hours, RTX 3060 Ti)
+- **Performance:** 302× speedup via batched embeddings (~23s per run vs 116 minutes)
+- **Validation:** 20 independent seeds tested (100% consistency)
+  - Mean stratification: 35.2× (low → high friction)
+  - Statistical significance: p < 0.0001
+  - Bias checks: All passed (random seeds + negative control)
+- **Friction stratification (seed 42 baseline):**
+  - Low friction: 1.9% flip rate | Medium: 11.8% | High: 25.9%
+  - Stratification: 13.6× difference (low → high)
+- **Key finding (VALIDATED):** d̃(x) is a robust, seed-independent predictor of perturbation robustness
+- **Artifacts:** Validation manifest, 20 run directories, negative control script
+- **Documentation:** [`docs/PHASE_D_DEEP_ANALYSIS_v1.0.md`](docs/PHASE_D_DEEP_ANALYSIS_v1.0.md)
 
 ---
 
@@ -164,8 +171,10 @@ Outputs: `experiments/results/phase_d_integrated_eval/<run_id>/`
 
 - **Phase A Summary:** [`docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md`](docs/PHASE_A_COMPLETION_SUMMARY_v1.0.md) — Evidence pack completion report
 - **Phase B Transform Validation:** [`docs/TIER2_TRANSFORM_EXAMPLES.md`](docs/TIER2_TRANSFORM_EXAMPLES.md) — Transform validation log template (≥5 spot-checks)
+- **Phase D Deep Analysis:** [`docs/PHASE_D_DEEP_ANALYSIS_v1.0.md`](docs/PHASE_D_DEEP_ANALYSIS_v1.0.md) — 20-seed validation, bias checks, stratification analysis
 - **Definitions:** [`docs/DEFINITIONS_FREEZE_v0.1.md`](docs/DEFINITIONS_FREEZE_v0.1.md) — Canonical definitions (Phase 0 lock)
 - **Run Ledger:** [`runs/RUN_LEDGER.md`](runs/RUN_LEDGER.md) — Reproducible run tracking
+- **Validation Manifest:** [`runs/phase_d_validation_manifest.json`](runs/phase_d_validation_manifest.json) — 20-seed validation artifact
 - **Tools README:** [`tools/README.md`](tools/README.md) — GPU playground documentation
 
 ---
@@ -189,4 +198,4 @@ Outputs: `experiments/results/phase_d_integrated_eval/<run_id>/`
 
 ---
 
-**Last Updated:** 2025-12-27
+**Last Updated:** 2025-12-28
