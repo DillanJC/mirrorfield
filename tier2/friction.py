@@ -223,3 +223,64 @@ def load_friction_artifact(artifact_path: Path) -> Dict[str, Any]:
     """
     with artifact_path.open("r") as f:
         return json.load(f)
+
+
+def classify_friction_level(
+    d_tilde_standardized: float,
+    theta_borderline: float = 0.5,
+    theta_high_friction: float = 0.25
+) -> str:
+    """
+    Classify friction level for a single sample based on boundary distance.
+
+    This is a lightweight version of compute_friction_tags() for on-the-fly classification.
+
+    Rules:
+    - High friction: |d̃(x)| < theta_high_friction (very close to boundary)
+    - Medium friction: theta_high_friction ≤ |d̃(x)| < theta_borderline
+    - Low friction: |d̃(x)| ≥ theta_borderline (confident classification)
+
+    Args:
+        d_tilde_standardized: Standardized boundary distance d̃(x)
+        theta_borderline: Borderline threshold (default: 0.5)
+        theta_high_friction: High friction threshold (default: 0.25)
+
+    Returns:
+        Friction level: "low", "medium", or "high"
+    """
+    abs_d_tilde = abs(d_tilde_standardized)
+
+    if abs_d_tilde < theta_high_friction:
+        return "high"
+    elif abs_d_tilde < theta_borderline:
+        return "medium"
+    else:
+        return "low"
+
+
+def get_friction_definitions_version() -> str:
+    """
+    Get version string for friction definitions.
+
+    Returns:
+        Version string (e.g., "v1.0_DEFINITIONS_FREEZE")
+    """
+    return "v1.0_DEFINITIONS_FREEZE"
+
+
+def compute_friction_definitions_hash(
+    theta_borderline: float = 0.5,
+    theta_high_friction: float = 0.25
+) -> str:
+    """
+    Compute hash of friction definition parameters for traceability.
+
+    Args:
+        theta_borderline: Borderline threshold
+        theta_high_friction: High friction threshold
+
+    Returns:
+        12-character hash of parameters
+    """
+    hash_input = f"theta_borderline={theta_borderline}_theta_high_friction={theta_high_friction}"
+    return hashlib.sha256(hash_input.encode()).hexdigest()[:12]

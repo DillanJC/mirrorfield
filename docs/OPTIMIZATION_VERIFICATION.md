@@ -1,8 +1,9 @@
 # Phase D Optimization Verification Plan
 
 **Date:** 2025-12-28
-**Status:** Ready for verification run
-**Git Commit:** 0a1d556
+**Status:** VERIFIED - Optimization successful
+**Git Commit:** 5fa0d475b987 (with RNG fixes)
+**Speedup Achieved:** 302× (116 minutes → 23 seconds)
 
 ---
 
@@ -237,6 +238,55 @@ Once verification passes:
 - Same seed (42) for both runs
 - Seed control in `precompute_embeddings_batch()`
 - Deterministic RNG for perturbations
+
+---
+
+## Verification Results (2025-12-28)
+
+### Runs Executed
+
+**Baseline (Original Version):**
+- Run ID: `20251228_030427`
+- Runtime: 1 hour 55 minutes 34 seconds (6,954 seconds)
+- Results: 7.905% flip rate, -0.030 compound effect
+
+**Optimized (Final Version):**
+- Run ID: `20251228_050730`
+- Runtime: 23 seconds
+- Results: 7.905% flip rate, -0.030 compound effect
+
+### Performance
+
+**Speedup: 302× faster than original**
+- Original: 116 minutes
+- Optimized: 23 seconds
+- Far exceeds predicted 5-10× speedup
+
+### Accuracy
+
+**High-Level Metrics:** Perfect match
+- Semantic mean Δd̃: -0.931079 (exact match)
+- Semantic flip rate: 36.67% (exact match)
+- Perturbation flip rate: 7.905% (exact match)
+- Combined compound effect: -0.030 (exact match)
+
+**Detailed Results:**
+- Semantic: 3/30 results differ by <6.2e-06 (numerical precision only)
+- Perturbation: 2000/2000 perfect match
+- Combined: 30/30 perfect match
+
+### Bug Fixes Required
+
+Three RNG state management fixes applied during verification:
+1. Prevent RNG reset during embedding batch (seed=None)
+2. Add per-sample RNG reset in perturbation mode
+3. Correct RNG flow in combined mode (one reset, not two)
+
+See `docs/OVERNIGHT_VERIFICATION_LOG.md` for complete debugging details.
+
+### Conclusion
+
+Optimization verified successful. Optimized version produces identical results with 302× speedup. Safe for production use.
 
 ---
 

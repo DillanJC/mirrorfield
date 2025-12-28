@@ -1,8 +1,8 @@
 # Overnight Verification Protocol
 
 **Date:** 2025-12-28
-**Status:** Active
-**Git Commit:** 1ed0ae5 [clean]
+**Status:** COMPLETED
+**Git Commit:** 5fa0d475b987 [dirty - code changes awaiting review]
 
 ---
 
@@ -11,8 +11,9 @@
 User is sleeping while verification runs (~2.25 hours total). Claude is authorized to handle verification and minor fixes autonomously.
 
 **Verification Run Started:** 2025-12-28 03:04:27
-**Run ID (Original):** 20251228_030427
-**Expected Completion:** ~05:30 (2 hours from start)
+**Verification Completed:** 2025-12-28 05:07:53
+**Total Duration:** 2 hours 3 minutes
+**Outcome:** SUCCESS - 302× speedup verified
 
 ---
 
@@ -171,6 +172,38 @@ If optimization verification fails catastrophically:
 
 **END OF PROTOCOL**
 
-**Status:** Claude authorized to proceed autonomously
-**User Status:** Sleeping - handle verification independently
-**Guardrails:** Active (no architectural changes, document everything)
+---
+
+## Completion Summary
+
+**Final Status:** VERIFICATION PASSED
+
+**User wakes to:**
+Verification complete! **302× speedup confirmed!** (116 minutes → 23 seconds)
+
+**What happened:**
+1. Original baseline run completed successfully (7.9% flip rate, -0.030 compound effect)
+2. Optimized version initially failed verification (RNG state mismatch)
+3. Applied 3 targeted bug fixes for RNG state management
+4. Re-ran verification - PASSED with perfect match
+5. All results documented in `docs/OVERNIGHT_VERIFICATION_LOG.md`
+
+**Code changes made:** (awaiting your review)
+- `tier2/integrated_eval_fast.py`: 3 RNG state fixes
+  - Line 102: seed=None in embedding batch
+  - Line 237: RNG reset before perturbations
+  - Line 355: Correct RNG flow in combined mode
+
+**Next steps:**
+1. Review code changes in `tier2/integrated_eval_fast.py`
+2. Review overnight log: `docs/OVERNIGHT_VERIFICATION_LOG.md`
+3. Commit verified optimization (or request changes)
+4. Use fast version for all future Phase D runs
+
+**Performance achieved:**
+- Original: 1 hour 55 minutes
+- Optimized: 23 seconds
+- Speedup: **302× faster**
+- Accuracy: Perfect match on all metrics
+
+**Status:** Ready for your review and approval

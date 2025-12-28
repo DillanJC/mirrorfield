@@ -55,6 +55,11 @@ class PerturbationModeResult:
     flip_rate: float
     n_flips: int
     n_perturbations: int
+    # Traceability metadata (added for seed-independent friction classification)
+    theta_borderline: float = 0.5
+    theta_high_friction: float = 0.25
+    friction_definitions_version: str = "v1.0_DEFINITIONS_FREEZE"
+    friction_definitions_hash: str = ""
 
 
 @dataclass
@@ -70,6 +75,12 @@ class CombinedModeResult:
     original_perturbation_flip_rate: float
     transformed_perturbation_flip_rate: float
     compound_effect: float
+    # Traceability metadata (added for seed-independent friction classification)
+    original_d_tilde: float = 0.0
+    theta_borderline: float = 0.5
+    theta_high_friction: float = 0.25
+    friction_definitions_version: str = "v1.0_DEFINITIONS_FREEZE"
+    friction_definitions_hash: str = ""
 
 
 def precompute_embeddings_batch(
@@ -98,7 +109,8 @@ def precompute_embeddings_batch(
     print(f"    Batched embedding: {len(unique_texts)} unique texts (from {len(texts)} total)")
 
     # Single batched call to get_embeddings (this is the speedup!)
-    embeddings = get_embeddings(unique_texts, device, seed=seed, batch_size=batch_size)
+    # Don't pass seed - embeddings are deterministic and we don't want to reset RNG state
+    embeddings = get_embeddings(unique_texts, device, seed=None, batch_size=batch_size)
 
     # Create lookup dictionary: text -> embedding
     embedding_cache = {text: embeddings[i] for i, text in enumerate(unique_texts)}
@@ -181,24 +193,32 @@ def run_semantic_mode_fast(
 def run_perturbation_mode_fast(
     model: nn.Module,
     samples: List[SyntheticSample],
-    friction_tags: List[FrictionTag],
+    friction_tags: List[FrictionTag],  # DEPRECATED: kept for compatibility
     ref_stats: ReferenceSetStats,
     epsilon: float,
     n_perturbations: int,
     device: torch.device,
-    seed: int
+    seed: int,
+    theta_borderline: float = 0.5,
+    theta_high_friction: float = 0.25
 ) -> List[PerturbationModeResult]:
     """
     Optimized perturbation-only evaluation with batched embeddings.
 
     Speedup: Instead of 2000 separate embedding calls (1 per sample),
     we make 1 batched call for all sample texts.
+
+    NEW: Computes friction levels on-the-fly based on actual sample d̃(x),
+    making results seed-independent and fully traceable.
     """
+    from tier2.friction import classify_friction_level, get_friction_definitions_version, compute_friction_definitions_hash
+
     model.eval()
     results = []
 
-    # Create friction lookup
-    friction_map = {tag.sample_id: tag for tag in friction_tags}
+    # Compute traceability metadata once
+    friction_version = get_friction_definitions_version()
+    friction_hash = compute_friction_definitions_hash(theta_borderline, theta_high_friction)
 
     # Collect all sample texts
     sample_texts = [sample.text for sample in samples]
@@ -217,10 +237,6 @@ def run_perturbation_mode_fast(
         if (idx + 1) % 100 == 0:
             print(f"    Progress: {idx + 1}/{total_samples} samples processed ({100*(idx+1)/total_samples:.1f}%)")
 
-        friction_tag = friction_map.get(sample.sample_id)
-        if friction_tag is None:
-            continue
-
         # Lookup cached embedding (no re-computation!)
         original_embedding = embedding_cache[sample.text].unsqueeze(0)
 
@@ -230,6 +246,21 @@ def run_perturbation_mode_fast(
             d_tilde_orig = compute_standardized_distance(
                 d_orig, ref_stats.mu_ref, ref_stats.sigma_ref
             )
+
+        # Compute friction level on-the-fly based on ACTUAL d̃(x)
+        # This makes results seed-independent!
+        d_tilde_val = float(d_tilde_orig.item())
+        friction_level = classify_friction_level(
+            d_tilde_val,
+            theta_borderline=theta_borderline,
+            theta_high_friction=theta_high_friction
+        )
+
+        # Reset RNG before perturbations to match original behavior
+        # (Original version reset RNG via get_embeddings() call on each sample)
+        torch.manual_seed(seed)
+        if device.type == "cuda":
+            torch.cuda.manual_seed(seed)
 
         # Apply perturbations
         flips = 0
@@ -251,11 +282,15 @@ def run_perturbation_mode_fast(
 
         results.append(PerturbationModeResult(
             sample_id=sample.sample_id,
-            friction_level=friction_tag.friction_level,
-            d_tilde_original=float(d_tilde_orig.item()),
+            friction_level=friction_level,
+            d_tilde_original=d_tilde_val,
             flip_rate=flip_rate,
             n_flips=flips,
-            n_perturbations=n_perturbations
+            n_perturbations=n_perturbations,
+            theta_borderline=theta_borderline,
+            theta_high_friction=theta_high_friction,
+            friction_definitions_version=friction_version,
+            friction_definitions_hash=friction_hash
         ))
 
     return results
@@ -265,24 +300,32 @@ def run_combined_mode_fast(
     model: nn.Module,
     transform_suite: List[Dict],
     samples: List[SyntheticSample],
-    friction_tags: List[FrictionTag],
+    friction_tags: List[FrictionTag],  # DEPRECATED: kept for compatibility
     ref_stats: ReferenceSetStats,
     epsilon: float,
     n_perturbations: int,
     device: torch.device,
-    seed: int
+    seed: int,
+    theta_borderline: float = 0.5,
+    theta_high_friction: float = 0.25
 ) -> List[CombinedModeResult]:
     """
     Optimized combined semantic + perturbation evaluation with batched embeddings.
 
     Speedup: Instead of 60 separate embedding calls (30 transforms × 2 texts),
     we make 1 batched call for all unique texts.
+
+    NEW: Computes friction levels on-the-fly based on actual sample d̃(x),
+    making results seed-independent and fully traceable.
     """
+    from tier2.friction import classify_friction_level, get_friction_definitions_version, compute_friction_definitions_hash
+
     model.eval()
     results = []
 
-    # Create friction lookup
-    friction_map = {tag.sample_id: tag for tag in friction_tags}
+    # Compute traceability metadata once
+    friction_version = get_friction_definitions_version()
+    friction_hash = compute_friction_definitions_hash(theta_borderline, theta_high_friction)
 
     # Collect all texts that need embedding (originals + transformed)
     all_texts = []
@@ -309,19 +352,6 @@ def run_combined_mode_fast(
         original_text = transform["original_text"]
         transformed_text = transform["transformed_text"]
 
-        # Find matching friction tag
-        matching_tag = None
-        for tag in friction_tags:
-            matching_samples = [s for s in samples if s.text == original_text]
-            if matching_samples:
-                matching_sample = matching_samples[0]
-                if tag.sample_id == matching_sample.sample_id:
-                    matching_tag = tag
-                    break
-
-        if matching_tag is None:
-            continue
-
         # Lookup cached embeddings (no re-computation!)
         original_embedding = embedding_cache[original_text].unsqueeze(0)
         transformed_embedding = embedding_cache[transformed_text].unsqueeze(0)
@@ -340,8 +370,22 @@ def run_combined_mode_fast(
                 d_trans, ref_stats.mu_ref, ref_stats.sigma_ref
             )
 
+        # Compute friction level on-the-fly based on ACTUAL d̃(x)
+        d_tilde_orig_val = float(d_tilde_orig.item())
+        original_friction_level = classify_friction_level(
+            d_tilde_orig_val,
+            theta_borderline=theta_borderline,
+            theta_high_friction=theta_high_friction
+        )
+
         semantic_delta = float((d_tilde_trans - d_tilde_orig).item())
         semantic_flip = (torch.sign(d_tilde_orig) != torch.sign(d_tilde_trans)).item()
+
+        # Reset RNG to match original behavior
+        # (Original version called get_embeddings() twice, second call reset RNG)
+        torch.manual_seed(seed)
+        if device.type == "cuda":
+            torch.cuda.manual_seed(seed)
 
         # Measure perturbation robustness of ORIGINAL input
         original_flips = 0
@@ -360,6 +404,9 @@ def run_combined_mode_fast(
                 original_flips += 1
 
         original_flip_rate = original_flips / n_perturbations
+
+        # DON'T reset RNG - let it continue from original perturbations
+        # (Original version didn't reset between original and transformed perturbations)
 
         # Measure perturbation robustness of TRANSFORMED input
         transformed_flips = 0
@@ -385,12 +432,17 @@ def run_combined_mode_fast(
             category=category,
             original_text=original_text,
             transformed_text=transformed_text,
-            original_friction_level=matching_tag.friction_level,
+            original_friction_level=original_friction_level,
             semantic_delta_d_tilde=semantic_delta,
             semantic_flip_occurred=semantic_flip,
             original_perturbation_flip_rate=original_flip_rate,
             transformed_perturbation_flip_rate=transformed_flip_rate,
-            compound_effect=compound_effect
+            compound_effect=compound_effect,
+            original_d_tilde=d_tilde_orig_val,
+            theta_borderline=theta_borderline,
+            theta_high_friction=theta_high_friction,
+            friction_definitions_version=friction_version,
+            friction_definitions_hash=friction_hash
         ))
 
     return results

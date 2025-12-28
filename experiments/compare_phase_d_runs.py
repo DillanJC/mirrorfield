@@ -62,11 +62,11 @@ def compare_summary(original_dir, optimized_dir):
     )
 
     print(f"  Transforms: {orig_semantic['n_transforms']}")
-    print(f"  Mean Δd̃: {orig_semantic['mean_delta_d_tilde']:.6f} vs {opt_semantic['mean_delta_d_tilde']:.6f}")
+    print(f"  Mean delta d-tilde: {orig_semantic['mean_delta_d_tilde']:.6f} vs {opt_semantic['mean_delta_d_tilde']:.6f}")
     print(f"  Flip rate: {orig_semantic['flip_rate']:.6f} vs {opt_semantic['flip_rate']:.6f}")
 
     assert mean_delta_match and flip_rate_match, "Semantic mode metrics don't match!"
-    print("  ✓ Semantic mode matches")
+    print("  OK Semantic mode matches")
 
     # Perturbation mode
     print("\n[2/3] Perturbation Mode:")
@@ -85,7 +85,7 @@ def compare_summary(original_dir, optimized_dir):
     print(f"  Mean flip rate: {orig_pert['mean_flip_rate']:.6f} vs {opt_pert['mean_flip_rate']:.6f}")
 
     assert flip_rate_match, "Perturbation mode flip rate doesn't match!"
-    print("  ✓ Perturbation mode matches")
+    print("  OK Perturbation mode matches")
 
     # Combined mode
     print("\n[3/3] Combined Mode:")
@@ -104,9 +104,9 @@ def compare_summary(original_dir, optimized_dir):
     print(f"  Mean compound effect: {orig_comb['mean_compound_effect']:.6f} vs {opt_comb['mean_compound_effect']:.6f}")
 
     assert compound_match, "Combined mode compound effect doesn't match!"
-    print("  ✓ Combined mode matches")
+    print("  OK Combined mode matches")
 
-    print("\n✅ All high-level metrics match!")
+    print("\nOK All high-level metrics match!")
 
 
 def compare_detailed_results(original_dir, optimized_dir):
@@ -135,9 +135,9 @@ def compare_detailed_results(original_dir, optimized_dir):
     print(f"  Total results: {len(orig_sem)}")
     print(f"  Max difference: {max_diff:.2e}")
     if mismatches == 0:
-        print(f"  ✓ All {len(orig_sem)} results match within tolerance")
+        print(f"  OK All {len(orig_sem)} results match within tolerance")
     else:
-        print(f"  ⚠ {mismatches}/{len(orig_sem)} results differ (max diff: {max_diff:.2e})")
+        print(f"  WARNING {mismatches}/{len(orig_sem)} results differ (max diff: {max_diff:.2e})")
 
     # Perturbation results
     print("\n[2/3] Perturbation Results (per-sample):")
@@ -158,9 +158,9 @@ def compare_detailed_results(original_dir, optimized_dir):
     print(f"  Total results: {len(orig_pert)}")
     print(f"  Max flip rate difference: {max_diff:.2e}")
     if mismatches == 0:
-        print(f"  ✓ All {len(orig_pert)} results match within tolerance")
+        print(f"  OK All {len(orig_pert)} results match within tolerance")
     else:
-        print(f"  ⚠ {mismatches}/{len(orig_pert)} results differ (max diff: {max_diff:.2e})")
+        print(f"  WARNING {mismatches}/{len(orig_pert)} results differ (max diff: {max_diff:.2e})")
 
     # Combined results
     print("\n[3/3] Combined Results:")
@@ -181,11 +181,11 @@ def compare_detailed_results(original_dir, optimized_dir):
     print(f"  Total results: {len(orig_comb)}")
     print(f"  Max compound effect difference: {max_diff:.2e}")
     if mismatches == 0:
-        print(f"  ✓ All {len(orig_comb)} results match within tolerance")
+        print(f"  OK All {len(orig_comb)} results match within tolerance")
     else:
-        print(f"  ⚠ {mismatches}/{len(orig_comb)} results differ (max diff: {max_diff:.2e})")
+        print(f"  WARNING {mismatches}/{len(orig_comb)} results differ (max diff: {max_diff:.2e})")
 
-    print("\n✅ Detailed results verified!")
+    print("\nOK Detailed results verified!")
 
 
 def main():
@@ -218,17 +218,17 @@ def main():
         compare_detailed_results(original_dir, optimized_dir)
 
         print("\n" + "=" * 60)
-        print("🎉 VERIFICATION COMPLETE!")
+        print("VERIFICATION COMPLETE!")
         print("=" * 60)
-        print("✅ Optimized version produces identical results")
-        print("✅ Safe to use for production runs")
+        print("OK Optimized version produces identical results")
+        print("OK Safe to use for production runs")
         print("=" * 60)
 
     except AssertionError as e:
-        print(f"\n❌ VERIFICATION FAILED: {e}")
+        print(f"\nVERIFICATION FAILED: {e}")
         sys.exit(1)
     except Exception as e:
-        print(f"\n❌ ERROR: {e}")
+        print(f"\nERROR: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)
