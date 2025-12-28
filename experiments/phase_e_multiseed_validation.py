@@ -76,18 +76,18 @@ def run_multiseed_validation(
 
         # Extract key metrics
         results.append({
-            "seed": seed,
+            "seed": int(seed),
             "verdict": result["falsifier"]["verdict"],
-            "delta_r2": result["falsifier"]["delta_r2"],
-            "info_density": result["falsifier"]["info_density"],
-            "corr_bd_geom": result["falsifier"]["correlations"]["boundary_distance_vs_geometry_score"],
-            "corr_ridge_bd": result["falsifier"]["correlations"]["ridge_proximity_vs_boundary_distance"],
-            "ridge_independence_ok": result["ridge_independence_ok"],
-            "curvature_mean": result["geometry_stats"]["curvature_mean"],
-            "curvature_std": result["geometry_stats"]["curvature_std"],
-            "ridge_mean": result["geometry_stats"]["ridge_mean"],
-            "ridge_std": result["geometry_stats"]["ridge_std"],
-            "timing": result["timing"],
+            "delta_r2": float(result["falsifier"]["delta_r2"]),
+            "info_density": float(result["falsifier"]["info_density"]),
+            "corr_bd_geom": float(result["falsifier"]["correlations"]["boundary_distance_vs_geometry_score"]),
+            "corr_ridge_bd": float(result["falsifier"]["correlations"]["ridge_proximity_vs_boundary_distance"]),
+            "ridge_independence_ok": bool(result["ridge_independence_ok"]),
+            "curvature_mean": float(result["geometry_stats"]["curvature_mean"]),
+            "curvature_std": float(result["geometry_stats"]["curvature_std"]),
+            "ridge_mean": float(result["geometry_stats"]["ridge_mean"]),
+            "ridge_std": float(result["geometry_stats"]["ridge_std"]),
+            "timing": {k: float(v) for k, v in result["timing"].items()},
         })
 
     # Aggregate statistics
