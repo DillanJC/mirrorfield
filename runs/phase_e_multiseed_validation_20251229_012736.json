@@ -1,0 +1,55 @@
+{
+  "validation_type": "phase_e_multiseed",
+  "timestamp": "2025-12-29T01:27:36.630272",
+  "config": {
+    "n_seeds": 10,
+    "seeds": [
+      42,
+      123,
+      456,
+      789,
+      999,
+      17,
+      100,
+      200,
+      333,
+      500
+    ],
+    "n_ref": 1000,
+    "n_query": 500,
+    "D": 768,
+    "device": "cpu"
+  },
+  "summary": {
+    "verdict_distribution": {
+      "COSMETIC": 10
+    },
+    "ridge_independence_pass_rate": 100.0,
+    "correlations": {
+      "bd_geom_mean": -0.020121567191391035,
+      "bd_geom_std": 0.03525963041655188,
+      "ridge_bd_mean": -0.020909101913739476,
+      "ridge_bd_std": 0.03601958173316082
+    },
+    "explanatory_power": {
+      "delta_r2_mean": 0.0017110131527897532,
+      "delta_r2_std": 0.0021389283135902393,
+      "info_density_mean": 0.003424599588780247,
+      "info_density_std": 0.004060305483344968
+    },
+    "geometry_features": {
+      "curvature_mean": 0.684631597995758,
+      "curvature_mean_std": 0.0002937597980844219,
+      "ridge_mean": 1.006840145260899,
+      "ridge_mean_std": 0.00011733816686997378
+    }
+  },
+  "per_seed_results": [
+    {
+      "seed": 42,
+      "verdict": "COSMETIC",
+      "delta_r2": 0.003948457229440816,
+      "info_density": 0.008629783944341374,
+      "corr_bd_geom": -0.062435084476283965,
+      "corr_ridge_bd": 0.0388434823286133,
+      "ridge_independence_ok": 
