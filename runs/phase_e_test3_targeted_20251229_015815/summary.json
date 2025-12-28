@@ -1,0 +1,56 @@
+{
+  "test_id": "test3_targeted_construction_adversarial",
+  "timestamp": "2025-12-29T01:58:15.197507",
+  "dataset": {
+    "n_ref": 1000,
+    "n_query": 400,
+    "n_pairs": 200,
+    "design": "Same boundary_distance, different geometry, different targets"
+  },
+  "geometry_separation": {
+    "curvature_difference": 0.6818211078643799,
+    "ridge_difference": 0.6260061163851838,
+    "separation_achieved": true
+  },
+  "geometry_stats": {
+    "flat_curvature": 0.6833490133285522,
+    "ridge_curvature": 0.0015278926584869623,
+    "flat_ridge": 1.0062770791913458,
+    "ridge_ridge": 1.6322831955765296
+  },
+  "falsifier": {
+    "verdict": "REAL_SIGNAL",
+    "delta_r2": 0.9498086403324258,
+    "info_density": 0.9501564648971975,
+    "correlations": {
+      "boundary_distance_vs_geometry_score": -0.01299182611114143,
+      "ridge_proximity_vs_boundary_distance": 0.03323224432101474
+    },
+    "r_squared": {
+      "distance_only": 0.00036607082898632015,
+      "distance_plus_geometry": 0.9501747111614122
+    },
+    "evidence": {
+      "n_samples": 400,
+      "boundary_distance_stats": {
+        "mean": 0.300462764359659,
+        "std": 0.051222804243839834,
+        "min": 0.15706790481011348,
+        "max": 0.4629899711804073
+      },
+      "geometry_score_stats": {
+        "mean": 0.3910992523737648,
+        "std": 0.1213525517248722,
+        "min": 0.16946198040648253,
+        "max": 0.5149277064906044
+      },
+      "ridge_stats": {
+        "mean": 1.3192801373839376,
+        "std": 0.3556434957407187,
+        "min": 1.003312135965086,
+        "max": 2.3264358796806373
+      },
+      "reason": "Geometry adds 0.9498 R\u00b2 with 0.950 info density"
+    }
+  }
+}

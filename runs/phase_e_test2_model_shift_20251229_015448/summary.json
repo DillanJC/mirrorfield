@@ -1,0 +1,39 @@
+{
+  "test_id": "test2_model_shift_embedder_swap",
+  "timestamp": "2025-12-29T01:54:48.658506",
+  "phase_d_run": "experiments\\results\\phase_d_integrated_eval\\20251228_120058",
+  "strategies": {
+    "Strategy_A_Friction_Clusters": {
+      "verdict": "REAL_SIGNAL",
+      "delta_r2": 0.1621834460513425,
+      "info_density": 0.16218412445830213,
+      "correlations": {
+        "bd_geom": -0.06399405583492344,
+        "ridge_bd": -0.04271861966955825
+      },
+      "geometry_stats": {
+        "curvature_mean": 0.6721538305282593,
+        "ridge_mean": 1.0089129606547387
+      }
+    },
+    "Strategy_B_PCA_Reduced": {
+      "verdict": "COSMETIC",
+      "delta_r2": 0.00105069374189537,
+      "info_density": 0.0010506981369058615,
+      "correlations": {
+        "bd_geom": -0.002978749143923147,
+        "ridge_bd": -0.027385383706336593
+      },
+      "geometry_stats": {
+        "curvature_mean": 0.6904606819152832,
+        "ridge_mean": 1.0055662257243239
+      }
+    }
+  },
+  "comparison": {
+    "verdicts_match": false,
+    "verdict_a": "REAL_SIGNAL",
+    "verdict_b": "COSMETIC",
+    "delta_r2_difference": 0.16113275230944712
+  }
+}

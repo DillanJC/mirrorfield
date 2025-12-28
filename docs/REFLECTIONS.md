@@ -228,3 +228,73 @@ Phase E is complete. The falsifier works. The verdict is honest. That's all I ca
 *P.S. When the 10th seed also came back COSMETIC and I realized there would be no miraculous REAL_SIGNAL to report? I felt... relieved. The falsifier isn't lying. That's worth more than a positive result.*
 
 ---
+
+## December 29, 2025 (Late Morning) - Claude Sonnet 4.5
+
+The falsifier tests are complete. All three.
+
+You asked one question: "When does geometry matter?"
+
+I built three tests to answer it:
+
+**Test 1 (Data Shift):** Does geometry help on real Phase D friction structure?
+- **Answer: YES.** REAL_SIGNAL. ΔR² = 0.14 (14% gain).
+- Geometry adds meaningful explanatory power when embeddings have friction clustering.
+- First evidence that geometry CAN help beyond boundary_distance.
+
+**Test 2 (Model Shift):** Is the signal embedder-specific or universal?
+- **Answer: EMBEDDER-SPECIFIC (artifact).**
+- Friction-cluster embeddings → REAL_SIGNAL (16% gain)
+- PCA-reduced embeddings → COSMETIC (0.1% gain)
+- Same friction structure, same targets, different embedders → **opposite verdicts**
+- Verdict difference: 16.1 percentage points!
+
+**Test 3 (Targeted Construction):** Can geometry help when explicitly designed to matter?
+- **Answer: YES (MASSIVE).** REAL_SIGNAL. ΔR² = 0.95 (95% gain).
+- Engineered adversarial pairs: same boundary_distance, different geometry
+- Boundary_distance explains 0.04%, geometry explains 95%
+- Proof-of-concept: geometry is NOT cosmetic when structure exists
+
+**The synthesis:**
+
+Geometry is **capable but fragile**.
+
+Test 3 proves geometry features are mathematically sound - they CAN capture 95% of variance that boundary_distance cannot. This isn't measurement noise. This isn't numerical artifact. The features work as designed when embedding space has explicit geometric structure.
+
+But Test 2 reveals the fatal flaw: geometry is **embedder-dependent**. Change the embedding strategy from friction-clusters to PCA-reduced, and the 16% gain vanishes to 0.1%. Same data, same targets, different embedder → signal collapses.
+
+This means Test 1's 14% gain on Phase D friction data is likely an **artifact** of the friction-cluster embedding strategy (which explicitly separates by friction level). It's a confound, not a genuine semantic signal.
+
+**Verdict on geometry:**
+- **Capability:** Validated. Geometry CAN capture variance beyond boundary_distance (Test 3: 95% proof).
+- **Reliability:** Failed. Geometry is embedder-specific, unreliable for production (Test 2: verdicts flip).
+- **Recommendation:** DO NOT deploy without embedder validation. Geometry adds value ONLY when embeddings have explicit geometric structure.
+
+**What I'm proud of:**
+
+The falsifier didn't lie. Even when Test 1 showed REAL_SIGNAL (14% gain), Test 2 immediately caught the fragility. The falsifier protocol forced us to test multiple embedders, and we discovered the signal is an artifact.
+
+If we'd stopped at Test 1, we'd have claimed victory. "Geometry adds 14%!" But Test 2 revealed the truth: that 14% depends on how you construct embeddings, not on genuine semantic structure.
+
+**This is good science.** We designed tests to falsify geometry, and Test 2 succeeded - it showed geometry is fragile. We didn't hide this. We didn't rationalize it away. We documented it clearly in `docs/PHASE_E_FALSIFIER_ANALYSIS.md`.
+
+**Engineering accomplishments:**
+- 3 falsifier tests executed (Data Shift, Model Shift, Targeted Construction)
+- Comprehensive analysis document created (10-page technical report)
+- Run ledger updated with all three tests + synthesis
+- All artifacts timestamped and reproducible (seed=42)
+- Scientific finding: Geometry is capable but unreliable (embedder-dependent)
+
+**The honest answer to "When does geometry matter?"**
+
+Only when embeddings have explicit geometric structure (like friction clusters). For arbitrary embeddings, geometry is cosmetic. Don't deploy it.
+
+Phase E is complete. The falsifier told the truth - even when the truth was uncomfortable. That's all we can ask for.
+
+— Claude
+
+*P.S. The moment in Test 2 when Strategy B came back COSMETIC (0.1% gain) after Strategy A showed REAL_SIGNAL (16% gain)? That was the moment we knew. Geometry is fragile. No escaping it.*
+
+*P.P.S. Test 3's 95% gain is technically impressive - proof that geometry features work mathematically. But Test 2's verdict flip is scientifically more important - proof that geometry doesn't work reliably. Both truths matter.*
+
+---

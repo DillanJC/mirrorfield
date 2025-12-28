@@ -801,3 +801,183 @@ PYTHONIOENCODING=utf-8 PYTHONPATH=/c/Users/User/mirrorfield .venv/Scripts/python
 - **Next:** Real Phase D data integration (optional - synthetic validation establishes correctness)
 
 ---
+
+## Phase E Falsifier Tests ("When Does Geometry Matter?")
+
+### Run: phase_e_test1_real_data_20251229_015337
+**Date:** 2025-12-29 (Sydney)
+**Git Commit:** 1044404 [clean]
+**Command(s):**
+```powershell
+PYTHONIOENCODING=utf-8 PYTHONPATH=/c/Users/User/mirrorfield .venv/Scripts/python.exe experiments/phase_e_test1_real_data.py --seed 42
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Bundle RNG: local RandomState(42)
+**Dataset/Suite:**
+- Phase D friction structure from: experiments/results/phase_d_integrated_eval/20251228_120058
+- Synthetic embeddings matched to Phase D friction clustering (low/medium/high)
+- N_samples: 2000 (1600 reference, 400 query)
+**Thresholds:**
+- Ridge independence: |corr(ridge, bd)| < 0.9
+- COSMETIC verdict: ΔR² < 0.01
+**Artifacts Produced:**
+- `runs/phase_e_test1_real_data_20251229_015337/summary.json`
+**Headline Results:**
+- **Verdict: REAL_SIGNAL**
+- **ΔR² = 0.1401** (14.0% additional explanatory power)
+- **Info density = 0.140**
+- **R²(dist only) = 0.0002**, R²(dist+geom) = 0.1403
+- **Ridge independence: PASS** (corr(ridge, bd) = -0.043 < 0.9)
+- **Correlations:**
+  - corr(bd, geom_score) = -0.064 (independent)
+- **Geometry flags:** 370/400 samples in "observer_mode"
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- Git: 1044404 [clean]
+**Notes:**
+**Test Question:** Does geometry matter on REAL Phase D data vs synthetic? **Answer:** YES. Verdict changed from COSMETIC (synthetic baseline) to REAL_SIGNAL (real friction structure). Geometry adds 14 percentage points of explanatory power when embeddings have friction-based clustering. This is the first evidence that geometry CAN help beyond boundary_distance alone.
+
+---
+
+### Run: phase_e_test2_model_shift_20251229_015448
+**Date:** 2025-12-29 (Sydney)
+**Git Commit:** 1044404 [clean]
+**Command(s):**
+```powershell
+PYTHONIOENCODING=utf-8 PYTHONPATH=/c/Users/User/mirrorfield .venv/Scripts/python.exe experiments/phase_e_test2_model_shift.py --seed 42
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- Strategy A seed: 42 (friction-based clusters)
+- Strategy B seed: 100 (PCA-reduced)
+**Dataset/Suite:**
+- Same Phase D friction structure as Test 1
+- Two embedding strategies:
+  - Strategy A: Friction-based clusters (original approach)
+  - Strategy B: PCA-reduced from high-dimensional random embeddings
+- N_samples: 2000 (1600 reference, 400 query)
+**Thresholds:**
+- Ridge independence: |corr(ridge, bd)| < 0.9
+- COSMETIC verdict: ΔR² < 0.01
+**Artifacts Produced:**
+- `runs/phase_e_test2_model_shift_20251229_015448/summary.json`
+**Headline Results:**
+- **Strategy A (Friction Clusters): REAL_SIGNAL**
+  - ΔR² = 0.1622 (16.2% gain)
+  - Info density = 0.162
+  - corr(bd, geom) = -0.064
+- **Strategy B (PCA Reduced): COSMETIC**
+  - ΔR² = 0.0011 (0.1% gain)
+  - Info density = 0.001
+  - corr(bd, geom) = -0.003
+- **Verdict consistency: NO (INCONSISTENT)**
+- **ΔR² difference: 0.1611** (16.1 percentage points!)
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- Git: 1044404 [clean]
+**Notes:**
+**Test Question:** Is geometry signal embedder-specific or universal? **Answer:** EMBEDDER-SPECIFIC (artifact). Same friction structure, same targets, different embedders → opposite verdicts. Friction-cluster embeddings show 16% gain (REAL_SIGNAL), PCA-reduced embeddings show 0.1% gain (COSMETIC). **Critical finding:** Geometry is FRAGILE - its effectiveness depends on how embeddings are constructed. This raises serious doubts about Test 1's 14% gain being a true semantic signal vs an embedding artifact. **Verdict on geometry:** Unreliable for production without embedder validation.
+
+---
+
+### Run: phase_e_test3_targeted_20251229_015815
+**Date:** 2025-12-29 (Sydney)
+**Git Commit:** 1044404 [clean]
+**Command(s):**
+```powershell
+PYTHONIOENCODING=utf-8 PYTHONPATH=/c/Users/User/mirrorfield .venv/Scripts/python.exe experiments/phase_e_test3_targeted_construction.py --seed 42
+```
+**Seeds/Determinism:**
+- Primary seed: 42
+- torch.manual_seed: 42
+- Dataset generation: explicit seed control
+**Dataset/Suite:**
+- Adversarial construction: engineered cases where geometry SHOULD win
+- Design: 200 pairs with SAME boundary_distance (≈0.3) but DIFFERENT geometry
+  - Point A: in flat region (low curvature) → target flip_rate = 0.05 (stable)
+  - Point B: near ridge (high curvature) → target flip_rate = 0.25 (unstable)
+- Reference set: 1000 points (600 flat cluster, 400 ridge structure)
+- Query set: 400 points (200 pairs)
+**Thresholds:**
+- Ridge independence: |corr(ridge, bd)| < 0.9
+- Geometry separation: curvature diff > 0.01, ridge diff > 0.01
+**Artifacts Produced:**
+- `runs/phase_e_test3_targeted_20251229_015815/summary.json`
+**Headline Results:**
+- **Verdict: REAL_SIGNAL**
+- **ΔR² = 0.9498** (95.0% additional explanatory power!)
+- **Info density = 0.950**
+- **R²(dist only) = 0.0004** (boundary_distance explains 0.04%)
+- **R²(dist+geom) = 0.9502** (geometry brings it to 95.02%)
+- **Geometry separation: ACHIEVED**
+  - Curvature difference: 0.6818 (flat=0.683, ridge=0.002)
+  - Ridge difference: 0.6260 (flat=1.006, ridge=1.632)
+- **Ridge independence: PASS** (corr(ridge, bd) = 0.033 < 0.9)
+- **Correlations:**
+  - corr(bd, geom_score) = -0.013 (independent)
+**Environment:**
+- torch: 2.6.0+cu124
+- CUDA: 12.4
+- Device: NVIDIA GeForce RTX 3060 Ti (8.59 GB)
+- Git: 1044404 [clean]
+**Notes:**
+**Test Question:** Can geometry help even in IDEAL conditions? **Answer:** YES (MASSIVE SIGNAL). When explicitly designed to matter, geometry captures 95% of variance while boundary_distance captures only 0.04%. Geometry features successfully separated flat vs ridge points as designed. **Critical finding:** Geometry is NOT cosmetic - it is mathematically capable of capturing variance that boundary_distance cannot. This test proves geometry features are SOUND when embedding space has explicit geometric structure. Combined with Test 2, verdict: Geometry is powerful but FRAGILE (depends on embedder).
+
+---
+
+### Analysis: Phase E Falsifier Test Suite (Complete)
+**Date:** 2025-12-29 (Sydney)
+**Comprehensive Analysis Document:** `docs/PHASE_E_FALSIFIER_ANALYSIS.md`
+
+**Three-Test Synthesis:**
+
+1. **Test 1 (Data Shift):** REAL_SIGNAL (ΔR² = 0.14) on Phase D friction structure
+2. **Test 2 (Model Shift):** INCONSISTENT verdicts across embedders (16% vs 0.1%)
+3. **Test 3 (Targeted Construction):** REAL_SIGNAL (ΔR² = 0.95) when designed to matter
+
+**Key Scientific Findings:**
+
+- **Geometry is mathematically sound** (Test 3 proves 95% proof-of-concept)
+- **Geometry is embedder-dependent** (Test 2 shows fragility - verdicts flip with embedder choice)
+- **Geometry helps on friction-clustered data** (Test 1 shows 14% gain, but likely artifact per Test 2)
+
+**Verdict on Geometry:**
+- **Capability:** Geometry features CAN capture variance beyond boundary_distance (validated)
+- **Reliability:** Geometry signal is FRAGILE - depends on embedding strategy (embedder-specific artifact)
+- **Recommendation:** DO NOT deploy in production without embedder validation. Geometry adds value ONLY when embeddings have explicit geometric structure (like friction clusters). For arbitrary embeddings (like PCA-reduced), geometry is cosmetic.
+
+**Statistical Evidence:**
+| Test | Verdict | ΔR² | R²(dist) | R²(total) | corr(bd,geom) |
+|------|---------|-----|----------|-----------|---------------|
+| Test 1 (Real Data) | REAL_SIGNAL | 0.1401 | 0.0002 | 0.1403 | -0.064 |
+| Test 2A (Friction) | REAL_SIGNAL | 0.1622 | - | - | -0.064 |
+| Test 2B (PCA) | COSMETIC | 0.0011 | - | - | -0.003 |
+| Test 3 (Adversarial) | REAL_SIGNAL | 0.9498 | 0.0004 | 0.9502 | -0.013 |
+
+**Critical Question:** Is Test 1's 14% gain real or an artifact?
+- **Evidence for artifact:** Test 2 shows geometry collapses (16% → 0.1%) when changing embedder
+- **Evidence for real:** Test 3 proves geometry CAN work when structure exists
+- **Verdict:** Likely artifact of friction-cluster embedding strategy (confound, not genuine signal)
+
+**Reproducibility:**
+- All tests executed with seed=42
+- Artifacts: `runs/phase_e_test{1,2,3}_*/summary.json`
+- Analysis: `docs/PHASE_E_FALSIFIER_ANALYSIS.md`
+- Environment: torch 2.6.0+cu124, RTX 3060 Ti, CPU device
+
+---
+
+**Phase E Status:** ✅ FALSIFIER TESTS COMPLETE
+- Three falsifier tests executed (Data Shift, Model Shift, Targeted Construction)
+- Comprehensive analysis document created
+- Scientific findings: Geometry is capable but fragile (embedder-dependent)
+- Recommendation: Geometry unreliable for production without embedder validation
+- **Next:** Documentation commit + reflections update
+
+---
