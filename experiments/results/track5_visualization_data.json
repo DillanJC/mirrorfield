@@ -1,0 +1,78 @@
+{
+  "description": "Plottable data from Tracks 4-5 geometric intervention experiments",
+  "generated": "2026-02-09",
+  "model": "claude-sonnet-4-5-20250929",
+
+  "quality_per_iteration": {
+    "description": "Mean quality score per iteration (0 = baseline, -1 = Track 4 original, -2 = Track 4 fixed)",
+    "labels": ["Baseline", "Track4_Orig", "Track4_Fixed", "Iter_1", "Iter_2", "Iter_3", "Iter_4", "Iter_5"],
+    "iteration": [0, -1, -2, 1, 2, 3, 4, 5],
+    "mean_quality": [0.7989, 0.7351, 0.7818, 0.7877, 0.7828, 0.7670, 0.7781, 0.8053],
+    "delta_vs_baseline": [0.0, -0.0639, -0.0171, -0.0112, -0.0162, -0.0319, -0.0208, 0.0064]
+  },
+
+  "per_domain_quality": {
+    "description": "Per-domain mean quality across all experiments",
+    "domains": ["research_questions", "design_exploration", "ethical_dilemmas", "novel_hypothesis"],
+    "baseline":        [0.789, 0.737, 0.900, 0.770],
+    "track4_original": [0.634, 0.827, 0.717, 0.763],
+    "track4_fixed":    [0.751, 0.816, 0.816, 0.744],
+    "iter_1":          [0.793, 0.778, 0.787, 0.793],
+    "iter_2":          [0.737, 0.799, 0.829, 0.766],
+    "iter_3":          [0.736, 0.773, 0.821, 0.738],
+    "iter_4":          [0.750, 0.833, 0.792, 0.738],
+    "iter_5":          [0.829, 0.788, 0.805, 0.800]
+  },
+
+  "intervention_rate": {
+    "description": "Fraction of steps with interventions (total_interventions / total_steps)",
+    "labels": ["Baseline", "Track4_Orig", "Track4_Fixed", "Iter_1", "Iter_2", "Iter_3", "Iter_4", "Iter_5"],
+    "total_interventions": [0, 64, 24, 24, 9, 11, 14, 1],
+    "total_steps": [64, 64, 64, 64, 64, 64, 64, 64],
+    "rate": [0.000, 1.000, 0.375, 0.375, 0.141, 0.172, 0.219, 0.016]
+  },
+
+  "policy_multipliers": {
+    "description": "Threshold multiplier per signal after each iteration (>1 = harder to trigger)",
+    "signals": ["low_pr", "framework_collision", "decision_boundary", "terra_incognita"],
+    "initial":  [1.000, 1.000, 1.000, 1.000],
+    "after_1":  [1.300, 1.300, 1.300, 0.850],
+    "after_2":  [1.690, 1.105, 1.300, 0.722],
+    "after_3":  [1.690, 0.939, 1.300, 0.939],
+    "after_4":  [1.690, 1.221, 1.300, 1.221],
+    "after_5":  [1.690, 1.221, 1.300, 1.221],
+    "final_enabled": [true, false, true, true]
+  },
+
+  "goodhart_verdicts": {
+    "description": "Goodhart detector results per iteration",
+    "iterations": [2, 3, 4, 5],
+    "verdicts": ["PASS", "PASS", "PASS", "FAIL"],
+    "n_red_triggered": [0, 0, 0, 3],
+    "n_green_triggered": [1, 2, 2, 2]
+  },
+
+  "diversity_trend": {
+    "description": "Response diversity (unique 3-gram ratio) per iteration",
+    "iterations": [1, 2, 3, 4, 5],
+    "diversity": [0.964, 0.967, 0.966, 0.960, 0.965]
+  },
+
+  "signal_fires_per_iteration": {
+    "description": "Number of times each signal fired per iteration",
+    "iterations": [1, 2, 3, 4, 5],
+    "low_pr":              [9, 1, 0, 0, 0],
+    "framework_collision": [11, 1, 5, 11, 1],
+    "decision_boundary":   [1, 0, 0, 0, 0],
+    "terra_incognita":     [3, 7, 6, 3, 0]
+  },
+
+  "per_signal_effectiveness": {
+    "description": "Mean quality delta for tasks where each signal fired, per iteration",
+    "iterations": [1, 2, 3, 4, 5],
+    "low_pr":              [-0.026, -0.006, null, null, null],
+    "framework_collision": [-0.014, 0.020, 0.007, -0.007, -0.161],
+    "decision_boundary":   [-0.028, null, null, null, null],
+    "terra_incognita":     [0.009, 0.020, -0.057, -0.045, null]
+  }
+}
