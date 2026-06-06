@@ -1,0 +1,42 @@
+{
+  "rte | Qwen2.5-0.5B-Instruct": {
+    "n": 277,
+    "n_wrong": 81,
+    "wrong_rate": 0.2924187725631769,
+    "auc_standard": 0.5504,
+    "auc_standard_ci95": [
+      0.471,
+      0.6285
+    ],
+    "auc_geometry_only": 0.4831,
+    "auc_standard_plus_geometry": 0.5779,
+    "delta_auc": 0.0275,
+    "delta_ci95": [
+      -0.0345,
+      0.0904
+    ],
+    "null_delta_auc": 0.0011,
+    "geometry_verdict": "adds nothing (CI spans 0)",
+    "standard_verdict": "no better than chance"
+  },
+  "sst2 | Qwen2.5-0.5B-Instruct": {
+    "n": 500,
+    "n_wrong": 72,
+    "wrong_rate": 0.144,
+    "auc_standard": 0.6203,
+    "auc_standard_ci95": [
+      0.5479,
+      0.6897
+    ],
+    "auc_geometry_only": 0.5501,
+    "auc_standard_plus_geometry": 0.6265,
+    "delta_auc": 0.0062,
+    "delta_ci95": [
+      -0.0315,
+      0.0448
+    ],
+    "null_delta_auc": -0.0374,
+    "geometry_verdict": "adds nothing (CI spans 0)",
+    "standard_verdict": "predicts wrong outputs"
+  }
+}

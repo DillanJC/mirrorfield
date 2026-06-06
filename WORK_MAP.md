@@ -158,6 +158,106 @@ Caveat: model is strong on SST-2 -> only 40/300 wrong, so the positive class is
 small and the CIs are wide. Qualitative verdict is robust; a harder task with more
 errors would tighten the numbers. Results: `mcp_uncertainty_ablation_results.json`.
 
+### §4c. Hardening run (v2), 2026-06-07 — the keeper is weaker than it looked
+
+Re-ran with more samples + a HARDER task (RTE entailment) to tighten the wide v1
+CI. `mcp_uncertainty_ablation_v2.py`, Qwen2.5-0.5B, bootstrap CI on BOTH the
+standard AUC and the geometry delta.
+
+| Task | wrong% | n_wrong | standard AUC (95% CI) | geometry dAUC (CI) |
+|------|--------|---------|-----------------------|--------------------|
+| RTE (hard, reasoning) | 29.2% | ~81 | **0.550 [0.47, 0.63]** | +0.028 [-0.03,+0.09] |
+| SST-2 (easy, sentiment) | 14.4% | ~72 | **0.620 [0.55, 0.69]** | +0.006 [-0.03,+0.04] |
+
+**Two updates:**
+1. *(reinforced)* Geometry adds nothing — replicated on a second task; both deltas
+   span 0. This is now very robust.
+2. *(corrected — important)* The standard gate is **weaker and task-dependent**.
+   The v1 0.667 was an optimistic small-sample estimate; with more data it's 0.62
+   on SST-2 (CI clears 0.5 — weakly real) but **0.55 on RTE with a CI that INCLUDES
+   0.5 — i.e. not reliably better than chance on a hard reasoning task.**
+
+Interpretation: log-prob uncertainty (margin/entropy) catches *surface* uncertainty
+but misses *confident reasoning errors* — a known UQ failure mode, cleanly
+reproduced. The gate is honest but only modestly useful on easy/ambiguous tasks;
+it is NOT a general "knows when it's wrong" capability. Building a robust gate for
+hard tasks would require sampling-based signals (self-consistency / semantic
+entropy), which specifically target confident-but-wrong. Results:
+`mcp_uncertainty_ablation_v2_results.json`.
+
+### §4d. Self-consistency on RTE, 2026-06-07 — FIRST robust POSITIVE result
+
+Tested the Road-B prediction directly (`selfconsistency_rte.py`): sample the model
+N=10x at T=1.0 per RTE example, measure answer disagreement (agreement ratio +
+whether the sampled majority flips the greedy answer), predict wrong = greedy != gold.
+Same non-circular label, bootstrap CI on every AUC.
+
+| Signal on RTE | AUC (95% CI) |
+|---------------|--------------|
+| standard gate (margin/entropy/boundary) | 0.550 [0.47, 0.63]  (at chance) |
+| **self-consistency (sample disagreement)** | **0.649 [0.571, 0.723]  (REAL)** |
+| combined | 0.648 [0.572, 0.720] |
+| **SC advantage over gate** | **+0.098 [+0.017, +0.175]  (REAL)** |
+
+Both CIs exclude their null thresholds: self-consistency predicts wrong outputs on
+hard reasoning where log-probs were at chance, AND beats the standard gate. The
+hypothesis (sampling catches confident-but-wrong; log-probs can't) is CONFIRMED.
+The combined model ≈ SC alone, so on hard tasks SC is the carrying signal and the
+log-prob gate adds little on top.
+
+Initially looked like the project's first robustly-real positive. The replication
+below WALKED IT BACK — read §4e before relying on it.
+Results: `selfconsistency_rte_results.json`.
+
+### §4e. Replication on QNLI, 2026-06-07 — §4d did NOT hold up
+
+Re-ran the exact SC test on a 2nd hard task (QNLI) + reran RTE
+(`selfconsistency_multi.py`). The §4d positive failed to replicate:
+
+| Task | wrong% | standard AUC (CI) | self-consistency AUC (CI) | SC works? |
+|------|--------|-------------------|---------------------------|-----------|
+| RTE  | 29% | 0.550 [0.47, 0.63] (chance) | 0.615 [0.54, 0.68] (clears 0.5) | yes |
+| QNLI | 40% | 0.613 [0.54, 0.68] (clears 0.5) | 0.558 [0.49, 0.62] (chance) | **no** |
+
+Two corrections to §4d:
+1. **SC does NOT generalize.** It works on RTE, at chance on QNLI — where log-probs
+   work and SC doesn't. Which signal carries flips by task; neither dominates.
+2. **The §4d "SC beats the gate" delta was fragile / partly luck.** Re-running RTE,
+   the delta fell from +0.098 [+0.017,+0.175] (cleared 0) to +0.049 [-0.022,+0.123]
+   (spans 0). Cause: a real bug — the **torch sampling RNG was never seeded** (only
+   numpy/random were), so the 10 votes vary run-to-run and that wobble flipped the
+   verdict. The single-run §4d positive did not survive its own replication.
+
+**Conclusion at 0.5B:** NO method is a reliable "knows when it's wrong" detector —
+all weak/task-dependent. The only untested lever is model SCALE -> see §4f. Results:
+`selfconsistency_multi_results.json`.
+
+### §4f. Scale test — Qwen2.5-3B, 2026-06-07 — the CHEAP gate wins
+
+Re-ran the same test at 3B (6x scale, same family; sampling RNG now seeded -> fully
+reproducible). `selfconsistency_Qwen25_3B_Instruct_results.json`.
+
+| Model | Task | standard gate AUC (CI) | self-consistency AUC (CI) |
+|-------|------|------------------------|---------------------------|
+| 0.5B | RTE  | 0.55 [0.47,0.63] chance | 0.62 [0.54,0.68] works |
+| 0.5B | QNLI | 0.61 [0.54,0.68] works  | 0.56 [0.49,0.62] chance |
+| **3B** | RTE  | **0.60 [0.52,0.68] works** | 0.51 [0.41,0.60] chance |
+| **3B** | QNLI | **0.65 [0.57,0.72] works** | 0.53 [0.45,0.60] chance |
+
+**Findings:**
+1. **The standard log-prob gate generalizes at scale.** At 3B it clears 0.5 on BOTH
+   hard tasks (incl. RTE, where it was at chance at 0.5B). Bigger model -> better
+   calibrated -> token confidence carries real wrong-output signal across tasks.
+2. **Self-consistency does NOT survive scale.** At chance on both tasks at 3B; the
+   0.5B RTE effect was a small-model artifact (weak models scatter when wrong) and
+   vanished once the model is competent and the seed is fixed.
+
+**FINAL uncertainty verdict:** the buildable tool is the LEAN LOG-PROB GATE
+(margin/entropy/boundary) — cheap (single pass), reliable-ish (AUC 0.60-0.65 at 3B
+across easy+hard tasks), and it IMPROVES with model scale. The expensive Nx
+self-consistency path is NOT justified. This is exactly what the leaned MCP already
+ships (§ commit c8b571e). Geometry remains dead; scale is the gate's friend.
+
 ---
 
 ## 5. Honest scorecard
@@ -165,8 +265,20 @@ errors would tighten the numbers. Results: `mcp_uncertainty_ablation_results.jso
 **Survives scrutiny:** weak-but-real boundary-instability signal (~6% variance);
 the Goodhart detector (genuinely works); the design-vs-ethics intervention split;
 the falsification discipline in the March work; **the MCP's *standard* log-prob
-uncertainty signals** (margin+entropy predict wrong outputs at AUC 0.667 on a
-non-circular gold-correctness label — see §4b). The geometry add-on does NOT survive.
+uncertainty signals — but only weakly and on easy tasks** (AUC 0.62 on SST-2,
+CI clears 0.5; but 0.55 / chance on hard RTE reasoning — see §4b/§4c). A modest,
+task-dependent signal, NOT a general "knows when it's wrong" capability. The
+geometry add-on does NOT survive at all.
+
+**Self-consistency sampling** (§4d/§4e/§4f): looked like a breakthrough on RTE at
+0.5B but FAILED to replicate on QNLI, its edge was a seeding-bug artifact, and it
+COLLAPSED to chance at 3B. Not a win. The expensive Nx path is not justified.
+
+**THE buildable tool — lean log-prob gate** (§4f): margin/entropy/boundary predicts
+wrong outputs at AUC 0.60-0.65 across easy AND hard tasks at 3B (both CIs clear
+0.5), is cheap (single pass), and IMPROVES with model scale. This is what the
+leaned MCP already ships (commit c8b571e). The one genuinely useful, validated,
+scale-friendly result to come out of the project.
 
 **Does NOT survive:** AUC=1.0 poison detection as a general claim (circular —
 now confirmed by R3 on real SST-2: chance once the trigger varies);

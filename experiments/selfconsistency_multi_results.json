@@ -1,0 +1,48 @@
+{
+  "rte": {
+    "n": 277,
+    "n_wrong": 81,
+    "wrong_rate": 0.2924,
+    "auc_standard": 0.5504,
+    "auc_standard_ci95": [
+      0.471,
+      0.6285
+    ],
+    "auc_selfconsistency": 0.6151,
+    "auc_sc_ci95": [
+      0.5416,
+      0.6849
+    ],
+    "auc_combined": 0.5995,
+    "delta_sc_over_standard": 0.0491,
+    "delta_ci95": [
+      -0.0221,
+      0.1234
+    ],
+    "sc_works": true,
+    "sc_beats_gate": false
+  },
+  "qnli": {
+    "n": 300,
+    "n_wrong": 121,
+    "wrong_rate": 0.4033,
+    "auc_standard": 0.6133,
+    "auc_standard_ci95": [
+      0.5438,
+      0.6769
+    ],
+    "auc_selfconsistency": 0.5579,
+    "auc_sc_ci95": [
+      0.4911,
+      0.6227
+    ],
+    "auc_combined": 0.6195,
+    "delta_sc_over_standard": 0.0062,
+    "delta_ci95": [
+      -0.0391,
+      0.0526
+    ],
+    "sc_works": false,
+    "sc_beats_gate": false
+  }
+}

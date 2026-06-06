@@ -1,0 +1,49 @@
+{
+  "rte": {
+    "n": 277,
+    "n_wrong": 52,
+    "wrong_rate": 0.1877,
+    "auc_standard": 0.6022,
+    "auc_standard_ci95": [
+      0.5206,
+      0.6802
+    ],
+    "auc_selfconsistency": 0.5089,
+    "auc_sc_ci95": [
+      0.4147,
+      0.603
+    ],
+    "auc_combined": 0.6111,
+    "delta_sc_over_standard": 0.0089,
+    "delta_ci95": [
+      -0.0415,
+      0.0547
+    ],
+    "sc_works": false,
+    "sc_beats_gate": false
+  },
+  "qnli": {
+    "n": 300,
+    "n_wrong": 73,
+    "wrong_rate": 0.2433,
+    "auc_standard": 0.6467,
+    "auc_standard_ci95": [
+      0.5746,
+      0.7189
+    ],
+    "auc_selfconsistency": 0.526,
+    "auc_sc_ci95": [
+      0.4525,
+      0.6049
+    ],
+    "auc_combined": 0.6444,
+    "delta_sc_over_standard": -0.0022,
+    "delta_ci95": [
+      -0.0352,
+      0.0288
+    ],
+    "sc_works": false,
+    "sc_beats_gate": false
+  },
+  "_model": "Qwen/Qwen2.5-3B-Instruct"
+}
