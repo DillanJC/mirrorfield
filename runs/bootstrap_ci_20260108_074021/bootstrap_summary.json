@@ -1,0 +1,88 @@
+{
+  "timestamp": "20260108_074021",
+  "n_bootstrap": 1000,
+  "ci_percentile": 95,
+  "seeds": [
+    17,
+    42,
+    100,
+    200,
+    333
+  ],
+  "threshold_low": -0.5,
+  "threshold_high": 0.5,
+  "all_significant": false,
+  "verdict": "FAIL",
+  "results": [
+    {
+      "seed": 17,
+      "n_borderline": 80,
+      "n_test": 220,
+      "r2_baseline": 0.35661447048187256,
+      "r2_geometry": 0.4547423720359802,
+      "direct_delta": 0.09812790155410767,
+      "bootstrap": {
+        "mean_delta": 0.09983489429950713,
+        "ci_low": -0.02237757295370102,
+        "ci_high": 0.2901598498225212,
+        "n_iterations": 1000
+      }
+    },
+    {
+      "seed": 42,
+      "n_borderline": 62,
+      "n_test": 220,
+      "r2_baseline": 0.3132973313331604,
+      "r2_geometry": 0.16152024269104004,
+      "direct_delta": -0.15177708864212036,
+      "bootstrap": {
+        "mean_delta": -0.15569382303953172,
+        "ci_low": -0.3966235816478729,
+        "ci_high": 0.029147589206695374,
+        "n_iterations": 1000
+      }
+    },
+    {
+      "seed": 100,
+      "n_borderline": 87,
+      "n_test": 220,
+      "r2_baseline": -0.06433820724487305,
+      "r2_geometry": 0.12665021419525146,
+      "direct_delta": 0.1909884214401245,
+      "bootstrap": {
+        "mean_delta": 0.19101955389976502,
+        "ci_low": -0.0781345620751381,
+        "ci_high": 0.6277287647128104,
+        "n_iterations": 1000
+      }
+    },
+    {
+      "seed": 200,
+      "n_borderline": 72,
+      "n_test": 220,
+      "r2_baseline": 0.5241963863372803,
+      "r2_geometry": 0.47891902923583984,
+      "direct_delta": -0.04527735710144043,
+      "bootstrap": {
+        "mean_delta": -0.04673172152042389,
+        "ci_low": -0.15849434733390808,
+        "ci_high": 0.05929271727800368,
+        "n_iterations": 1000
+      }
+    },
+    {
+      "seed": 333,
+      "n_borderline": 73,
+      "n_test": 220,
+      "r2_baseline": 0.4050039052963257,
+      "r2_geometry": 0.4943917393684387,
+      "direct_delta": 0.08938783407211304,
+      "bootstrap": {
+        "mean_delta": 0.09086408299207688,
+        "ci_low": 0.003998643159866333,
+        "ci_high": 0.17728156447410584,
+        "n_iterations": 1000
+      }
+    }
+  ]
+}

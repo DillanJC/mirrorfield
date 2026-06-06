@@ -1,0 +1,9 @@
+{
+  "timestamp": "20251231_011315",
+  "tests": [
+    {
+      "embedder_name": "text-embedding-3-small (1536-D)",
+      "n_samples": 500,
+      "dimensions": 1536,
+      "gate_prediction": "REAL_SIGNAL",
+      "falsifier_verdict": 

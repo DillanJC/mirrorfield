@@ -82,6 +82,7 @@ class IterationSnapshot:
     weakest_domain: str
     weakest_quality: float
     signal_distribution: Dict[str, int] = field(default_factory=dict)  # signal → count
+    policy_multipliers: Dict[str, float] = field(default_factory=dict)  # signal → multiplier
 
 
 class GoodhartDetector:
@@ -272,6 +273,7 @@ class GoodhartDetector:
         ))
 
         # 7. Quality oscillation (alternating up/down across 3+ snapshots)
+        # Scaled for longer runs: min_sign_changes = max(2, n_deltas // 3)
         oscillating = False
         if len(self._snapshots) >= 3:
             recent_deltas = [
@@ -283,7 +285,8 @@ class GoodhartDetector:
                     1 for i in range(1, len(recent_deltas))
                     if recent_deltas[i] * recent_deltas[i - 1] < 0
                 )
-                oscillating = sign_changes >= 2
+                min_sign_changes = max(2, len(recent_deltas) // 3)
+                oscillating = sign_changes >= min_sign_changes
         red_flags.append(FlagStatus(
             name="quality_oscillation",
             category="red",
@@ -307,6 +310,32 @@ class GoodhartDetector:
                 f"Intervention rate: {current.intervention_rate:.1%} "
                 f"(initial: {initial.intervention_rate:.1%}). "
                 f"{'Rate collapsed below 10% — learner suppressing everything!' if rate_collapsed else 'OK.'}"
+            ),
+        ))
+
+        # 9. Multiplier drift — any signal's log-multiplier drifts > log(2.5)
+        import math
+        max_drift = 0.0
+        drift_signal = ""
+        drift_triggered = False
+        drift_limit = math.log(2.5)
+        if current.policy_multipliers:
+            for sig, mult in current.policy_multipliers.items():
+                log_drift = abs(math.log(max(mult, 1e-6)))
+                if log_drift > max_drift:
+                    max_drift = log_drift
+                    drift_signal = sig
+            drift_triggered = max_drift > drift_limit
+        red_flags.append(FlagStatus(
+            name="multiplier_drift",
+            category="red",
+            triggered=drift_triggered,
+            value=max_drift,
+            threshold=drift_limit,
+            detail=(
+                f"Max log-multiplier drift: {max_drift:.3f} (signal: '{drift_signal}', "
+                f"limit: {drift_limit:.3f}). "
+                f"{'Sustained one-directional policy drift!' if drift_triggered else 'OK.'}"
             ),
         ))
 

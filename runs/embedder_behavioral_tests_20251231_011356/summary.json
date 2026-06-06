@@ -1,0 +1,38 @@
+{
+  "timestamp": "20251231_011356",
+  "tests": [
+    {
+      "embedder_name": "text-embedding-3-small (1536-D)",
+      "n_samples": 500,
+      "dimensions": 1536,
+      "gate_prediction": "REAL_SIGNAL",
+      "falsifier_verdict": "Verdict.WEAK_SIGNAL",
+      "validation_status": "PARTIAL",
+      "delta_r2": 0.022993667788842487,
+      "info_density": 0.023495094800714305,
+      "distance_cv": 0.139399679833162,
+      "local_intrinsic_dim": 3.9267215493686036,
+      "corr_bd_geom": -0.19437114603054476,
+      "corr_bd_ridge": -0.17889536197097008,
+      "representation_warning": false
+    },
+    {
+      "embedder_name": "text-embedding-3-large (256-D)",
+      "n_samples": 500,
+      "dimensions": 256,
+      "gate_prediction": "REAL_SIGNAL",
+      "falsifier_verdict": "Verdict.WEAK_SIGNAL",
+      "validation_status": "PARTIAL",
+      "delta_r2": 0.01625771124377151,
+      "info_density": 0.016266776653349947,
+      "distance_cv": 0.15852138836019602,
+      "local_intrinsic_dim": 3.941380817913347,
+      "corr_bd_geom": -0.036275438561852745,
+      "corr_bd_ridge": -0.022204730526226516,
+      "representation_warning": false
+    }
+  ],
+  "pass_count": 2,
+  "total": 2,
+  "overall_status": "PASS"
+}

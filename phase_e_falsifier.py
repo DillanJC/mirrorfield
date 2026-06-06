@@ -45,6 +45,8 @@ class FalsifierResult:
         r2_dist_only: R² for boundary_distance alone
         r2_dist_geom: R² for boundary_distance + geometry
         evidence: Dict of supporting evidence
+        representation_warning: True if embedder diagnostics suggest COSMETIC risk
+        embedder_diagnostics: Optional dict of embedder diagnostic metrics
     """
     verdict: Verdict
     delta_r2: float
@@ -54,10 +56,12 @@ class FalsifierResult:
     r2_dist_only: float
     r2_dist_geom: float
     evidence: Dict[str, Any]
+    representation_warning: bool = False
+    embedder_diagnostics: Dict[str, Any] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to JSON-serializable dict."""
-        return {
+        result = {
             "verdict": self.verdict.value,
             "delta_r2": float(self.delta_r2),
             "info_density": float(self.info_density),
@@ -70,7 +74,13 @@ class FalsifierResult:
                 "distance_plus_geometry": float(self.r2_dist_geom),
             },
             "evidence": self.evidence,
+            "representation_warning": self.representation_warning,
         }
+
+        if self.embedder_diagnostics is not None:
+            result["embedder_diagnostics"] = self.embedder_diagnostics
+
+        return result
 
 
 class PhaseEFalsifier:
@@ -87,6 +97,7 @@ class PhaseEFalsifier:
         ridge_proximity: np.ndarray,
         target: np.ndarray,
         eps: float = 1e-8,
+        embedder_diagnostics: Dict[str, Any] = None,
     ) -> FalsifierResult:
         """Evaluate geometry signal quality and return verdict.
 
@@ -96,6 +107,8 @@ class PhaseEFalsifier:
             ridge_proximity: (N,) ridge proximity values
             target: (N,) target variable for R² computation (e.g., flip outcomes)
             eps: small constant for numerical stability
+            embedder_diagnostics: Optional dict from EmbedderDiagnostics.run_all()
+                                  Used to set representation_warning flag
 
         Returns:
             FalsifierResult with verdict and supporting evidence
@@ -107,6 +120,11 @@ class PhaseEFalsifier:
         4. If ΔR² < 0.01: COSMETIC
         5. If ΔR² ≥ 0.01 and info_density > 0.10: REAL_SIGNAL
         6. Else: WEAK_SIGNAL
+
+        Representation Warning:
+        If embedder_diagnostics provided and indicate unstable/collapsed embeddings:
+        - Add warning flag (even if verdict is REAL_SIGNAL)
+        - Warn: geometry gains may be embedder-specific artifacts
         """
         # Compute correlations
         corr_bd_geom = PhaseEFalsifier._correlation(boundary_distance, geometry_score)
@@ -166,6 +184,48 @@ class PhaseEFalsifier:
             verdict = Verdict.WEAK_SIGNAL
             evidence["reason"] = f"Geometry adds {delta_r2:.4f} R² but info_density={info_density:.3f} is low"
 
+        # Representation warning (gate 3): Check embedder diagnostics
+        representation_warning = False
+        embedder_diag_dict = None
+
+        if embedder_diagnostics is not None:
+            # Extract key metrics from diagnostics
+            # Distance concentration and LID are the strongest predictors
+            distance_conc = embedder_diagnostics.get("distance_concentration", 1.0)
+            local_id = embedder_diagnostics.get("local_intrinsic_dim", 0.0)
+
+            # Empirical thresholds from Test A/B/C analysis:
+            # - Distance concentration < 0.05: collapsed (COSMETIC risk)
+            # - Local ID > 150: too high-dimensional (COSMETIC risk)
+            if distance_conc < 0.05 or local_id > 150:
+                representation_warning = True
+                evidence["representation_warning_reason"] = []
+                if distance_conc < 0.05:
+                    evidence["representation_warning_reason"].append(
+                        f"Distance concentration collapsed (CV={distance_conc:.3f} < 0.05)"
+                    )
+                if local_id > 150:
+                    evidence["representation_warning_reason"].append(
+                        f"Local intrinsic dimensionality too high (LID={local_id:.1f} > 150)"
+                    )
+                evidence["representation_warning_reason"] = "; ".join(
+                    evidence["representation_warning_reason"]
+                )
+
+            # Save diagnostics summary
+            embedder_diag_dict = {
+                "distance_concentration": float(distance_conc),
+                "local_intrinsic_dim": float(local_id),
+                "representation_warning": representation_warning,
+            }
+
+            # If verdict is REAL_SIGNAL but diagnostics warn, add note
+            if representation_warning and verdict == Verdict.REAL_SIGNAL:
+                evidence["warning_note"] = (
+                    "REAL_SIGNAL verdict but representation diagnostics suggest risk of "
+                    "embedder-specific artifact. Gains may not generalize to other embedders."
+                )
+
         return FalsifierResult(
             verdict=verdict,
             delta_r2=delta_r2,
@@ -175,6 +235,8 @@ class PhaseEFalsifier:
             r2_dist_only=r2_dist_only,
             r2_dist_geom=r2_dist_geom,
             evidence=evidence,
+            representation_warning=representation_warning,
+            embedder_diagnostics=embedder_diag_dict,
         )
 
     @staticmethod

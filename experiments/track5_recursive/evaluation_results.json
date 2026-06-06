@@ -1,0 +1,175 @@
+{
+  "learning_curve": {
+    "curve": [
+      {
+        "iteration": 1,
+        "mean_quality": 0.6054999999999999,
+        "std_quality": 0.13565857879249654,
+        "diversity": 0.1584467120181406,
+        "intervention_rate": 1.0,
+        "delta_vs_baseline": 0.026899999999999924
+      },
+      {
+        "iteration": 2,
+        "mean_quality": 0.6054999999999999,
+        "std_quality": 0.13565857879249654,
+        "diversity": 0.1584467120181406,
+        "intervention_rate": 1.0,
+        "delta_vs_baseline": 0.026899999999999924
+      },
+      {
+        "iteration": 3,
+        "mean_quality": 0.6054999999999999,
+        "std_quality": 0.13565857879249654,
+        "diversity": 0.1584467120181406,
+        "intervention_rate": 1.0,
+        "delta_vs_baseline": 0.026899999999999924
+      },
+      {
+        "iteration": 4,
+        "mean_quality": 0.6054999999999999,
+        "std_quality": 0.13565857879249654,
+        "diversity": 0.1584467120181406,
+        "intervention_rate": 1.0,
+        "delta_vs_baseline": 0.026899999999999924
+      },
+      {
+        "iteration": 5,
+        "mean_quality": 0.6054999999999999,
+        "std_quality": 0.13565857879249654,
+        "diversity": 0.1584467120181406,
+        "intervention_rate": 1.0,
+        "delta_vs_baseline": 0.026899999999999924
+      }
+    ],
+    "baseline_mean": 0.5786,
+    "final_mean": 0.6054999999999999,
+    "total_delta": 0.026899999999999924,
+    "trend_slope": -6.960814394643624e-17,
+    "improving": false
+  },
+  "goodhart": {
+    "n_reports": 4,
+    "verdicts": [
+      "PASS",
+      "PASS",
+      "PASS",
+      "PASS"
+    ],
+    "final_verdict": "PASS",
+    "total_red_flags": 0,
+    "total_green_flags": 0,
+    "mean_red_per_iteration": 0.0,
+    "mean_green_per_iteration": 0.0,
+    "trend_lines": {
+      "quality": [
+        0.6054999999999999,
+        0.6054999999999999,
+        0.6054999999999999,
+        0.6054999999999999,
+        0.6054999999999999
+      ],
+      "ridge_proximity": [
+        0.03316435223678127,
+        0.02344086905941367,
+        0.013323820152436383,
+        0.013352205845876597,
+        0.013526440918212757
+      ],
+      "diversity": [
+        0.1584467120181406,
+        0.1584467120181406,
+        0.1584467120181406,
+        0.1584467120181406,
+        0.1584467120181406
+      ],
+      "intervention_rate": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "terra_incognita": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "framework_collision": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "any_fail": false,
+    "any_warn": false
+  },
+  "domain_analysis": {
+    "research_questions": {
+      "initial_quality": 0.82,
+      "final_quality": 0.82,
+      "delta": 0.0,
+      "trend_slope": -2.82698491332931e-17,
+      "improving": false
+    },
+    "design_exploration": {
+      "initial_quality": 0.547,
+      "final_quality": 0.547,
+      "delta": 0.0,
+      "trend_slope": -1.4768234036172015e-17,
+      "improving": false
+    },
+    "ethical_dilemmas": {
+      "initial_quality": 0.605,
+      "final_quality": 0.605,
+      "delta": 0.0,
+      "trend_slope": -3.221758462965242e-17,
+      "improving": false
+    },
+    "novel_hypothesis": {
+      "initial_quality": 0.45,
+      "final_quality": 0.45,
+      "delta": 0.0,
+      "trend_slope": -8.874871921724764e-18,
+      "improving": false
+    }
+  },
+  "policy_evolution": {
+    "n_iterations": 5,
+    "final_n_interventions": 4,
+    "initial_n_interventions": 4,
+    "total_dropped": 0,
+    "dropped_signals": [],
+    "all_adjustments": [
+      "KEPT 'framework_collision': no observations yet",
+      "KEPT 'terra_incognita': no observations yet",
+      "KEPT 'decision_boundary': no observations yet",
+      "KEPT 'low_pr': mean_delta=0.0269 over 64 observations",
+      "NOTE: fire_rate=1.000 above target maximum 0.5. Consider tightening thresholds.",
+      "KEPT 'framework_collision': no observations yet",
+      "KEPT 'terra_incognita': no observations yet",
+      "KEPT 'decision_boundary': no observations yet",
+      "KEPT 'low_pr': mean_delta=0.0269 over 64 observations",
+      "NOTE: fire_rate=1.000 above target maximum 0.5. Consider tightening thresholds.",
+      "KEPT 'framework_collision': no observations yet",
+      "KEPT 'terra_incognita': no observations yet",
+      "KEPT 'decision_boundary': no observations yet",
+      "KEPT 'low_pr': mean_delta=0.0269 over 64 observations",
+      "NOTE: fire_rate=1.000 above target maximum 0.5. Consider tightening thresholds.",
+      "KEPT 'framework_collision': no observations yet",
+      "KEPT 'terra_incognita': no observations yet",
+      "KEPT 'decision_boundary': no observations yet",
+      "KEPT 'low_pr': mean_delta=0.0269 over 64 observations",
+      "NOTE: fire_rate=1.000 above target maximum 0.5. Consider tightening thresholds.",
+      "KEPT 'framework_collision': no observations yet",
+      "KEPT 'terra_incognita': no observations yet",
+      "KEPT 'decision_boundary': no observations yet",
+      "KEPT 'low_pr': mean_delta=0.0269 over 64 observations",
+      "NOTE: fire_rate=1.000 above target maximum 0.5. Consider tightening thresholds."
+    ]
+  }
+}

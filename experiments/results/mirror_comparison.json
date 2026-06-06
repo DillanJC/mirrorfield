@@ -1,0 +1,363 @@
+{
+  "metadata": {
+    "description": "Comparison of GLM baseline vs directive-switched vs mirror-switched experiments",
+    "conditions": {
+      "baseline": "No interventions; pure GLM-4.7 generation",
+      "directive": "Directive-style interventions injected based on geometric signals",
+      "mirror": "Mirror-style (non-directive) interventions injected based on geometric signals"
+    },
+    "model": "glm-4.7",
+    "n_tasks": 16,
+    "steps_per_task": 4,
+    "domains": [
+      "research_questions",
+      "design_exploration",
+      "ethical_dilemmas",
+      "novel_hypothesis"
+    ]
+  },
+  "overall_quality": {
+    "baseline": {
+      "mean_quality": 0.8116875,
+      "std_quality": 0.03725707776718404
+    },
+    "directive": {
+      "mean_quality": 0.7775000000000001,
+      "std_quality": 0.0605413082118317
+    },
+    "mirror": {
+      "mean_quality": 0.7825,
+      "std_quality": 0.07599506562928939
+    }
+  },
+  "per_domain_quality": {
+    "baseline": {
+      "research_questions": 0.8115,
+      "design_exploration": 0.8230000000000001,
+      "ethical_dilemmas": 0.839,
+      "novel_hypothesis": 0.77325
+    },
+    "directive": {
+      "research_questions": 0.73175,
+      "design_exploration": 0.767,
+      "ethical_dilemmas": 0.82075,
+      "novel_hypothesis": 0.7905000000000001
+    },
+    "mirror": {
+      "research_questions": 0.72375,
+      "design_exploration": 0.7702499999999999,
+      "ethical_dilemmas": 0.85175,
+      "novel_hypothesis": 0.7842499999999999
+    }
+  },
+  "per_domain_deltas": {
+    "research_questions": {
+      "baseline": 0.8115,
+      "directive": 0.73175,
+      "mirror": 0.72375,
+      "directive_minus_baseline": -0.07975,
+      "mirror_minus_baseline": -0.08775,
+      "mirror_minus_directive": -0.008
+    },
+    "design_exploration": {
+      "baseline": 0.823,
+      "directive": 0.767,
+      "mirror": 0.77025,
+      "directive_minus_baseline": -0.056,
+      "mirror_minus_baseline": -0.05275,
+      "mirror_minus_directive": 0.00325
+    },
+    "ethical_dilemmas": {
+      "baseline": 0.839,
+      "directive": 0.82075,
+      "mirror": 0.85175,
+      "directive_minus_baseline": -0.01825,
+      "mirror_minus_baseline": 0.01275,
+      "mirror_minus_directive": 0.031
+    },
+    "novel_hypothesis": {
+      "baseline": 0.77325,
+      "directive": 0.7905,
+      "mirror": 0.78425,
+      "directive_minus_baseline": 0.01725,
+      "mirror_minus_baseline": 0.011,
+      "mirror_minus_directive": -0.00625
+    }
+  },
+  "per_task_deltas": {
+    "design_01": {
+      "domain": "design_exploration",
+      "baseline": 0.867,
+      "directive": 0.765,
+      "mirror": 0.797,
+      "directive_minus_baseline": -0.102,
+      "mirror_minus_baseline": -0.07,
+      "mirror_minus_directive": 0.032,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "design_02": {
+      "domain": "design_exploration",
+      "baseline": 0.797,
+      "directive": 0.777,
+      "mirror": 0.595,
+      "directive_minus_baseline": -0.02,
+      "mirror_minus_baseline": -0.202,
+      "mirror_minus_directive": -0.182,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "declined"
+    },
+    "design_03": {
+      "domain": "design_exploration",
+      "baseline": 0.785,
+      "directive": 0.731,
+      "mirror": 0.825,
+      "directive_minus_baseline": -0.054,
+      "mirror_minus_baseline": 0.04,
+      "mirror_minus_directive": 0.094,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "design_04": {
+      "domain": "design_exploration",
+      "baseline": 0.843,
+      "directive": 0.795,
+      "mirror": 0.864,
+      "directive_minus_baseline": -0.048,
+      "mirror_minus_baseline": 0.021,
+      "mirror_minus_directive": 0.069,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "ethics_01": {
+      "domain": "ethical_dilemmas",
+      "baseline": 0.852,
+      "directive": 0.864,
+      "mirror": 0.867,
+      "directive_minus_baseline": 0.012,
+      "mirror_minus_baseline": 0.015,
+      "mirror_minus_directive": 0.003,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "improved",
+      "mirror_vs_directive": "improved"
+    },
+    "ethics_02": {
+      "domain": "ethical_dilemmas",
+      "baseline": 0.812,
+      "directive": 0.871,
+      "mirror": 0.886,
+      "directive_minus_baseline": 0.059,
+      "mirror_minus_baseline": 0.074,
+      "mirror_minus_directive": 0.015,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "improved",
+      "mirror_vs_directive": "improved"
+    },
+    "ethics_03": {
+      "domain": "ethical_dilemmas",
+      "baseline": 0.843,
+      "directive": 0.765,
+      "mirror": 0.831,
+      "directive_minus_baseline": -0.078,
+      "mirror_minus_baseline": -0.012,
+      "mirror_minus_directive": 0.066,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "ethics_04": {
+      "domain": "ethical_dilemmas",
+      "baseline": 0.849,
+      "directive": 0.783,
+      "mirror": 0.823,
+      "directive_minus_baseline": -0.066,
+      "mirror_minus_baseline": -0.026,
+      "mirror_minus_directive": 0.04,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "hypothesis_01": {
+      "domain": "novel_hypothesis",
+      "baseline": 0.723,
+      "directive": 0.785,
+      "mirror": 0.745,
+      "directive_minus_baseline": 0.062,
+      "mirror_minus_baseline": 0.022,
+      "mirror_minus_directive": -0.04,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "improved",
+      "mirror_vs_directive": "declined"
+    },
+    "hypothesis_02": {
+      "domain": "novel_hypothesis",
+      "baseline": 0.785,
+      "directive": 0.867,
+      "mirror": 0.735,
+      "directive_minus_baseline": 0.082,
+      "mirror_minus_baseline": -0.05,
+      "mirror_minus_directive": -0.132,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "improved",
+      "mirror_vs_directive": "declined"
+    },
+    "hypothesis_03": {
+      "domain": "novel_hypothesis",
+      "baseline": 0.785,
+      "directive": 0.765,
+      "mirror": 0.832,
+      "directive_minus_baseline": -0.02,
+      "mirror_minus_baseline": 0.047,
+      "mirror_minus_directive": 0.067,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "hypothesis_04": {
+      "domain": "novel_hypothesis",
+      "baseline": 0.8,
+      "directive": 0.745,
+      "mirror": 0.825,
+      "directive_minus_baseline": -0.055,
+      "mirror_minus_baseline": 0.025,
+      "mirror_minus_directive": 0.08,
+      "mirror_vs_baseline": "improved",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    },
+    "research_01": {
+      "domain": "research_questions",
+      "baseline": 0.811,
+      "directive": 0.717,
+      "mirror": 0.705,
+      "directive_minus_baseline": -0.094,
+      "mirror_minus_baseline": -0.106,
+      "mirror_minus_directive": -0.012,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "declined"
+    },
+    "research_02": {
+      "domain": "research_questions",
+      "baseline": 0.775,
+      "directive": 0.82,
+      "mirror": 0.775,
+      "directive_minus_baseline": 0.045,
+      "mirror_minus_baseline": 0.0,
+      "mirror_minus_directive": -0.045,
+      "mirror_vs_baseline": "unchanged",
+      "directive_vs_baseline": "improved",
+      "mirror_vs_directive": "declined"
+    },
+    "research_03": {
+      "domain": "research_questions",
+      "baseline": 0.8,
+      "directive": 0.77,
+      "mirror": 0.735,
+      "directive_minus_baseline": -0.03,
+      "mirror_minus_baseline": -0.065,
+      "mirror_minus_directive": -0.035,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "declined"
+    },
+    "research_04": {
+      "domain": "research_questions",
+      "baseline": 0.86,
+      "directive": 0.62,
+      "mirror": 0.68,
+      "directive_minus_baseline": -0.24,
+      "mirror_minus_baseline": -0.18,
+      "mirror_minus_directive": 0.06,
+      "mirror_vs_baseline": "declined",
+      "directive_vs_baseline": "declined",
+      "mirror_vs_directive": "improved"
+    }
+  },
+  "intervention_statistics": {
+    "directive": {
+      "total_interventions": 29,
+      "mean_interventions_per_task": 1.8125,
+      "signal_distribution": {
+        "low_pr": 8,
+        "terra_incognita": 3,
+        "decision_boundary": 7,
+        "framework_collision": 11
+      },
+      "per_domain_interventions": {
+        "research_questions": 7,
+        "design_exploration": 7,
+        "ethical_dilemmas": 6,
+        "novel_hypothesis": 9
+      }
+    },
+    "mirror": {
+      "total_interventions": 25,
+      "mean_interventions_per_task": 1.5625,
+      "signal_distribution": {
+        "low_pr": 7,
+        "decision_boundary": 5,
+        "framework_collision": 10,
+        "terra_incognita": 3
+      },
+      "per_domain_interventions": {
+        "research_questions": 4,
+        "design_exploration": 10,
+        "ethical_dilemmas": 5,
+        "novel_hypothesis": 6
+      }
+    }
+  },
+  "summary": {
+    "overall_mean_quality": {
+      "baseline": 0.81169,
+      "directive": 0.7775,
+      "mirror": 0.7825
+    },
+    "overall_deltas": {
+      "directive_minus_baseline": -0.03419,
+      "mirror_minus_baseline": -0.02919,
+      "mirror_minus_directive": 0.005
+    },
+    "task_change_counts": {
+      "directive_vs_baseline": {
+        "improved": 5,
+        "declined": 11,
+        "unchanged": 0
+      },
+      "mirror_vs_baseline": {
+        "improved": 7,
+        "declined": 8,
+        "unchanged": 1
+      }
+    },
+    "best_domain_for_mirror": {
+      "domain": "ethical_dilemmas",
+      "delta": 0.01275
+    },
+    "worst_domain_for_mirror": {
+      "domain": "research_questions",
+      "delta": -0.08775
+    },
+    "best_domain_for_directive": {
+      "domain": "novel_hypothesis",
+      "delta": 0.01725
+    },
+    "worst_domain_for_directive": {
+      "domain": "research_questions",
+      "delta": -0.07975
+    },
+    "key_findings": [
+      "Both intervention conditions reduced overall quality relative to the baseline (baseline 0.8117; directive 0.7775, delta -0.0342; mirror 0.7825, delta -0.0292).",
+      "Mirror-switched outperformed directive-switched by +0.00500 overall mean quality.",
+      "Directive interventions caused more tasks to decline (11/16) than mirror interventions (8/16) relative to baseline.",
+      "Mirror interventions used fewer total interventions (25) vs directive (29), suggesting the non-directive style triggered fewer cooldown resets.",
+      "The ethical_dilemmas domain showed improvement under both conditions (directive -0.01825, mirror +0.01275), making it the most intervention-resilient domain.",
+      "The research_questions domain suffered the largest decline under both conditions (directive -0.07975, mirror -0.08775)."
+    ]
+  }
+}

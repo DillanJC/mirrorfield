@@ -17,11 +17,11 @@ import numpy as np
 import torch
 from typing import Dict, Any, Optional
 
-from geometry.features import (
+from .features import (
     local_curvature_svd_gpu,
     ridge_proximity_from_knn_distances,
 )
-from geometry.schema import NAMES
+from .schema import NAMES
 
 
 class GeometryBundle:
@@ -106,10 +106,13 @@ class GeometryBundle:
             AssertionError: if input shapes don't match or config is invalid
         """
         assert query_emb.ndim == 2, f"query_emb must be (N, D), got {query_emb.shape}"
-        assert boundary_distance.ndim == 1, f"boundary_distance must be (N,), got {boundary_distance.shape}"
+        assert boundary_distance.ndim == 1, (
+            f"boundary_distance must be (N,), got {boundary_distance.shape}"
+        )
         n_query = len(query_emb)
-        assert len(boundary_distance) == n_query, \
+        assert len(boundary_distance) == n_query, (
             f"Length mismatch: query_emb={n_query}, boundary_distance={len(boundary_distance)}"
+        )
 
         # Extract config
         n_neighbors = self.config.get("n_neighbors", 32)
@@ -120,13 +123,17 @@ class GeometryBundle:
         use_amp = self.config.get("use_amp", False)
 
         # Validate config
-        assert r_components < k_curv, \
+        assert r_components < k_curv, (
             f"r_components must be < k_curvature (got r={r_components}, k={k_curv})"
-        assert k_curv <= n_neighbors, \
+        )
+        assert k_curv <= n_neighbors, (
             f"k_curvature must be <= n_neighbors (got k={k_curv}, n={n_neighbors})"
+        )
 
         # 1) kNN against reference set only (batch-independent)
-        distances, indices = self.nn_index.kneighbors(query_emb, n_neighbors=n_neighbors)
+        distances, indices = self.nn_index.kneighbors(
+            query_emb, n_neighbors=n_neighbors
+        )
 
         # 2) Local curvature via GPU-batched SVD
         # Use first k_curv neighbors for curvature computation
@@ -190,7 +197,7 @@ class GeometryBundle:
 
         flags = []
         JC = curvature  # Gemini alias: Jitter Curvature
-        SD = ridge      # Gemini alias: Separatrix Density
+        SD = ridge  # Gemini alias: Separatrix Density
         CA = boundary_distance  # Centroid Anchor (in Phase D terms)
 
         for i in range(len(JC)):
@@ -233,16 +240,21 @@ class GeometryBundle:
         # Warnings
         if seed is None:
             import warnings
+
             warnings.warn("No random_seed specified in config; using default=42")
 
         if not (64 <= batch_size <= 512):
             import warnings
-            warnings.warn(f"batch_size={batch_size} is outside recommended range [64, 512]")
+
+            warnings.warn(
+                f"batch_size={batch_size} is outside recommended range [64, 512]"
+            )
 
         # GPU memory warnings (heuristic for 8GB VRAM)
         device = config.get("device", "cuda")
         if device == "cuda" and batch_size > 512:
             import warnings
+
             warnings.warn(
                 f"batch_size={batch_size} may exceed 8GB VRAM for D=768 embeddings. "
                 "Consider reducing to 256-512."

@@ -1,0 +1,184 @@
+{
+  "summary": {
+    "claude_quality": 0.7989375,
+    "glm_quality": 0.8116875,
+    "quality_delta": 0.012750000000000039,
+    "mean_l2_distance": 0.07691090757117475,
+    "mean_cosine_similarity": 0.9994147352370488,
+    "claude_displacement_magnitude": 0.2009555968340463,
+    "glm_displacement_magnitude": 0.1628436234798036
+  },
+  "feature_comparison": {
+    "knn_mean_distance": {
+      "claude_mean": 1.2683811113238335,
+      "claude_std": 0.026100889439224218,
+      "glm_mean": 1.2681158911436796,
+      "glm_std": 0.02644012099296919,
+      "delta": -0.00026522018015384674
+    },
+    "knn_std_distance": {
+      "claude_mean": 0.0815615834435448,
+      "claude_std": 0.01568551218251201,
+      "glm_mean": 0.08564165729330853,
+      "glm_std": 0.016115415797056578,
+      "delta": 0.004080073849763721
+    },
+    "knn_min_distance": {
+      "claude_mean": 0.9034782880917192,
+      "claude_std": 0.12357208220035869,
+      "glm_mean": 0.880361351184547,
+      "glm_std": 0.11848929979776425,
+      "delta": -0.023116936907172203
+    },
+    "knn_max_distance": {
+      "claude_mean": 1.3454939350485802,
+      "claude_std": 0.021064713255022557,
+      "glm_mean": 1.348891455680132,
+      "glm_std": 0.01973767658021625,
+      "delta": 0.0033975206315517426
+    },
+    "local_curvature": {
+      "claude_mean": 0.050758883706294,
+      "claude_std": 0.0035225739001337095,
+      "glm_mean": 0.05003626085817814,
+      "glm_std": 0.00275613046658502,
+      "delta": -0.0007226228481158614
+    },
+    "ridge_proximity": {
+      "claude_mean": 0.0643581697368063,
+      "claude_std": 0.01261816723420686,
+      "glm_mean": 0.06762991828145459,
+      "glm_std": 0.013077899332420366,
+      "delta": 0.0032717485446482897
+    },
+    "dist_to_ref_nearest": {
+      "claude_mean": 0.9034782880917192,
+      "claude_std": 0.12357208220035869,
+      "glm_mean": 0.880361351184547,
+      "glm_std": 0.11848929979776425,
+      "delta": -0.023116936907172203
+    }
+  },
+  "signature_distribution": {
+    "claude": {
+      "coherent": 64
+    },
+    "glm": {
+      "coherent": 64
+    }
+  },
+  "per_task_comparison": [
+    {
+      "task_id": "design_01",
+      "domain": "design_exploration",
+      "claude_quality": 0.703,
+      "glm_quality": 0.867,
+      "quality_delta": 0.16400000000000003
+    },
+    {
+      "task_id": "design_02",
+      "domain": "design_exploration",
+      "claude_quality": 0.709,
+      "glm_quality": 0.797,
+      "quality_delta": 0.08800000000000008
+    },
+    {
+      "task_id": "design_03",
+      "domain": "design_exploration",
+      "claude_quality": 0.854,
+      "glm_quality": 0.785,
+      "quality_delta": -0.06899999999999995
+    },
+    {
+      "task_id": "design_04",
+      "domain": "design_exploration",
+      "claude_quality": 0.68,
+      "glm_quality": 0.843,
+      "quality_delta": 0.16299999999999992
+    },
+    {
+      "task_id": "ethics_01",
+      "domain": "ethical_dilemmas",
+      "claude_quality": 0.904,
+      "glm_quality": 0.852,
+      "quality_delta": -0.052000000000000046
+    },
+    {
+      "task_id": "ethics_02",
+      "domain": "ethical_dilemmas",
+      "claude_quality": 0.94,
+      "glm_quality": 0.812,
+      "quality_delta": -0.1279999999999999
+    },
+    {
+      "task_id": "ethics_03",
+      "domain": "ethical_dilemmas",
+      "claude_quality": 0.823,
+      "glm_quality": 0.843,
+      "quality_delta": 0.020000000000000018
+    },
+    {
+      "task_id": "ethics_04",
+      "domain": "ethical_dilemmas",
+      "claude_quality": 0.933,
+      "glm_quality": 0.849,
+      "quality_delta": -0.08400000000000007
+    },
+    {
+      "task_id": "hypothesis_01",
+      "domain": "novel_hypothesis",
+      "claude_quality": 0.7,
+      "glm_quality": 0.723,
+      "quality_delta": 0.02300000000000002
+    },
+    {
+      "task_id": "hypothesis_02",
+      "domain": "novel_hypothesis",
+      "claude_quality": 0.831,
+      "glm_quality": 0.785,
+      "quality_delta": -0.04599999999999993
+    },
+    {
+      "task_id": "hypothesis_03",
+      "domain": "novel_hypothesis",
+      "claude_quality": 0.804,
+      "glm_quality": 0.785,
+      "quality_delta": -0.019000000000000017
+    },
+    {
+      "task_id": "hypothesis_04",
+      "domain": "novel_hypothesis",
+      "claude_quality": 0.745,
+      "glm_quality": 0.8,
+      "quality_delta": 0.05500000000000005
+    },
+    {
+      "task_id": "research_01",
+      "domain": "research_questions",
+      "claude_quality": 0.677,
+      "glm_quality": 0.811,
+      "quality_delta": 0.134
+    },
+    {
+      "task_id": "research_02",
+      "domain": "research_questions",
+      "claude_quality": 0.755,
+      "glm_quality": 0.775,
+      "quality_delta": 0.020000000000000018
+    },
+    {
+      "task_id": "research_03",
+      "domain": "research_questions",
+      "claude_quality": 0.865,
+      "glm_quality": 0.8,
+      "quality_delta": -0.06499999999999995
+    },
+    {
+      "task_id": "research_04",
+      "domain": "research_questions",
+      "claude_quality": 0.86,
+      "glm_quality": 0.86,
+      "quality_delta": 0.0
+    }
+  ]
+}

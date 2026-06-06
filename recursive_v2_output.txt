@@ -1,0 +1,102 @@
+============================================================
+MIRRORFIELD — GLM LEARNED RECURSIVE v2
+  Phase 4 states + balanced rates + 10 iterations
+Timestamp: 20260217_091123
+Iterations: 2
+API calls: 2 x 16 x 4 = 128
+============================================================
+
+Loading GLM baseline scores...
+  GLM Baseline mean quality: 0.8117
+Initializing GLM client and embedder...
+Building reference corpus...
+Initializing PolicyOptimizer with EnhancedTracer...
+  EnhancedTracer: 80 calibration samples, 6 states
+
+============================================================
+  ITERATION 1/2
+  Policy: {'threshold_multipliers': {'low_pr': 1.0, 'framework_collision': 1.0, 'decision_boundary': 1.0, 'terra_incognita': 1.0}, 'enabled': {'low_pr': True, 'framework_collision': True, 'decision_boundary': True, 'terra_incognita': True}, 'cooldown_window': 1}
+============================================================
+    [research_01] q=0.757 | intv=0 | sigs=[]
+    [research_02] q=0.715 | intv=0 | sigs=[]
+    [research_03] q=0.615 | intv=0 | sigs=[]
+    [research_04] q=0.645 | intv=0 | sigs=[]
+    [design_01] q=0.671 | intv=0 | sigs=[]
+    [design_02] q=0.785 | intv=0 | sigs=[]
+    [design_03] q=0.777 | intv=0 | sigs=[]
+    [design_04] q=0.817 | intv=0 | sigs=[]
+    [ethics_01] q=0.789 | intv=0 | sigs=[]
+    [ethics_02] q=0.855 | intv=0 | sigs=[]
+    [ethics_03] q=0.841 | intv=0 | sigs=[]
+    [ethics_04] q=0.805 | intv=0 | sigs=[]
+    [hypothesis_01] q=0.731 | intv=0 | sigs=[]
+    [hypothesis_02] q=0.737 | intv=0 | sigs=[]
+    [hypothesis_03] q=0.880 | intv=0 | sigs=[]
+    [hypothesis_04] q=0.801 | intv=0 | sigs=[]
+
+  Iteration 1 quality: 0.7638 (baseline: 0.8117, delta: -0.0479)
+  Iteration time: 1729.7s
+    design_exploration  : 0.762 (baseline 0.823, delta -0.061)
+    ethical_dilemmas    : 0.823 (baseline 0.839, delta -0.016)
+    novel_hypothesis    : 0.787 (baseline 0.773, delta +0.014)
+    research_questions  : 0.683 (baseline 0.811, delta -0.129)
+
+  Policy updates:
+    low_pr: no fires (unchanged)
+    framework_collision: no fires (unchanged)
+    decision_boundary: no fires (unchanged)
+    terra_incognita: no fires (unchanged)
+
+  Interventions: 0/64 steps (0% trigger rate)
+
+============================================================
+  ITERATION 2/2
+  Policy: {'threshold_multipliers': {'low_pr': 1.0, 'framework_collision': 1.0, 'decision_boundary': 1.0, 'terra_incognita': 1.0}, 'enabled': {'low_pr': True, 'framework_collision': True, 'decision_boundary': True, 'terra_incognita': True}, 'cooldown_window': 1}
+============================================================
+    [research_01] q=0.705 | intv=0 | sigs=[]
+    [research_02] q=0.715 | intv=0 | sigs=[]
+    [research_03] q=0.735 | intv=0 | sigs=[]
+    [research_04] q=0.760 | intv=0 | sigs=[]
+    [design_01] q=0.765 | intv=0 | sigs=[]
+    [design_02] q=0.711 | intv=0 | sigs=[]
+    [design_03] q=0.852 | intv=0 | sigs=[]
+    [design_04] q=0.837 | intv=0 | sigs=[]
+    [ethics_01] q=0.837 | intv=0 | sigs=[]
+    [ethics_02] q=0.840 | intv=0 | sigs=[]
+    [ethics_03] q=0.717 | intv=0 | sigs=[]
+    [ethics_04] q=0.806 | intv=0 | sigs=[]
+    [hypothesis_01] q=0.671 | intv=0 | sigs=[]
+    [hypothesis_02] q=0.907 | intv=0 | sigs=[]
+    [hypothesis_03] q=0.783 | intv=0 | sigs=[]
+    [hypothesis_04] q=0.880 | intv=0 | sigs=[]
+
+  Iteration 2 quality: 0.7826 (baseline: 0.8117, delta: -0.0291)
+  Iteration time: 1856.2s
+    design_exploration  : 0.791 (baseline 0.823, delta -0.032)
+    ethical_dilemmas    : 0.800 (baseline 0.839, delta -0.039)
+    novel_hypothesis    : 0.810 (baseline 0.773, delta +0.037)
+    research_questions  : 0.729 (baseline 0.811, delta -0.083)
+
+  Goodhart [WARN]: 1 red, 1 green
+    RED: ['quality_up_depth_down']
+    GREEN: ['weakest_improved_most']
+
+  Policy updates:
+    low_pr: no fires (unchanged)
+    framework_collision: no fires (unchanged)
+    decision_boundary: no fires (unchanged)
+    terra_incognita: no fires (unchanged)
+
+  Interventions: 0/64 steps (0% trigger rate)
+
+============================================================
+  RECURSIVE LEARNER v2 COMPLETE — 2/2 iterations (full run)
+  Total time: 3598.1s
+============================================================
+  Baseline mean quality: 0.8117
+  Iter 1: quality=0.7638 (delta=-0.0479, intv=0, time=1729.7s)
+  Iter 2: quality=0.7826 (delta=-0.0291, intv=0, time=1856.2s)
+
+  Final policy: {'threshold_multipliers': {'low_pr': 1.0, 'framework_collision': 1.0, 'decision_boundary': 1.0, 'terra_incognita': 1.0}, 'enabled': {'low_pr': True, 'framework_collision': True, 'decision_boundary': True, 'terra_incognita': True}, 'cooldown_window': 1}
+  Penalty*Reward product: 1.000000
+  Results saved to: C:\Users\User\mirrorfield\experiments\results\glm_learned_recursive_v2\20260217_091123\glm_learned_recursive_v2_trials.json

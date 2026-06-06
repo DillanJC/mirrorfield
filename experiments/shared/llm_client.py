@@ -1,7 +1,11 @@
 """
-Claude API client for multi-step reasoning.
+LLM API client for multi-step reasoning.
 
-Wraps the Anthropic SDK to generate reasoning steps with:
+Supports multiple backends:
+- Claude (Anthropic SDK)
+- GLM (Zhipu AI, OpenAI-compatible API)
+
+All backends provide the same interface for:
 - Conversation continuity (previous steps as context)
 - Intervention injection (meta-instructions between steps)
 - Rate limit handling (retry with exponential backoff)
@@ -11,6 +15,7 @@ Wraps the Anthropic SDK to generate reasoning steps with:
 import os
 import time
 import anthropic
+from openai import OpenAI
 from pathlib import Path
 from typing import Optional
 
@@ -19,6 +24,7 @@ from typing import Optional
 def _load_env():
     """Load .env file using python-dotenv."""
     from dotenv import load_dotenv
+
     project_root = Path(__file__).resolve().parent.parent.parent
     env_path = project_root / ".env"
     if env_path.exists():
@@ -29,6 +35,8 @@ _load_env()
 
 # Default configuration
 DEFAULT_MODEL = "claude-sonnet-4-5-20250929"
+DEFAULT_GLM_MODEL = "glm-4.7"
+GLM_BASE_URL = "https://api.z.ai/api/coding/paas/v4/"
 DEFAULT_TEMPERATURE = 0.7
 DEFAULT_MAX_TOKENS = 1024
 MAX_RETRIES = 5
@@ -75,13 +83,13 @@ class ClaudeReasoningClient:
             except anthropic.RateLimitError:
                 if attempt == MAX_RETRIES - 1:
                     raise
-                wait = backoff * (2 ** attempt)
+                wait = backoff * (2**attempt)
                 print(f"    Rate limited, retrying in {wait:.1f}s...")
                 time.sleep(wait)
             except anthropic.APIStatusError as e:
                 if e.status_code == 529 and attempt < MAX_RETRIES - 1:
                     # Overloaded
-                    wait = backoff * (2 ** attempt)
+                    wait = backoff * (2**attempt)
                     print(f"    API overloaded, retrying in {wait:.1f}s...")
                     time.sleep(wait)
                 else:
@@ -121,23 +129,29 @@ class ClaudeReasoningClient:
         messages = []
 
         # User message: the task
-        messages.append({
-            "role": "user",
-            "content": f"Task: {task_prompt}",
-        })
+        messages.append(
+            {
+                "role": "user",
+                "content": f"Task: {task_prompt}",
+            }
+        )
 
         # Build conversation from previous steps
         if previous_steps:
             for i, step_text in enumerate(previous_steps):
-                messages.append({
-                    "role": "assistant",
-                    "content": step_text,
-                })
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": step_text,
+                    }
+                )
                 if i < len(previous_steps) - 1:
-                    messages.append({
-                        "role": "user",
-                        "content": f"Continue to step {i + 2} of {total_steps}.",
-                    })
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": f"Continue to step {i + 2} of {total_steps}.",
+                        }
+                    )
 
         # Prompt for current step
         if intervention_text:
@@ -147,19 +161,19 @@ class ClaudeReasoningClient:
                 f"Now proceed with step {step_index + 1} of {total_steps}."
             )
         elif previous_steps:
-            prompt = (
-                f"Continue to step {step_index + 1} of {total_steps}."
-            )
+            prompt = f"Continue to step {step_index + 1} of {total_steps}."
         else:
             prompt = (
                 f"Begin step 1 of {total_steps}. "
                 f"Start by framing the problem and identifying key dimensions."
             )
 
-        messages.append({
-            "role": "user",
-            "content": prompt,
-        })
+        messages.append(
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        )
 
         return self._call_api(system, messages)
 
@@ -196,3 +210,179 @@ class ClaudeReasoningClient:
             steps.append(step_text)
 
         return steps
+
+
+class GLMReasoningClient:
+    """
+    Zhipu AI GLM client for multi-step reasoning tasks.
+
+    Uses the OpenAI-compatible API at open.bigmodel.cn.
+    Same interface as ClaudeReasoningClient for drop-in swapping.
+    """
+
+    def __init__(
+        self,
+        model: str = DEFAULT_GLM_MODEL,
+        temperature: float = DEFAULT_TEMPERATURE,
+        max_tokens: int = DEFAULT_MAX_TOKENS,
+    ):
+        api_key = os.environ.get("ZHIPU_API_KEY")
+        if not api_key:
+            raise ValueError("ZHIPU_API_KEY not found. Set it in .env or environment.")
+        self.client = OpenAI(api_key=api_key, base_url=GLM_BASE_URL)
+        self.model = model
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+
+    def _call_api(self, system: str, messages: list) -> str:
+        """Call GLM API with retry and backoff for rate limits."""
+        # Convert from Anthropic message format to OpenAI format
+        oai_messages = [{"role": "system", "content": system}]
+        for msg in messages:
+            oai_messages.append(
+                {
+                    "role": msg["role"],
+                    "content": msg["content"],
+                }
+            )
+
+        backoff = INITIAL_BACKOFF
+        for attempt in range(MAX_RETRIES):
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    max_tokens=self.max_tokens,
+                    temperature=self.temperature,
+                    messages=oai_messages,
+                    extra_body={"thinking": {"type": "enabled"}},
+                )
+                # Handle "thinking" mode: content may be in reasoning_content
+                msg = response.choices[0].message
+                content = msg.content
+                if not content and hasattr(msg, "model_extra") and msg.model_extra:
+                    content = msg.model_extra.get("reasoning_content", content)
+                return content
+            except Exception as e:
+                err_str = str(e)
+                if (
+                    "rate" in err_str.lower()
+                    or "429" in err_str
+                    or "overloaded" in err_str.lower()
+                    or "529" in err_str
+                ):
+                    if attempt == MAX_RETRIES - 1:
+                        raise
+                    wait = backoff * (2**attempt)
+                    print(f"    GLM rate limited, retrying in {wait:.1f}s...")
+                    time.sleep(wait)
+                else:
+                    raise
+        raise RuntimeError("Max retries exceeded")
+
+    def generate_step(
+        self,
+        task_prompt: str,
+        step_index: int,
+        total_steps: int,
+        previous_steps: Optional[list] = None,
+        intervention_text: Optional[str] = None,
+    ) -> str:
+        """Generate a single reasoning step. Same interface as ClaudeReasoningClient."""
+        system = (
+            f"You are reasoning through a complex task in {total_steps} steps. "
+            f"This is step {step_index + 1} of {total_steps}. "
+            f"Each step should build on previous steps and advance the reasoning. "
+            f"Be substantive, analytical, and nuanced. "
+            f"Acknowledge uncertainty where appropriate. "
+            f"Consider multiple perspectives and trade-offs."
+        )
+
+        messages = []
+        messages.append(
+            {
+                "role": "user",
+                "content": f"Task: {task_prompt}",
+            }
+        )
+
+        if previous_steps:
+            for i, step_text in enumerate(previous_steps):
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": step_text,
+                    }
+                )
+                if i < len(previous_steps) - 1:
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": f"Continue to step {i + 2} of {total_steps}.",
+                        }
+                    )
+
+        if intervention_text:
+            prompt = (
+                f"Before continuing to step {step_index + 1}, consider this: "
+                f"{intervention_text}\n\n"
+                f"Now proceed with step {step_index + 1} of {total_steps}."
+            )
+        elif previous_steps:
+            prompt = f"Continue to step {step_index + 1} of {total_steps}."
+        else:
+            prompt = (
+                f"Begin step 1 of {total_steps}. "
+                f"Start by framing the problem and identifying key dimensions."
+            )
+
+        messages.append(
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        )
+
+        return self._call_api(system, messages)
+
+    def generate_reasoning(
+        self,
+        task_prompt: str,
+        n_steps: int = 4,
+        intervention_per_step: Optional[dict] = None,
+    ) -> list:
+        """Orchestrate multi-step reasoning. Same interface as ClaudeReasoningClient."""
+        if intervention_per_step is None:
+            intervention_per_step = {}
+
+        steps = []
+        for i in range(n_steps):
+            intervention = intervention_per_step.get(i)
+            step_text = self.generate_step(
+                task_prompt=task_prompt,
+                step_index=i,
+                total_steps=n_steps,
+                previous_steps=steps if steps else None,
+                intervention_text=intervention,
+            )
+            steps.append(step_text)
+
+        return steps
+
+
+def get_client(backend: str = "claude", **kwargs):
+    """
+    Factory function to get the right client by backend name.
+
+    Args:
+        backend: "claude" or "glm"
+        **kwargs: Passed to client constructor (model, temperature, max_tokens)
+
+    Returns:
+        ClaudeReasoningClient or GLMReasoningClient
+    """
+    if backend == "claude":
+        return ClaudeReasoningClient(**kwargs)
+    elif backend == "glm":
+        return GLMReasoningClient(**kwargs)
+    else:
+        raise ValueError(f"Unknown backend: {backend}. Use 'claude' or 'glm'.")

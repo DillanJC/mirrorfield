@@ -1,0 +1,70 @@
+{
+  "timestamp": "20260108_084756",
+  "verdict": "ROBUST",
+  "k_values_tested": [
+    25,
+    50,
+    100
+  ],
+  "threshold_values_tested": [
+    0.3,
+    0.5,
+    0.7
+  ],
+  "seeds_used": [
+    42,
+    100,
+    200
+  ],
+  "runs_per_config": 3,
+  "results": [
+    {
+      "test": "knn_sensitivity",
+      "k": 25,
+      "threshold": 0.5,
+      "mean_delta": 0.0508901211950514,
+      "std_delta": 0.06341200843747687,
+      "n_runs": 9
+    },
+    {
+      "test": "knn_sensitivity",
+      "k": 50,
+      "threshold": 0.5,
+      "mean_delta": 0.057622955905066595,
+      "std_delta": 0.06398328557576995,
+      "n_runs": 9
+    },
+    {
+      "test": "knn_sensitivity",
+      "k": 100,
+      "threshold": 0.5,
+      "mean_delta": 0.11037042405870226,
+      "std_delta": 0.030417759505570213,
+      "n_runs": 9
+    },
+    {
+      "test": "threshold_sensitivity",
+      "k": 50,
+      "threshold": 0.3,
+      "mean_delta": 0.30165649784935844,
+      "std_delta": 0.31460949274369693,
+      "n_runs": 9
+    },
+    {
+      "test": "threshold_sensitivity",
+      "k": 50,
+      "threshold": 0.5,
+      "mean_delta": 0.057622955905066595,
+      "std_delta": 0.06398328557576995,
+      "n_runs": 9
+    },
+    {
+      "test": "threshold_sensitivity",
+      "k": 50,
+      "threshold": 0.7,
+      "mean_delta": 0.05009237925211588,
+      "std_delta": 0.02024968675672773,
+      "n_runs": 9
+    }
+  ]
+}

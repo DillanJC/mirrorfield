@@ -1,0 +1,19 @@
+{
+  "timestamp": "20260108_073653",
+  "n_bootstrap": 1000,
+  "ci_percentile": 95,
+  "seeds": [
+    17,
+    42,
+    100,
+    200,
+    333
+  ],
+  "threshold_low": -0.5,
+  "threshold_high": 0.5,
+  "all_significant": false,
+  "verdict": "FAIL",
+  "results": [
+    {
+      "seed": 17,
+      "n_borderline": 

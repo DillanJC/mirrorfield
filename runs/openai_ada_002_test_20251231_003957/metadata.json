@@ -1,0 +1,14 @@
+{
+  "timestamp": "20251231_003957",
+  "embedder": "openai_ada_002",
+  "model": "text-embedding-ada-002",
+  "n_samples": 500,
+  "embedding_dim": 1536,
+  "cost_estimate": {
+    "n_texts": 500,
+    "estimated_tokens": 4851,
+    "estimated_cost_usd": 0.00048510000000000003,
+    "model": "text-embedding-ada-002",
+    "cost_per_1k_tokens": 0.0001
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "timestamp": "20260216_092158",
+  "classifier_mode": "learned",
+  "baselines": {
+    "glm_no_intervention": 0.812,
+    "glm_directive_rules": 0.778,
+    "glm_mirror_rules": 0.789
+  },
+  "learned_results": {
+    "directive": {
+      "mean_quality": 0.7436875000000001,
+      "delta_vs_baseline": -0.0683125,
+      "delta_vs_old_directive": -0.03431249999999997,
+      "total_interventions": 28,
+      "per_domain": {
+        "novel_hypothesis": {
+          "mean_quality": 0.6755,
+          "n_tasks": 4,
+          "total_interventions": 7
+        },
+        "ethical_dilemmas": {
+          "mean_quality": 0.8435,
+          "n_tasks": 4,
+          "total_interventions": 3
+        },
+        "research_questions": {
+          "mean_quality": 0.71,
+          "n_tasks": 4,
+          "total_interventions": 9
+        },
+        "design_exploration": {
+          "mean_quality": 0.74575,
+          "n_tasks": 4,
+          "total_interventions": 9
+        }
+      }
+    },
+    "mirror": {
+      "mean_quality": 0.7790625,
+      "delta_vs_baseline": -0.032937500000000064,
+      "delta_vs_old_mirror": -0.009937500000000044,
+      "total_interventions": 21,
+      "per_domain": {
+        "novel_hypothesis": {
+          "mean_quality": 0.77025,
+          "n_tasks": 4,
+          "total_interventions": 5
+        },
+        "ethical_dilemmas": {
+          "mean_quality": 0.845,
+          "n_tasks": 4,
+          "total_interventions": 4
+        },
+        "research_questions": {
+          "mean_quality": 0.75875,
+          "n_tasks": 4,
+          "total_interventions": 6
+        },
+        "design_exploration": {
+          "mean_quality": 0.74225,
+          "n_tasks": 4,
+          "total_interventions": 6
+        }
+      }
+    }
+  }
+}

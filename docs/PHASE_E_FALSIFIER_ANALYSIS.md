@@ -6,11 +6,27 @@
 
 ---
 
+## Section 0: Outcome Lines
+
+**OUTCOME**: REAL_SIGNAL on Test A (ΔR²=0.14), INCONSISTENT on Test B (ΔR²=0.16 vs 0.001), REAL_SIGNAL on Test C (ΔR²=0.95)
+
+**VERDICT**: Embedder-dependent (capable but fragile)
+
+**CLAIM (UPDATED)**: "Geometry helps when the embedding space contains stable geometric structure aligned with the target (and fails / becomes cosmetic when that structure is absent or destroyed by representation choice)."
+
+**OLD CLAIM** (over-broad): "Geometry helps beyond boundary distance." ← This is only true conditionally.
+
+**NEXT**: Follow Section 6 → narrow claim + test embedder properties
+
+---
+
 ## Executive Summary
 
 Phase E geometry features (local curvature + ridge proximity) were subjected to three falsifier tests to determine **when and if** they add meaningful explanatory power beyond boundary_distance alone.
 
 **Core Finding**: Geometry is **NOT cosmetic** - it CAN capture real signal. However, geometry is **FRAGILE** - its effectiveness is strongly embedder-dependent, making it unreliable for production use without careful embedding strategy validation.
+
+**Defensible Claim**: Geometry features add explanatory power **only when the embedding space contains stable geometric structure aligned with the target**. When that structure is absent or destroyed by representation choice (e.g., PCA-reduction), geometry becomes cosmetic.
 
 ---
 
@@ -202,12 +218,15 @@ Evidence for "real":
 
 **Reliability**: Geometry signal is **fragile** - it depends on the embedding strategy. Without explicit geometric structure in embeddings, geometry is cosmetic.
 
+**Updated Claim**: "Geometry helps when the embedding space contains stable geometric structure aligned with the target (and fails / becomes cosmetic when that structure is absent or destroyed by representation choice)."
+
 **Recommendation**:
 - Geometry adds value ONLY when embeddings have explicit geometric structure (like friction clusters)
 - For arbitrary embeddings (like PCA-reduced), geometry is cosmetic
 - **Do NOT deploy geometry features in production** without first validating that:
   1. The embedder preserves geometric structure
   2. Geometry signal persists across multiple embedding strategies (run Test 2 protocol)
+  3. Embedder diagnostics indicate stable geometric structure (see Section 7: Embedder Diagnostics)
 
 ---
 
@@ -224,6 +243,100 @@ Evidence for "real":
 | **corr(ridge, bd)** | -0.043 | -0.043 | -0.027 | 0.033 |
 | **Ridge indep OK** | YES | YES | YES | YES |
 | **n_samples** | 400 | 400 | 400 | 400 |
+
+---
+
+## Section 7: Embedder Diagnostics (Representation Health Checks)
+
+Following the Test 2 findings (embedder-dependence), we developed **embedder diagnostics** to predict when geometry will be REAL_SIGNAL vs COSMETIC **before running the falsifier**.
+
+### Motivation
+
+Test 2 revealed that geometry verdicts flip based on embedding strategy:
+- Friction clusters: ΔR² = 0.16 (REAL_SIGNAL)
+- PCA-reduced: ΔR² = 0.001 (COSMETIC)
+
+**Question**: Can we predict this ahead of time?
+
+### Five Diagnostic Metrics
+
+1. **Neighborhood Stability**: Do kNN sets persist under small perturbations?
+2. **Local Intrinsic Dimensionality**: Does the space behave low-rank locally?
+3. **Anisotropy/Hubness**: Does kNN collapse to hubs?
+4. **Distance Concentration**: Are distances nearly constant?
+5. **Feature Variance Sanity**: Do geometry features have usable variance?
+
+### Empirical Results (Test A/B/C Analysis)
+
+Running diagnostics on all test datasets:
+
+| Dataset | Verdict | Stability | Conc (CV) | LID | Hubness |
+|---------|---------|-----------|-----------|-----|---------|
+| Test A (Friction) | REAL_SIGNAL | 0.995 | 0.301 | 134.9 | 4.97 |
+| Test B-A (Friction) | REAL_SIGNAL | 0.995 | 0.301 | 134.9 | 4.97 |
+| Test B-B (PCA) | COSMETIC | 0.988 | 0.022 ⚠ | 154.8 ⚠ | 5.85 |
+| Test C (Adversarial) | REAL_SIGNAL | 0.995 | 0.270 | 116.4 | 3.83 |
+
+**Key Findings:**
+
+**Strong Predictors** (marked with ★):
+1. **Distance Concentration (CV)**: Δ = 0.269 ★
+   - REAL_SIGNAL mean: 0.291
+   - COSMETIC mean: 0.022 (collapsed!)
+
+2. **Local Intrinsic Dimensionality**: Δ = 26.1 ★
+   - REAL_SIGNAL mean: 128.7
+   - COSMETIC mean: 154.8 (too high-dimensional)
+
+**Weak Predictors**:
+- Neighborhood Stability: Only Δ=0.007 (both ~0.99)
+- Hubness: All datasets show high hubness (4-6)
+
+**Prediction Accuracy**: 4/4 (100%)
+
+### Thresholds for Representation Warning
+
+Based on empirical separability:
+
+| Metric | Warning Threshold | Interpretation |
+|--------|-------------------|----------------|
+| Distance Concentration | <0.05 | Distances collapsed → geometry useless |
+| Local Intrinsic Dim | >150 | Too high-dimensional → geometry noisy |
+
+If **either** threshold violated → **representation_warning = True**
+
+### Integration with Falsifier
+
+The falsifier now accepts `embedder_diagnostics` and sets a **representation warning flag**:
+
+```python
+result = PhaseEFalsifier.evaluate(
+    boundary_distance=bd,
+    geometry_score=geom,
+    ridge_proximity=ridge,
+    target=targets,
+    embedder_diagnostics={
+        "distance_concentration": 0.022,  # WARN
+        "local_intrinsic_dim": 154.8,    # WARN
+    }
+)
+
+# result.representation_warning = True
+# result.evidence["warning_note"] = "REAL_SIGNAL verdict but..."
+```
+
+### Recommendation
+
+**Before trusting any REAL_SIGNAL verdict:**
+1. Run embedder diagnostics on reference set
+2. Check distance concentration (CV > 0.05)
+3. Check local intrinsic dimensionality (LID < 150)
+4. If warnings raised → treat gains as suspect, embedder-specific artifacts
+
+**Updated deployment rule:**
+- ✅ Deploy geometry IF: REAL_SIGNAL **AND** no representation warnings
+- ⚠️ Suspect IF: REAL_SIGNAL **BUT** representation warnings raised
+- ❌ Don't deploy IF: COSMETIC **OR** severe representation warnings
 
 ---
 
@@ -249,12 +362,16 @@ runs/phase_e_test3_targeted_20251229_015815/summary.json
 ## Next Steps
 
 1. **Do NOT deploy geometry in production** without embedder validation
-2. Investigate: What embedders preserve geometric structure?
+2. **ALWAYS run embedder diagnostics first** (Section 7)
+   - Check distance concentration (CV > 0.05)
+   - Check local intrinsic dimensionality (LID < 150)
+   - If warnings raised → don't trust REAL_SIGNAL verdicts
+3. Investigate: What embedders preserve geometric structure?
    - Transformer-based embeddings (BERT, RoBERTa, etc.) - test these
    - Random projections - likely FAIL (per PCA test)
    - Friction-cluster embeddings - PASS (per Test 1, Test 2A)
-3. Run Test 2 protocol on REAL production embedders before deployment
-4. Consider: Is geometry worth the complexity if it's embedder-specific?
+4. Run Test 2 protocol on REAL production embedders before deployment
+5. Consider: Is geometry worth the complexity if it's embedder-specific?
 
 ---
 

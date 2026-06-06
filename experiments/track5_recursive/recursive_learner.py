@@ -7,7 +7,10 @@ through the task bank, adjusts the policy based on per-signature effectiveness:
 - Per-signature threshold multipliers (raise = fire less, lower = fire more)
 - Per-signature enabled/disabled flags
 - Cooldown window adjustment
-- Asymmetric learning: penalize harm (1.3x) more than reward benefit (0.85x)
+- Balanced learning: penalty 1.15x / reward (1/1.15)x — product=1.0, no drift
+
+v2: Fixed penalty ratchet (was 1.3/0.85, product=1.105 → systematic silencing).
+    Added multiplier clamp [0.33, 3.0]. Enhanced tracer support (Phase 4 states).
 
 Policy is always a simple dict — human-readable, no neural net.
 """
@@ -71,6 +74,24 @@ class AdaptivePolicy:
         adj['ridge_p25'] = BASE_THRESHOLDS['ridge_p25'] / self.threshold_multipliers.get('low_pr', 1.0)
         return adj
 
+    def get_state_thresholds(self, base: float = 0.3) -> Dict[str, float]:
+        """
+        Compute per-signal state probability thresholds for EnhancedTracer gating.
+
+        threshold = base * multiplier. Higher multiplier = higher threshold
+        = harder to trigger that signal.
+
+        Args:
+            base: Base probability threshold (default 0.3)
+
+        Returns:
+            Dict mapping signal name → minimum state probability
+        """
+        return {
+            sig: base * self.threshold_multipliers.get(sig, 1.0)
+            for sig in ADJUSTABLE_SIGNALS
+        }
+
 
 @dataclass
 class EffectivenessRecord:
@@ -103,23 +124,33 @@ class PolicyOptimizer:
         engine = optimizer.build_engine()  # new engine with updated policy
     """
 
+    # Multiplier clamp bounds — prevents extreme values over many iterations
+    MULTIPLIER_MIN = 0.33
+    MULTIPLIER_MAX = 3.0
+
     def __init__(
         self,
         reference_embeddings: np.ndarray,
         k: int = 50,
         policy: Optional[AdaptivePolicy] = None,
-        penalty_rate: float = 1.3,
-        reward_rate: float = 0.85,
+        penalty_rate: float = 1.15,
+        reward_rate: float = 1.0 / 1.15,
         disable_threshold: float = -0.10,
+        base_interventions: Optional[List[Intervention]] = None,
+        use_enhanced_tracer: bool = False,
+        state_threshold_base: float = 0.3,
     ):
         """
         Args:
             reference_embeddings: Reference corpus embeddings (N_ref, D).
             k: Number of neighbors for k-NN.
             policy: Starting policy (default: all multipliers at 1.0).
-            penalty_rate: Threshold multiplier for negative-delta signals.
-            reward_rate: Threshold multiplier for positive-delta signals.
+            penalty_rate: Threshold multiplier for negative-delta signals (default 1.15).
+            reward_rate: Threshold multiplier for positive-delta signals (default 1/1.15).
             disable_threshold: Disable signals with mean delta below this.
+            base_interventions: Override default interventions (e.g. mirror).
+            use_enhanced_tracer: If True, use EnhancedTracer with Phase 4 states.
+            state_threshold_base: Base probability threshold for state gating.
         """
         self.reference_embeddings = reference_embeddings
         self.k = k
@@ -127,6 +158,15 @@ class PolicyOptimizer:
         self.penalty_rate = penalty_rate
         self.reward_rate = reward_rate
         self.disable_threshold = disable_threshold
+        self._base_interventions = base_interventions or list(DEFAULT_INTERVENTIONS)
+        self.use_enhanced_tracer = use_enhanced_tracer
+        self.state_threshold_base = state_threshold_base
+
+        # Create EnhancedTracer once (expensive calibration)
+        self._enhanced_tracer = None
+        if use_enhanced_tracer:
+            from experiments.shared.enhanced_tracer import EnhancedTracer
+            self._enhanced_tracer = EnhancedTracer(reference_embeddings, k=k)
 
         self._update_history: List[PolicyUpdate] = []
         self._iteration = 0
@@ -135,20 +175,32 @@ class PolicyOptimizer:
         """Build a SwitchEngine with the current adaptive policy."""
         # Filter to enabled interventions only
         enabled_interventions = [
-            copy.deepcopy(i) for i in DEFAULT_INTERVENTIONS
+            copy.deepcopy(i) for i in self._base_interventions
             if self.policy.enabled.get(i.signal, True)
         ]
 
-        # Get adjusted thresholds
-        adj = self.policy.get_adjusted_thresholds()
-
-        engine = SwitchEngine(
-            self.reference_embeddings,
-            k=self.k,
-            interventions=enabled_interventions,
-            use_live_calibration=True,
-            live_thresholds=adj,
-        )
+        if self.use_enhanced_tracer and self._enhanced_tracer is not None:
+            # Enhanced mode: inject EnhancedTracer + set state thresholds
+            engine = SwitchEngine(
+                self.reference_embeddings,
+                k=self.k,
+                interventions=enabled_interventions,
+                tracer=self._enhanced_tracer,
+            )
+            state_thresholds = self.policy.get_state_thresholds(
+                base=self.state_threshold_base
+            )
+            engine.set_state_thresholds(state_thresholds)
+        else:
+            # Legacy mode: GeometricTracer with live-calibrated thresholds
+            adj = self.policy.get_adjusted_thresholds()
+            engine = SwitchEngine(
+                self.reference_embeddings,
+                k=self.k,
+                interventions=enabled_interventions,
+                use_live_calibration=True,
+                live_thresholds=adj,
+            )
         return engine
 
     def compute_effectiveness(
@@ -233,18 +285,26 @@ class PolicyOptimizer:
             # Negative → make harder to trigger
             elif md < 0:
                 old_mult = self.policy.threshold_multipliers[sig]
-                self.policy.threshold_multipliers[sig] *= self.penalty_rate
+                new_mult = np.clip(
+                    old_mult * self.penalty_rate,
+                    self.MULTIPLIER_MIN, self.MULTIPLIER_MAX
+                )
+                self.policy.threshold_multipliers[sig] = float(new_mult)
                 adjustments.append(
                     f"  {sig}: PENALIZED (mean_delta={md:+.4f}, "
-                    f"multiplier {old_mult:.3f} -> {self.policy.threshold_multipliers[sig]:.3f})"
+                    f"multiplier {old_mult:.3f} -> {new_mult:.3f})"
                 )
             # Positive -> make easier to trigger
             else:
                 old_mult = self.policy.threshold_multipliers[sig]
-                self.policy.threshold_multipliers[sig] *= self.reward_rate
+                new_mult = np.clip(
+                    old_mult * self.reward_rate,
+                    self.MULTIPLIER_MIN, self.MULTIPLIER_MAX
+                )
+                self.policy.threshold_multipliers[sig] = float(new_mult)
                 adjustments.append(
                     f"  {sig}: REWARDED (mean_delta={md:+.4f}, "
-                    f"multiplier {old_mult:.3f} -> {self.policy.threshold_multipliers[sig]:.3f})"
+                    f"multiplier {old_mult:.3f} -> {new_mult:.3f})"
                 )
 
         policy_after = self.policy.to_dict()

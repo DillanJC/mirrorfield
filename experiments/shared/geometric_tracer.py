@@ -7,15 +7,26 @@ Delegates to:
 
 Provides: trace_reasoning(steps, reference) -> per-step features + novelty signatures
 
-No new math — pure delegation to existing functions.
+Classifier modes:
+- "learned": Data-driven classifier trained on experiment data (default if model exists)
+- "rules":   Original hand-coded threshold rules (fallback)
 """
 
 import numpy as np
+import pickle
+import logging
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Dict, Any, Optional
 
 from mirrorfield.geometry.bundle import GeometryBundle
 from mirrorfield.geometry.features import compute_knn_features, FEATURE_NAMES
+
+logger = logging.getLogger(__name__)
+
+# Path to trained classifier model
+_MODEL_DIR = Path(__file__).parent / "trained_models"
+_MODEL_PATH = _MODEL_DIR / "geometric_classifier.pkl"
 
 
 @dataclass
@@ -92,12 +103,15 @@ class GeometricTracer:
         reference_embeddings: np.ndarray,
         k: int = 50,
         thresholds: Optional[Dict[str, float]] = None,
+        classifier_mode: str = "auto",
     ):
         """
         Args:
             reference_embeddings: Reference corpus embeddings (N_ref, D)
             k: Number of neighbors for k-NN (default: 50)
             thresholds: Override default signature detection thresholds
+            classifier_mode: "auto" (learned if available, else rules),
+                             "learned" (error if no model), or "rules"
         """
         self.reference_embeddings = reference_embeddings
         self.k = min(k, len(reference_embeddings) - 1)
@@ -111,6 +125,45 @@ class GeometricTracer:
 
         # Compute reference statistics for percentile-based thresholds
         self._calibrate_from_reference()
+
+        # Learned classifier state
+        self._learned_model = None
+        self._learned_label_to_signal = None
+        self._prev_features = None  # for trajectory deltas
+
+        # Load trained model
+        self._init_classifier(classifier_mode)
+
+    def _init_classifier(self, mode: str):
+        """Load the trained classifier model if available."""
+        if mode == "rules":
+            logger.info("Classifier mode: rules (hand-coded thresholds)")
+            return
+
+        if _MODEL_PATH.exists():
+            try:
+                with open(_MODEL_PATH, "rb") as f:
+                    bundle = pickle.load(f)
+                self._learned_model = bundle["model"]
+                self._learned_label_to_signal = bundle["label_to_signal"]
+                logger.info(
+                    "Classifier mode: learned (%s, CV F1=%.3f, n=%d)",
+                    bundle["model_name"],
+                    bundle["cv_f1_macro"],
+                    bundle["n_training_samples"],
+                )
+            except Exception as e:
+                if mode == "learned":
+                    raise RuntimeError(f"Failed to load trained model: {e}") from e
+                logger.warning("Failed to load trained model, falling back to rules: %s", e)
+        elif mode == "learned":
+            raise FileNotFoundError(f"No trained model at {_MODEL_PATH}")
+        else:
+            logger.info("Classifier mode: rules (no trained model found)")
+
+    def reset_trajectory(self):
+        """Reset trajectory state for a new task. Call between tasks."""
+        self._prev_features = None
 
     def _calibrate_from_reference(self):
         """Compute reference feature distributions for threshold calibration."""
@@ -159,17 +212,57 @@ class GeometricTracer:
         self._live_ridge_p25 = lt['ridge_p25']
         self._using_live_calibration = True
 
-    def classify_signature(self, features: np.ndarray) -> str:
+    def classify_signature(self, features: np.ndarray,
+                           step_index: int = 0,
+                           n_steps: int = 4) -> str:
         """
         Classify a single feature vector into a novelty signature.
 
+        Dispatches to the learned model if available, otherwise uses
+        hand-coded threshold rules.
+
         Args:
             features: 7-element feature vector from compute_knn_features
+            step_index: Current step index (for trajectory features)
+            n_steps: Total steps in task (for progress feature)
 
         Returns:
-            One of: framework_collision, terra_incognita, decision_boundary,
-                    well_trodden, coherent
+            One of: terra_incognita, decision_boundary, coherent
+            (learned model) or framework_collision, terra_incognita,
+            decision_boundary, well_trodden, coherent (rules)
         """
+        if self._learned_model is not None:
+            return self._classify_learned(features, step_index, n_steps)
+        return self._classify_rules(features)
+
+    def _classify_learned(self, features: np.ndarray,
+                          step_index: int, n_steps: int) -> str:
+        """Classify using the trained model with trajectory features."""
+        # Build 14-element extended feature vector
+        x = np.zeros(14, dtype=np.float32)
+        x[:7] = features
+
+        # Trajectory deltas from previous step
+        if self._prev_features is not None:
+            x[7] = features[0] - self._prev_features[0]   # delta_knn_mean
+            x[8] = features[1] - self._prev_features[1]   # delta_knn_std
+            x[9] = features[4] - self._prev_features[4]   # delta_curvature
+            x[10] = features[5] - self._prev_features[5]  # delta_ridge
+            x[11] = features[6] - self._prev_features[6]  # delta_dist_nearest
+
+        # Positional features
+        x[12] = step_index
+        x[13] = step_index / max(n_steps - 1, 1)
+
+        # Update trajectory state
+        self._prev_features = features.copy()
+
+        # Predict
+        label = self._learned_model.predict(x.reshape(1, -1))[0]
+        return self._learned_label_to_signal.get(label, "coherent")
+
+    def _classify_rules(self, features: np.ndarray) -> str:
+        """Original hand-coded threshold rules (fallback)."""
         curvature = features[4]
         ridge = features[5]
         knn_std = features[1]
@@ -198,13 +291,15 @@ class GeometricTracer:
         # Default: coherent (normal reasoning)
         return "coherent"
 
-    def trace_step(self, step_embedding: np.ndarray, step_index: int) -> StepTrace:
+    def trace_step(self, step_embedding: np.ndarray, step_index: int,
+                   n_steps: int = 4) -> StepTrace:
         """
         Trace a single reasoning step.
 
         Args:
             step_embedding: Embedding vector for this step (D,) or (1, D)
             step_index: Index of the step in the reasoning sequence
+            n_steps: Total steps in the task (for learned classifier)
 
         Returns:
             StepTrace with features and signature
@@ -224,7 +319,7 @@ class GeometricTracer:
             for i, name in enumerate(FEATURE_NAMES)
         }
 
-        signature = self.classify_signature(feature_vec)
+        signature = self.classify_signature(feature_vec, step_index, n_steps)
 
         return StepTrace(
             step_index=step_index,
@@ -251,9 +346,12 @@ class GeometricTracer:
         if step_embeddings.ndim == 1:
             step_embeddings = step_embeddings.reshape(1, -1)
 
+        n_steps = len(step_embeddings)
+        self.reset_trajectory()  # clear deltas for new task
+
         steps = []
-        for i in range(len(step_embeddings)):
-            step = self.trace_step(step_embeddings[i], i)
+        for i in range(n_steps):
+            step = self.trace_step(step_embeddings[i], i, n_steps)
             steps.append(step)
 
         # Build summary

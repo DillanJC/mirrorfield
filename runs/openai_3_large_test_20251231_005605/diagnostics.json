@@ -1,0 +1,63 @@
+{
+  "embedder_id": "openai_3_large",
+  "model": "text-embedding-3-large",
+  "timestamp": "20251231_005605",
+  "n_samples": 500,
+  "n_dims": 512,
+  "verdict_prediction": "REAL_SIGNAL",
+  "confidence": 1.0,
+  "representation_warning": false,
+  "metrics": {
+    "neighborhood_stability": 0.99875,
+    "local_intrinsic_dim": 3.9571746980475715,
+    "hubness": 0.3536753171931931,
+    "distance_concentration": 0.1505237824750674,
+    "curvature_variance": 0.004404430277645588,
+    "ridge_variance": 0.028690065911689076
+  },
+  "details": {
+    "stability": {
+      "mean_jaccard": 0.99875,
+      "std_jaccard": 0.006123724356957945,
+      "min_jaccard": 0.96875,
+      "max_jaccard": 1.0,
+      "epsilon": 0.00044187824823893607,
+      "n_samples": 50,
+      "k_neighbors": 32
+    },
+    "local_id": {
+      "mean_id": 3.9571746980475715,
+      "std_id": 2.0824756023519173,
+      "median_id": 3.876704110109892,
+      "n_samples": 125,
+      "k_neighbors": 20,
+      "ambient_dim": 512
+    },
+    "hubness": {
+      "skewness": 0.3536753171931931,
+      "mean_in_degree": 16.0,
+      "std_in_degree": 6.340031545662844,
+      "max_in_degree": 31,
+      "n_hubs": 0,
+      "n_samples": 250,
+      "k_neighbors": 32
+    },
+    "concentration": {
+      "cv": 0.1505237824750674,
+      "mean_distance": 1.138244390487671,
+      "std_distance": 0.17133285105228424,
+      "min_distance": 0.2942184507846832,
+      "max_distance": 1.371256709098816,
+      "n_pairs": 250
+    },
+    "variance": {
+      "curvature_mean": 0.3381321430206299,
+      "curvature_std": 0.06636588275432587,
+      "curvature_range": 0.29126623272895813,
+      "ridge_mean": 1.246952220838278,
+      "ridge_std": 0.16938142138879658,
+      "ridge_range": 1.1575883104689924
+    },
+    "warnings": []
+  }
+}

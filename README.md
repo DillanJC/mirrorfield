@@ -1,6 +1,6 @@
 # Mirrorfield AI — Evidence-First Boundary Evaluation
 
-**Version:** v0.7 (Phase 0 + Phase A + Phase B + Phase C + Phase D + Phase E Complete + Validated)
+**Version:** v2.1 (Phase 0-E Complete + Track 4 & 5 Experiments)
 **Purpose:** Replayable, auditable AI model boundary stability evaluation
 **Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
 
@@ -207,6 +207,17 @@ Performance: ~21k queries/sec (CPU), ~1k queries/sec (GPU)
 - **Artifacts:** 10-seed validation manifest, test suite, benchmarks
 - **Next:** Real Phase D data integration (optional - synthetic validation establishes correctness)
 
+**Track 4 (Architectural Switches):** IN PROGRESS
+- Hard-coded geometric interventions mapping signatures to reasoning corrections
+- `python experiments\track4_switches\evaluate_switches.py` — Run full evaluation
+- Report: [`experiments/track4_switches/TRACK4_REPORT.md`](experiments/track4_switches/TRACK4_REPORT.md)
+
+**Track 5 (Recursive Self-Learning):** IN PROGRESS
+- Adaptive intervention policy that learns from quality feedback
+- Includes Goodhart's Law detection for metric gaming
+- `python experiments\track5_recursive\evaluate_recursive.py` — Run full evaluation
+- Report: [`experiments/track5_recursive/TRACK5_REPORT.md`](experiments/track5_recursive/TRACK5_REPORT.md)
+
 ---
 
 ## Documentation
@@ -218,6 +229,10 @@ Performance: ~21k queries/sec (CPU), ~1k queries/sec (GPU)
 - **Run Ledger:** [`runs/RUN_LEDGER.md`](runs/RUN_LEDGER.md) — Reproducible run tracking
 - **Validation Manifest:** [`runs/phase_d_validation_manifest.json`](runs/phase_d_validation_manifest.json) — 20-seed validation artifact
 - **Tools README:** [`tools/README.md`](tools/README.md) — GPU playground documentation
+- **Track 4 Report:** [`experiments/track4_switches/TRACK4_REPORT.md`](experiments/track4_switches/TRACK4_REPORT.md) — Architectural switches evaluation
+- **Track 5 Report:** [`experiments/track5_recursive/TRACK5_REPORT.md`](experiments/track5_recursive/TRACK5_REPORT.md) — Recursive self-learning evaluation
+- **Track Status:** [`docs/PHASE1_2_5_STATUS.md`](docs/PHASE1_2_5_STATUS.md) — Experiment track status
+- **Changelog:** [`CHANGELOG.md`](CHANGELOG.md) — Version history
 
 ---
 
@@ -240,4 +255,4 @@ Performance: ~21k queries/sec (CPU), ~1k queries/sec (GPU)
 
 ---
 
-**Last Updated:** 2025-12-28
+**Last Updated:** 2026-02-08

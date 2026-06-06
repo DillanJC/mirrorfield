@@ -1,0 +1,268 @@
+{
+  "timestamp": "20251230_222613",
+  "n_datasets": 4,
+  "reports": [
+    {
+      "dataset_name": "Test A (Real Data, Friction Clusters)",
+      "ground_truth_verdict": "REAL_SIGNAL",
+      "ground_truth_delta_r2": 0.1401,
+      "predicted_verdict": "REAL_SIGNAL",
+      "confidence": 1.0,
+      "representation_warning": true,
+      "metrics": {
+        "neighborhood_stability": 0.9946875,
+        "local_intrinsic_dim": 134.8538919997125,
+        "hubness": 4.969534099490191,
+        "distance_concentration": 0.3012777368160939,
+        "curvature_variance": 0.009008536115288734,
+        "ridge_variance": 1.665955257204675e-05
+      },
+      "details": {
+        "stability": {
+          "mean_jaccard": 0.9946875,
+          "std_jaccard": 0.011738524981870594,
+          "min_jaccard": 0.96875,
+          "max_jaccard": 1.0,
+          "epsilon": 0.004480255302041769,
+          "n_samples": 200,
+          "k_neighbors": 32
+        },
+        "local_id": {
+          "mean_id": 134.8538919997125,
+          "std_id": 64.58154508778696,
+          "median_id": 117.7135327652527,
+          "n_samples": 500,
+          "k_neighbors": 20,
+          "ambient_dim": 768
+        },
+        "hubness": {
+          "skewness": 4.969534099490191,
+          "mean_in_degree": 25.869037995149554,
+          "std_in_degree": 87.69981128300417,
+          "max_in_degree": 799,
+          "n_hubs": 43,
+          "n_samples": 1000,
+          "k_neighbors": 32
+        },
+        "concentration": {
+          "cv": 0.3012777368160939,
+          "mean_distance": 16.57242202758789,
+          "std_distance": 4.992901802062988,
+          "min_distance": 7.3309431076049805,
+          "max_distance": 41.698787689208984,
+          "n_pairs": 3997
+        },
+        "variance": {
+          "curvature_mean": 0.5632286667823792,
+          "curvature_std": 0.0949133113026619,
+          "curvature_range": 0.4604887366294861,
+          "ridge_mean": 1.0087431583154836,
+          "ridge_std": 0.004081611516551612,
+          "ridge_range": 0.02434959059106112
+        },
+        "warnings": [
+          "high_intrinsic_dimensionality",
+          "severe_hubness",
+          "ridge_no_variance"
+        ]
+      }
+    },
+    {
+      "dataset_name": "Test B Strategy A (Friction Clusters)",
+      "ground_truth_verdict": "REAL_SIGNAL",
+      "ground_truth_delta_r2": 0.1622,
+      "predicted_verdict": "REAL_SIGNAL",
+      "confidence": 1.0,
+      "representation_warning": true,
+      "metrics": {
+        "neighborhood_stability": 0.9946875,
+        "local_intrinsic_dim": 134.8538919997125,
+        "hubness": 4.969534099490191,
+        "distance_concentration": 0.3012777368160939,
+        "curvature_variance": 0.009008536115288734,
+        "ridge_variance": 1.665955257204675e-05
+      },
+      "details": {
+        "stability": {
+          "mean_jaccard": 0.9946875,
+          "std_jaccard": 0.011738524981870594,
+          "min_jaccard": 0.96875,
+          "max_jaccard": 1.0,
+          "epsilon": 0.004480255302041769,
+          "n_samples": 200,
+          "k_neighbors": 32
+        },
+        "local_id": {
+          "mean_id": 134.8538919997125,
+          "std_id": 64.58154508778696,
+          "median_id": 117.7135327652527,
+          "n_samples": 500,
+          "k_neighbors": 20,
+          "ambient_dim": 768
+        },
+        "hubness": {
+          "skewness": 4.969534099490191,
+          "mean_in_degree": 25.869037995149554,
+          "std_in_degree": 87.69981128300417,
+          "max_in_degree": 799,
+          "n_hubs": 43,
+          "n_samples": 1000,
+          "k_neighbors": 32
+        },
+        "concentration": {
+          "cv": 0.3012777368160939,
+          "mean_distance": 16.57242202758789,
+          "std_distance": 4.992901802062988,
+          "min_distance": 7.3309431076049805,
+          "max_distance": 41.698787689208984,
+          "n_pairs": 3997
+        },
+        "variance": {
+          "curvature_mean": 0.5632286667823792,
+          "curvature_std": 0.0949133113026619,
+          "curvature_range": 0.4604887366294861,
+          "ridge_mean": 1.0087431583154836,
+          "ridge_std": 0.004081611516551612,
+          "ridge_range": 0.02434959059106112
+        },
+        "warnings": [
+          "high_intrinsic_dimensionality",
+          "severe_hubness",
+          "ridge_no_variance"
+        ]
+      }
+    },
+    {
+      "dataset_name": "Test B Strategy B (PCA Reduced)",
+      "ground_truth_verdict": "COSMETIC",
+      "ground_truth_delta_r2": 0.0011,
+      "predicted_verdict": "COSMETIC",
+      "confidence": 0.09008174049877105,
+      "representation_warning": true,
+      "metrics": {
+        "neighborhood_stability": 0.98796875,
+        "local_intrinsic_dim": 154.7802138644907,
+        "hubness": 5.849831782080006,
+        "distance_concentration": 0.021949509501229002,
+        "curvature_variance": 1.1256983270868659e-05,
+        "ridge_variance": 1.8679290684404463e-06
+      },
+      "details": {
+        "stability": {
+          "mean_jaccard": 0.98796875,
+          "std_jaccard": 0.016140708191944367,
+          "min_jaccard": 0.9375,
+          "max_jaccard": 1.0,
+          "epsilon": 0.016872860491275787,
+          "n_samples": 200,
+          "k_neighbors": 32
+        },
+        "local_id": {
+          "mean_id": 154.7802138644907,
+          "std_id": 34.95951322466528,
+          "median_id": 148.24941163467847,
+          "n_samples": 500,
+          "k_neighbors": 20,
+          "ambient_dim": 768
+        },
+        "hubness": {
+          "skewness": 5.849831782080006,
+          "mean_in_degree": 17.787659811006115,
+          "std_in_degree": 33.15168774359638,
+          "max_in_degree": 560,
+          "n_hubs": 9,
+          "n_samples": 1000,
+          "k_neighbors": 32
+        },
+        "concentration": {
+          "cv": 0.021949509501229002,
+          "mean_distance": 66.12120056152344,
+          "std_distance": 1.451327919960022,
+          "min_distance": 61.05611801147461,
+          "max_distance": 71.2387466430664,
+          "n_pairs": 3997
+        },
+        "variance": {
+          "curvature_mean": 0.6921911239624023,
+          "curvature_std": 0.003355142893269658,
+          "curvature_range": 0.02519017457962036,
+          "ridge_mean": 1.0055185522539736,
+          "ridge_std": 0.0013667220157883044,
+          "ridge_range": 0.010350973849458711
+        },
+        "warnings": [
+          "high_intrinsic_dimensionality",
+          "severe_hubness",
+          "distance_concentration_collapsed",
+          "curvature_no_variance",
+          "ridge_no_variance"
+        ]
+      }
+    },
+    {
+      "dataset_name": "Test C (Targeted Construction)",
+      "ground_truth_verdict": "REAL_SIGNAL",
+      "ground_truth_delta_r2": 0.9498,
+      "predicted_verdict": "REAL_SIGNAL",
+      "confidence": 1.0,
+      "representation_warning": true,
+      "metrics": {
+        "neighborhood_stability": 0.995,
+        "local_intrinsic_dim": 116.43789086670255,
+        "hubness": 3.8308977765264203,
+        "distance_concentration": 0.26953617388904905,
+        "curvature_variance": 0.016009094193577766,
+        "ridge_variance": 5.432090768936439e-06
+      },
+      "details": {
+        "stability": {
+          "mean_jaccard": 0.995,
+          "std_jaccard": 0.012279301690242814,
+          "min_jaccard": 0.9375,
+          "max_jaccard": 1.0,
+          "epsilon": 0.002648171503096819,
+          "n_samples": 100,
+          "k_neighbors": 32
+        },
+        "local_id": {
+          "mean_id": 116.43789086670255,
+          "std_id": 32.95707615706567,
+          "median_id": 113.26500291436435,
+          "n_samples": 250,
+          "k_neighbors": 20,
+          "ambient_dim": 768
+        },
+        "hubness": {
+          "skewness": 3.8308977765264203,
+          "mean_in_degree": 22.408963585434172,
+          "std_in_degree": 55.22955130200754,
+          "max_in_degree": 339,
+          "n_hubs": 23,
+          "n_samples": 500,
+          "k_neighbors": 32
+        },
+        "concentration": {
+          "cv": 0.26953617388904905,
+          "mean_distance": 9.908854484558105,
+          "std_distance": 2.670794725418091,
+          "min_distance": 3.680216073989868,
+          "max_distance": 12.502039909362793,
+          "n_pairs": 999
+        },
+        "variance": {
+          "curvature_mean": 0.526493489742279,
+          "curvature_std": 0.12652705609798431,
+          "curvature_range": 0.2983769178390503,
+          "ridge_mean": 1.0094841721193781,
+          "ridge_std": 0.0023306846137854946,
+          "ridge_range": 0.015031562682943145
+        },
+        "warnings": [
+          "high_intrinsic_dimensionality",
+          "severe_hubness",
+          "ridge_no_variance"
+        ]
+      }
+    }
+  ]
+}

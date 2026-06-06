@@ -1,0 +1,139 @@
+{
+  "timestamp": "20260105_031116",
+  "num_seeds": 5,
+  "seeds": [
+    17,
+    42,
+    100,
+    200,
+    333
+  ],
+  "overall_verdict": "TASK_DEPENDENT",
+  "task_summaries": {
+    "boundary_distance": {
+      "winner": "120-cell",
+      "win_rate": 80.0,
+      "verdict": "ROBUST",
+      "win_counts": {
+        "120-cell": 4,
+        "24-cell": 1
+      }
+    },
+    "friction_classification": {
+      "winner": "120-cell",
+      "win_rate": 60.0,
+      "verdict": "MODERATE",
+      "win_counts": {
+        "24-cell": 2,
+        "120-cell": 3
+      }
+    },
+    "curvature": {
+      "winner": "8-cell",
+      "win_rate": 80.0,
+      "verdict": "ROBUST",
+      "win_counts": {
+        "8-cell": 4,
+        "5-cell": 1
+      }
+    }
+  },
+  "all_results": {
+    "boundary_distance": [
+      {
+        "seed": 17,
+        "winner": "120-cell",
+        "winner_score": 0.724306046962738,
+        "winner_delta": -0.19169163703918457
+      },
+      {
+        "seed": 42,
+        "winner": "120-cell",
+        "winner_score": 0.7458121180534363,
+        "winner_delta": -0.18536847829818726
+      },
+      {
+        "seed": 100,
+        "winner": "24-cell",
+        "winner_score": 0.6856614351272583,
+        "winner_delta": -0.23262238502502441
+      },
+      {
+        "seed": 200,
+        "winner": "120-cell",
+        "winner_score": 0.725590705871582,
+        "winner_delta": -0.2004380226135254
+      },
+      {
+        "seed": 333,
+        "winner": "120-cell",
+        "winner_score": 0.6926410794258118,
+        "winner_delta": -0.22804909944534302
+      }
+    ],
+    "friction_classification": [
+      {
+        "seed": 17,
+        "winner": "24-cell",
+        "winner_score": 0.9988210526315789,
+        "winner_delta": -0.0011789473684210572
+      },
+      {
+        "seed": 42,
+        "winner": "120-cell",
+        "winner_score": 0.9988849815593104,
+        "winner_delta": -0.001115018440689619
+      },
+      {
+        "seed": 100,
+        "winner": "120-cell",
+        "winner_score": 0.9993185109464179,
+        "winner_delta": -0.0006814890535821183
+      },
+      {
+        "seed": 200,
+        "winner": "24-cell",
+        "winner_score": 0.9924521828630243,
+        "winner_delta": -0.007547817136975721
+      },
+      {
+        "seed": 333,
+        "winner": "120-cell",
+        "winner_score": 0.9957298474945534,
+        "winner_delta": -0.00418300653594772
+      }
+    ],
+    "curvature": [
+      {
+        "seed": 17,
+        "winner": "8-cell",
+        "winner_score": -1.2677940329152059e+29,
+        "winner_delta": 3.182271669252487e+29
+      },
+      {
+        "seed": 42,
+        "winner": "8-cell",
+        "winner_score": -1.30696648011522e+30,
+        "winner_delta": 3.860757597763303e+30
+      },
+      {
+        "seed": 100,
+        "winner": "8-cell",
+        "winner_score": -1.210486833243394e+28,
+        "winner_delta": 5.974754242679395e+30
+      },
+      {
+        "seed": 200,
+        "winner": "8-cell",
+        "winner_score": -4.350252320860416e+30,
+        "winner_delta": 5.347839223499373e+30
+      },
+      {
+        "seed": 333,
+        "winner": "5-cell",
+        "winner_score": -4.798726602946674e+29,
+        "winner_delta": 9.013847230044307e+30
+      }
+    ]
+  }
+}

@@ -126,6 +126,7 @@ class SwitchEngine:
         low_pr_threshold: Optional[float] = None,
         use_live_calibration: bool = False,
         live_thresholds: Optional[Dict[str, float]] = None,
+        tracer=None,
     ):
         """
         Args:
@@ -135,8 +136,14 @@ class SwitchEngine:
             low_pr_threshold: Override auto-calibrated low PR threshold
             use_live_calibration: If True, use live-calibrated thresholds
             live_thresholds: Custom live thresholds (uses defaults if None)
+            tracer: External tracer instance (e.g. EnhancedTracer).
+                    If provided, used instead of creating a GeometricTracer.
         """
-        self.tracer = GeometricTracer(reference_embeddings, k=k)
+        if tracer is not None:
+            self.tracer = tracer
+        else:
+            self.tracer = GeometricTracer(reference_embeddings, k=k,
+                                           classifier_mode="auto")
         self.interventions = interventions or list(DEFAULT_INTERVENTIONS)
         self.interventions.sort(key=lambda x: x.priority, reverse=True)
 
@@ -150,26 +157,45 @@ class SwitchEngine:
             self._signal_map[intervention.signal] = intervention
 
         # Low PR threshold from live calibration or manual override
+        # (not used when EnhancedTracer handles low_pr via state mapping)
         if low_pr_threshold is not None:
             self._low_pr_threshold = low_pr_threshold
         elif use_live_calibration:
             self._low_pr_threshold = getattr(
                 self.tracer, '_live_ridge_p25', 0.055
             )
-        else:
+        elif hasattr(self.tracer, '_ref_stats'):
             self._low_pr_threshold = self.tracer._ref_stats.get(
                 'knn_std_p25', 0.05
             )
+        else:
+            self._low_pr_threshold = 0.05  # safe default for external tracers
 
         # Fix 2: Cooldown tracking
         self._last_signal: Optional[str] = None
         self._cooldown_skips: int = 0
+
+        # State probability thresholds (for EnhancedTracer gating)
+        self._state_thresholds: Optional[Dict[str, float]] = None
 
         # Tracking
         self._history: List[InterventionResult] = []
 
         # Fix 3: Signature diversity logging
         self._signature_log: List[Dict[str, Any]] = []
+
+    def set_state_thresholds(self, thresholds: Dict[str, float]):
+        """
+        Set per-signal state probability thresholds for gating.
+
+        When using an EnhancedTracer, the dominant state's probability
+        must exceed the threshold for that signal to trigger. Otherwise
+        the signal is demoted to 'coherent' (no intervention).
+
+        Args:
+            thresholds: Dict mapping signal name → minimum probability
+        """
+        self._state_thresholds = dict(thresholds)
 
     def evaluate(
         self,
@@ -193,10 +219,21 @@ class SwitchEngine:
         step_trace = self.tracer.trace_step(step_embedding, step_index)
         signature = step_trace.novelty_signature
 
+        # State probability gating (EnhancedTracer only)
+        has_state_scores = hasattr(step_trace, 'state_scores') and step_trace.state_scores
+        if has_state_scores and self._state_thresholds:
+            # Check if dominant state probability exceeds threshold for this signal
+            dominant_prob = max(step_trace.state_scores.values())
+            signal_threshold = self._state_thresholds.get(signature, 0.0)
+            if signature in self._signal_map and dominant_prob < signal_threshold:
+                signature = "coherent"  # demote — not confident enough
+
         # Check for low PR (ridge proximity below threshold)
+        # Skip when using EnhancedTracer — it already maps searching→low_pr
         ridge_proximity = step_trace.features.get('ridge_proximity', 0)
-        if ridge_proximity < self._low_pr_threshold and signature in NO_INTERVENTION_SIGNALS:
-            signature = "low_pr"
+        if not has_state_scores:
+            if ridge_proximity < self._low_pr_threshold and signature in NO_INTERVENTION_SIGNALS:
+                signature = "low_pr"
 
         # Fix 3: Log every signature for diversity analysis
         self._signature_log.append({
@@ -285,6 +322,7 @@ class SwitchEngine:
         self._history.clear()
         self._signature_log.clear()
         self._last_signal = None
+        self.tracer.reset_trajectory()
 
     def get_policy_table(self) -> List[Dict[str, Any]]:
         """Get the current intervention table as a list of dicts."""

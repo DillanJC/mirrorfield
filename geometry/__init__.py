@@ -8,12 +8,12 @@ This module provides geometry-based features for boundary evaluation:
 All computations are batch-independent (reference-set only).
 """
 
-from geometry.schema import NAMES, SectionFNames
-from geometry.features import (
+from .schema import NAMES, SectionFNames
+from .features import (
     local_curvature_svd_gpu,
     ridge_proximity_from_knn_distances,
 )
-from geometry.bundle import GeometryBundle
+from .bundle import GeometryBundle
 
 __all__ = [
     "NAMES",

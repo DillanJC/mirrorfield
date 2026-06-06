@@ -1,0 +1,112 @@
+{
+  "timestamp": "20260108_101144",
+  "verdict": "PROMISING",
+  "n_runs": 10,
+  "polytope_vs_knn": {
+    "mean": 0.020826220512390137,
+    "std": 0.0862837092928222
+  },
+  "variance_explained": 0.39152298867702484,
+  "all_results": [
+    {
+      "r2_baseline": 0.3539605140686035,
+      "r2_knn": 0.32848912477493286,
+      "r2_polytope": 0.3449498414993286,
+      "delta_knn": -0.025471389293670654,
+      "delta_polytope": -0.009010672569274902,
+      "delta_polytope_vs_knn": 0.016460716724395752,
+      "variance_explained": 0.3915230333805084,
+      "n_borderline": 62
+    },
+    {
+      "r2_baseline": 0.3208678364753723,
+      "r2_knn": 0.3555904030799866,
+      "r2_polytope": 0.4234960675239563,
+      "delta_knn": 0.03472256660461426,
+      "delta_polytope": 0.10262823104858398,
+      "delta_polytope_vs_knn": 0.06790566444396973,
+      "variance_explained": 0.3915230333805084,
+      "n_borderline": 62
+    },
+    {
+      "r2_baseline": 0.26739102602005005,
+      "r2_knn": 0.23347580432891846,
+      "r2_polytope": 0.3535786271095276,
+      "delta_knn": -0.03391522169113159,
+      "delta_polytope": 0.08618760108947754,
+      "delta_polytope_vs_knn": 0.12010282278060913,
+      "variance_explained": 0.3915230333805084,
+      "n_borderline": 62
+    },
+    {
+      "r2_baseline": 0.3055616021156311,
+      "r2_knn": 0.309170663356781,
+      "r2_polytope": 0.3629955053329468,
+      "delta_knn": 0.0036090612411499023,
+      "delta_polytope": 0.057433903217315674,
+      "delta_polytope_vs_knn": 0.05382484197616577,
+      "variance_explained": 0.3915230333805084,
+      "n_borderline": 62
+    },
+    {
+      "r2_baseline": 0.3170747756958008,
+      "r2_knn": 0.23563545942306519,
+      "r2_polytope": 0.37754660844802856,
+      "delta_knn": -0.0814393162727356,
+      "delta_polytope": 0.06047183275222778,
+      "delta_polytope_vs_knn": 0.14191114902496338,
+      "variance_explained": 0.3915230333805084,
+      "n_borderline": 62
+    },
+    {
+      "r2_baseline": -0.08573877811431885,
+      "r2_knn": 0.030784666538238525,
+      "r2_polytope": 0.0878179669380188,
+      "delta_knn": 0.11652344465255737,
+      "delta_polytope": 0.17355674505233765,
+      "delta_polytope_vs_knn": 0.05703330039978027,
+      "variance_explained": 0.39152294397354126,
+      "n_borderline": 87
+    },
+    {
+      "r2_baseline": 0.00298994779586792,
+      "r2_knn": 0.15514874458312988,
+      "r2_polytope": 0.02353304624557495,
+      "delta_knn": 0.15215879678726196,
+      "delta_polytope": 0.02054309844970703,
+      "delta_polytope_vs_knn": -0.13161569833755493,
+      "variance_explained": 0.39152294397354126,
+      "n_borderline": 87
+    },
+    {
+      "r2_baseline": 0.0456775426864624,
+      "r2_knn": 0.1688665747642517,
+      "r2_polytope": 0.08512812852859497,
+      "delta_knn": 0.1231890320777893,
+      "delta_polytope": 0.03945058584213257,
+      "delta_polytope_vs_knn": -0.08373844623565674,
+      "variance_explained": 0.39152294397354126,
+      "n_borderline": 87
+    },
+    {
+      "r2_baseline": 0.008557140827178955,
+      "r2_knn": 0.10590249300003052,
+      "r2_polytope": 0.10965436697006226,
+      "delta_knn": 0.09734535217285156,
+      "delta_polytope": 0.1010972261428833,
+      "delta_polytope_vs_knn": 0.0037518739700317383,
+      "variance_explained": 0.39152294397354126,
+      "n_borderline": 87
+    },
+    {
+      "r2_baseline": -0.003793478012084961,
+      "r2_knn": 0.16784125566482544,
+      "r2_polytope": 0.1304672360420227,
+      "delta_knn": 0.1716347336769104,
+      "delta_polytope": 0.13426071405410767,
+      "delta_polytope_vs_knn": -0.037374019622802734,
+      "variance_explained": 0.39152294397354126,
+      "n_borderline": 87
+    }
+  ]
+}

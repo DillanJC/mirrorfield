@@ -1,0 +1,28 @@
+
+PUBLICATION SUMMARY STATISTICS
+============================================================
+
+Overall Performance (N=50 runs):
+  Mean ΔR²:        +0.0637 (+6.37%)
+  Standard Dev:    0.0642
+  Standard Error:  0.0091
+  95% CI:          [+0.0454, +0.0819]
+
+Variance Decomposition:
+  Between-Seed SD: 0.0424 (43.5% of variance)
+  Within-Seed SD:  0.0497 (59.8% of variance)
+
+Per-Seed Results (Mean ± SD):
+  Seed  17: +0.0952 ± 0.0511 (range: [+0.0238, +0.1961])
+  Seed  42: +0.0154 ± 0.0821 (range: [-0.0814, +0.1923])
+  Seed 100: +0.1178 ± 0.0552 (range: [-0.0152, +0.1716])
+  Seed 200: +0.0342 ± 0.0261 (range: [-0.0133, +0.0736])
+  Seed 333: +0.0559 ± 0.0376 (range: [+0.0099, +0.0990])
+
+Statistical Tests:
+  Pass Threshold:  5% improvement
+  CI Lower Bound:  4.54% (FAIL)
+  Mean > 0:        Yes
+  Mean > 5%:       Yes
+
+Verdict: PASS

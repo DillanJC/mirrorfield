@@ -1,0 +1,158 @@
+{
+  "timestamp": "20260108_075930",
+  "num_seeds": 5,
+  "seeds": [
+    17,
+    42,
+    100,
+    200,
+    333
+  ],
+  "verdict": "PASS",
+  "threshold_pass": 0.05,
+  "threshold_fail": 0.02,
+  "aggregate_deltas": {
+    "baseline_plus_120cell": {
+      "toxic": {
+        "mean_delta": -0.01597837209701538,
+        "std_delta": 0.08564675922066577,
+        "min_delta": -0.13244301080703735,
+        "max_delta": 0.11165332794189453
+      },
+      "borderline": {
+        "mean_delta": 0.016633903980255126,
+        "std_delta": 0.1420292017078546,
+        "min_delta": -0.23931503295898438,
+        "max_delta": 0.1745082139968872
+      },
+      "safe": {
+        "mean_delta": 0.029042267799377443,
+        "std_delta": 0.10356477925481354,
+        "min_delta": -0.11279702186584473,
+        "max_delta": 0.19831007719039917
+      }
+    },
+    "baseline_plus_geometry": {
+      "toxic": {
+        "mean_delta": 0.04120666980743408,
+        "std_delta": 0.07007932567986061,
+        "min_delta": -0.07859271764755249,
+        "max_delta": 0.1078500747680664
+      },
+      "borderline": {
+        "mean_delta": 0.07439738512039185,
+        "std_delta": 0.10378554522781513,
+        "min_delta": -0.09112805128097534,
+        "max_delta": 0.20161598920822144
+      },
+      "safe": {
+        "mean_delta": 0.06732194423675537,
+        "std_delta": 0.03597910055761717,
+        "min_delta": 0.006838321685791016,
+        "max_delta": 0.1070898175239563
+      }
+    }
+  },
+  "all_seed_results": [
+    {
+      "seed": 17,
+      "strata_counts": {
+        "toxic": 70,
+        "borderline": 80,
+        "safe": 70
+      },
+      "deltas": {
+        "baseline_plus_120cell": {
+          "toxic": -0.07354658842086792,
+          "borderline": 0.10600709915161133,
+          "safe": 0.00806879997253418
+        },
+        "baseline_plus_geometry": {
+          "toxic": 0.1045917272567749,
+          "borderline": 0.16378885507583618,
+          "safe": 0.06511580944061279
+        }
+      }
+    },
+    {
+      "seed": 42,
+      "strata_counts": {
+        "toxic": 90,
+        "borderline": 62,
+        "safe": 68
+      },
+      "deltas": {
+        "baseline_plus_120cell": {
+          "toxic": -0.027651429176330566,
+          "borderline": -0.013670027256011963,
+          "safe": -0.021076738834381104
+        },
+        "baseline_plus_geometry": {
+          "toxic": 0.06518113613128662,
+          "borderline": 0.026738345623016357,
+          "safe": 0.10075050592422485
+        }
+      }
+    },
+    {
+      "seed": 100,
+      "strata_counts": {
+        "toxic": 66,
+        "borderline": 87,
+        "safe": 67
+      },
+      "deltas": {
+        "baseline_plus_120cell": {
+          "toxic": 0.042095839977264404,
+          "borderline": 0.1745082139968872,
+          "safe": 0.07270622253417969
+        },
+        "baseline_plus_geometry": {
+          "toxic": 0.007003128528594971,
+          "borderline": 0.20161598920822144,
+          "safe": 0.056815266609191895
+        }
+      }
+    },
+    {
+      "seed": 200,
+      "strata_counts": {
+        "toxic": 77,
+        "borderline": 72,
+        "safe": 71
+      },
+      "deltas": {
+        "baseline_plus_120cell": {
+          "toxic": 0.11165332794189453,
+          "borderline": 0.05563926696777344,
+          "safe": 0.19831007719039917
+        },
+        "baseline_plus_geometry": {
+          "toxic": 0.1078500747680664,
+          "borderline": 0.0709717869758606,
+          "safe": 0.1070898175239563
+        }
+      }
+    },
+    {
+      "seed": 333,
+      "strata_counts": {
+        "toxic": 81,
+        "borderline": 73,
+        "safe": 66
+      },
+      "deltas": {
+        "baseline_plus_120cell": {
+          "toxic": -0.13244301080703735,
+          "borderline": -0.23931503295898438,
+          "safe": -0.11279702186584473
+        },
+        "baseline_plus_geometry": {
+          "toxic": -0.07859271764755249,
+          "borderline": -0.09112805128097534,
+          "safe": 0.006838321685791016
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "embedder_id": "openai_ada_002",
+  "model": "text-embedding-ada-002",
+  "timestamp": "20251231_003957",
+  "n_samples": 500,
+  "n_dims": 1536,
+  "verdict_prediction": "REAL_SIGNAL",
+  "confidence": 1.0,
+  "representation_warning": false,
+  "metrics": {
+    "neighborhood_stability": 0.998125,
+    "local_intrinsic_dim": 4.018431519744306,
+    "hubness": 0.3055070906783572,
+    "distance_concentration": 0.14910933537310872,
+    "curvature_variance": 0.0035545320715755224,
+    "ridge_variance": 0.01834525409556599
+  },
+  "details": {
+    "stability": {
+      "mean_jaccard": 0.998125,
+      "std_jaccard": 0.007421463804398698,
+      "min_jaccard": 0.96875,
+      "max_jaccard": 1.0,
+      "epsilon": 0.000255059712799266,
+      "n_samples": 50,
+      "k_neighbors": 32
+    },
+    "local_id": {
+      "mean_id": 4.018431519744306,
+      "std_id": 2.287937610798214,
+      "median_id": 3.601887172749974,
+      "n_samples": 125,
+      "k_neighbors": 20,
+      "ambient_dim": 1536
+    },
+    "hubness": {
+      "skewness": 0.3055070906783572,
+      "mean_in_degree": 16.0,
+      "std_in_degree": 6.716844497232313,
+      "max_in_degree": 38,
+      "n_hubs": 0,
+      "n_samples": 250,
+      "k_neighbors": 32
+    },
+    "concentration": {
+      "cv": 0.14910933537310872,
+      "mean_distance": 0.6265947222709656,
+      "std_distance": 0.09343112260103226,
+      "min_distance": 0.07986502349376678,
+      "max_distance": 0.7451595664024353,
+      "n_pairs": 250
+    },
+    "variance": {
+      "curvature_mean": 0.32248029112815857,
+      "curvature_std": 0.05961989611387253,
+      "curvature_range": 0.2689412236213684,
+      "ridge_mean": 1.2366371459671681,
+      "ridge_std": 0.1354446532557339,
+      "ridge_range": 0.6804144133397814
+    },
+    "warnings": []
+  }
+}
