@@ -1,0 +1,14 @@
+{
+  "n": 300,
+  "wrong_rate": 0.13333333333333333,
+  "auc_standard": 0.6667307692307691,
+  "auc_geometry_only": 0.5351923076923076,
+  "auc_standard_plus_geometry": 0.6681730769230769,
+  "delta_auc": 0.0014423076923077982,
+  "delta_ci95": [
+    -0.04952897287197632,
+    0.048174352675154415
+  ],
+  "null_delta_auc": -0.07384615384615384,
+  "verdict": "geometry adds nothing beyond noise"
+}

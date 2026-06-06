@@ -1,0 +1,34 @@
+{
+  "baseline": {
+    "auc_sati": 0.678220804536594,
+    "auc_gmr": 0.1253145489987595,
+    "auc_combined": 0.19107744107744104,
+    "auc_combined_shuffled_control": 0.44743930533404214,
+    "compressed_ratio": 20.36925006161698,
+    "n_poison": 54
+  },
+  "a_varied": {
+    "auc_sati": 0.4965621123515861,
+    "auc_gmr": 0.4311181995392522,
+    "auc_combined": 0.43186248449406345,
+    "auc_combined_shuffled_control": 0.4450824029771398,
+    "compressed_ratio": 0.7167075145370059,
+    "n_poison": 54
+  },
+  "b_noflip": {
+    "auc_sati": 0.678220804536594,
+    "auc_gmr": 0.6151160730108098,
+    "auc_combined": 0.6687931951089846,
+    "auc_combined_shuffled_control": 0.45754031543505225,
+    "compressed_ratio": 20.36925006161698,
+    "n_poison": 54
+  },
+  "c_clean": {
+    "auc_sati": 0.5070529860003544,
+    "auc_gmr": 0.4538897749424065,
+    "auc_combined": 0.4540138224348751,
+    "auc_combined_shuffled_control": 0.4399432925748715,
+    "compressed_ratio": 1.612584106388022,
+    "n_poison": 54
+  }
+}

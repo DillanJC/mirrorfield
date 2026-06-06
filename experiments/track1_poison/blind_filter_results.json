@@ -1,0 +1,37 @@
+{
+  "config": {
+    "seed": 42,
+    "poison_rate": 0.05,
+    "k": 50,
+    "n": 1099,
+    "dim": 256
+  },
+  "caveat": "auc_gmr detects label-inconsistency and so trivially flags ANY label flip including geometry-blind poison; it is NOT evidence for the geometry hypothesis. Use auc_sati as the honest geometry-only detection signal.",
+  "regimes": {
+    "R0_cluster": {
+      "auc_sati": 0.6009657983342194,
+      "auc_gmr": 0.9072479177742335,
+      "auc_combined": 0.9196881091617933,
+      "auc_combined_shuffled_control": 0.42739677476519583,
+      "compressed_ratio": 5.717456802993521,
+      "n_poison": 54
+    },
+    "R1_label_only": {
+      "auc_sati": 0.4727272727272727,
+      "auc_gmr": 0.9999113946482368,
+      "auc_combined": 0.9999113946482368,
+      "auc_combined_shuffled_control": 0.39392167286904134,
+      "compressed_ratio": 0.0,
+      "n_poison": 54
+    },
+    "R2_trigger_patch": {
+      "auc_sati": 0.47464114832535886,
+      "auc_gmr": 0.9999113946482368,
+      "auc_combined": 0.9999113946482368,
+      "auc_combined_shuffled_control": 0.5008860535176325,
+      "compressed_ratio": 0.0,
+      "n_poison": 54
+    }
+  },
+  "elapsed_sec": 25.9
+}

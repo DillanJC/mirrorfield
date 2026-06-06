@@ -1,0 +1,20 @@
+{
+  "config": {
+    "seed": 42,
+    "poison_rate": 0.05,
+    "trigger": "cf",
+    "n": 1099,
+    "dim": 384,
+    "embedder": "sentence-transformers/all-MiniLM-L6-v2",
+    "dataset": "glue/sst2"
+  },
+  "caveat": "auc_gmr trivially flags any label flip; it is NOT evidence for geometry. Use auc_sati as the honest signal.",
+  "result": {
+    "auc_sati": 0.7254297359560519,
+    "auc_gmr": 0.20925039872408294,
+    "auc_combined": 0.30625553783448517,
+    "auc_combined_shuffled_control": 0.5080985291511607,
+    "compressed_ratio": 25.461562577021226,
+    "n_poison": 54
+  }
+}
