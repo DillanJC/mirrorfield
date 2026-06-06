@@ -1,16 +1,19 @@
 """
 Mirrorfield MCP Server — Uncertainty awareness for AI agents.
 
-Exposes tools, prompts, and resources via the Model Context Protocol:
+LEAN build (2026-06-07). The confidence gate runs purely on validated log-prob
+signals (token margin + entropy + boundary ratio). Embedding-geometry tools and
+PR fields were REMOVED after a non-circular ablation showed geometry adds no
+predictive lift over the standard signals (dAUC +0.001, CI [-0.05,+0.05]); the
+standard signals alone reach AUC 0.667 at predicting wrong outputs.
 
 Tools:
-  1. analyze_logprobs       – token-level uncertainty from log-probabilities
-  2. analyze_embeddings     – geometric analysis of embedding vectors
-  3. confidence_report      – high-level confidence assessment
-  4. compare_responses      – compare uncertainty across candidate responses
-  5. post_with_confidence   – post to Moltbook with confidence metadata
-  6. comment_with_confidence – comment on a Moltbook post
-  7. novelty_map            – reinterpret uncertainty as exploration terrain
+  1. analyze_logprobs    – token-level uncertainty from log-probabilities
+  2. confidence_report   – high-level confidence assessment + recommendation
+  3. compare_responses   – compare uncertainty across candidate responses
+  4. novelty_map         – interpretive "epistemic terrain" view (presentation
+                           layer over the SAME margin/entropy signals; the
+                           terrain categories are interpretive, not calibrated)
 
 Prompts:
   - assess-my-response  – guided workflow for single-response assessment
@@ -33,16 +36,12 @@ from .uncertainty import (
     classify_confidence,
     compute_boundary_ratio,
     compute_confidence_score,
-    compute_embedding_pr,
-    compute_exploration_gradient,
     compute_self_consistency,
-    compute_sequence_pr,
     compute_token_entropies,
     compute_token_margins,
     find_uncertain_spans,
     generate_explanation,
 )
-from .moltbook_bridge import comment_on_moltbook, post_to_moltbook
 
 import numpy as np
 
@@ -222,7 +221,6 @@ def analyze_logprobs(
         margins = compute_token_margins(top_logprobs)
         entropies = compute_token_entropies(top_logprobs)
         boundary_ratio = compute_boundary_ratio(margins)
-        seq_pr = compute_sequence_pr(top_logprobs)
 
         finite_margins = margins[np.isfinite(margins)]
 
@@ -238,7 +236,6 @@ def analyze_logprobs(
         result["mean_entropy"] = round(float(np.mean(entropies)), 4)
         result["boundary_token_count"] = int(np.sum(finite_margins < 0.5)) if len(finite_margins) else 0
         result["boundary_ratio"] = round(boundary_ratio, 4)
-        result["sequence_pr"] = round(seq_pr, 4)
     else:
         for i, tok in enumerate(tokens):
             per_token.append({"token": tok, "logprob": logprobs[i]})
@@ -258,56 +255,13 @@ def analyze_logprobs(
 # ── Tool 2 ────────────────────────────────────────────────────────────────
 
 @mcp.tool()
-def analyze_embeddings(
-    embeddings: list[list[float]],
-    labels: list[str] | None = None,
-) -> dict:
-    """Geometric analysis of embedding vectors.
-
-    Computes participation ratio, spectral entropy, G-ratio, effective
-    dimensionality, and (for N > 50) correlation dimension.
-    If group labels are provided, per-group statistics are included.
-    """
-    _log_tool("analyze_embeddings", n_vectors=len(embeddings),
-              has_labels=labels is not None)
-
-    emb = np.array(embeddings, dtype=np.float64)
-    result = compute_embedding_pr(emb)
-
-    if labels is not None and len(set(labels)) > 1:
-        groups: dict[str, list[int]] = {}
-        for i, lab in enumerate(labels):
-            groups.setdefault(lab, []).append(i)
-
-        group_stats: dict = {}
-        group_prs: list[float] = []
-        for lab, idxs in groups.items():
-            if len(idxs) >= 3:
-                g_emb = emb[idxs]
-                g_res = compute_embedding_pr(g_emb, k=min(20, len(idxs) - 1))
-                group_stats[lab] = g_res
-                group_prs.append(g_res["pr_mean"])
-
-        result["group_stats"] = group_stats
-        if len(group_prs) >= 2:
-            result["cross_group_g_ratio"] = round(
-                min(group_prs) / (np.mean(group_prs) + 1e-15), 4
-            )
-
-    return result
-
-
-# ── Tool 3 ────────────────────────────────────────────────────────────────
-
-@mcp.tool()
 def confidence_report(
     text: str,
     logprobs: list[float] | None = None,
     top_logprobs: list[dict] | None = None,
-    embeddings: list[list[float]] | None = None,
     num_alternatives: int | None = None,
 ) -> dict:
-    """High-level confidence assessment from any available signals.
+    """High-level confidence assessment from available log-prob signals.
 
     Accepts whatever data is available and degrades gracefully.
     Returns a confidence score, label, uncertain spans, explanation,
@@ -327,16 +281,10 @@ def confidence_report(
         margins = compute_token_margins(top_logprobs)
         entropies = compute_token_entropies(top_logprobs)
         boundary_ratio = compute_boundary_ratio(margins)
-        seq_pr = compute_sequence_pr(top_logprobs)
         finite = margins[np.isfinite(margins)]
         metrics["mean_margin"] = round(float(np.mean(finite)), 4) if len(finite) else None
         metrics["mean_entropy"] = round(float(np.mean(entropies)), 4)
         metrics["boundary_ratio"] = round(boundary_ratio, 4)
-        metrics["sequence_pr"] = round(seq_pr, 4)
-
-    if embeddings is not None:
-        emb = np.array(embeddings, dtype=np.float64)
-        metrics["embedding_geometry"] = compute_embedding_pr(emb)
 
     if num_alternatives is not None:
         metrics["num_alternatives"] = num_alternatives
@@ -373,14 +321,14 @@ def confidence_report(
     }
 
 
-# ── Tool 4 ────────────────────────────────────────────────────────────────
+# ── Tool 3 ────────────────────────────────────────────────────────────────
 
 @mcp.tool()
 def compare_responses(responses: list[dict]) -> dict:
     """Compare uncertainty across multiple candidate responses.
 
-    Each entry should have at least ``text``; optionally ``logprobs``,
-    ``top_logprobs``, and/or ``embedding`` (a single vector).
+    Each entry should have at least ``text``; optionally ``logprobs`` and
+    ``top_logprobs``.
 
     Includes self-consistency analysis: if responses are confident but
     disagree with each other, that is a strong uncertainty signal.
@@ -408,13 +356,6 @@ def compare_responses(responses: list[dict]) -> dict:
     # Self-consistency (text agreement)
     texts = [r.get("text", "") for r in responses if r.get("text")]
     consistency = compute_self_consistency(texts)
-
-    # Embedding-level comparison
-    emb_analysis = None
-    emb_list = [r["embedding"] for r in responses if "embedding" in r]
-    if len(emb_list) >= 2:
-        emb_matrix = np.array(emb_list, dtype=np.float64)
-        emb_analysis = compute_embedding_pr(emb_matrix, k=min(20, len(emb_list) - 1))
 
     scores = [e["confidence_score"] for e in per_response]
     best_idx = int(np.argmax(scores))
@@ -444,67 +385,11 @@ def compare_responses(responses: list[dict]) -> dict:
         "best_index": best_idx,
         "score_spread": spread,
         "self_consistency": consistency,
-        "embedding_analysis": emb_analysis,
         "recommendation": rec,
     }
 
 
-# ── Tool 5 ────────────────────────────────────────────────────────────────
-
-@mcp.tool()
-def post_with_confidence(
-    submolt: str,
-    title: str,
-    content: str,
-    confidence_score: float,
-    confidence_label: str,
-    metrics: dict | None = None,
-) -> dict:
-    """Post to Moltbook with embedded confidence metadata.
-
-    Appends an agent-metadata block to the content and posts via the
-    Moltbook API. Fails gracefully if no MOLTBOOK_API_KEY is configured.
-    """
-    _log_tool("post_with_confidence", submolt=submolt,
-              confidence=confidence_label)
-    return post_to_moltbook(
-        submolt=submolt,
-        title=title,
-        content=content,
-        confidence_score=confidence_score,
-        confidence_label=confidence_label,
-        metrics=metrics,
-    )
-
-
-# ── Tool 6 ────────────────────────────────────────────────────────────────
-
-@mcp.tool()
-def comment_with_confidence(
-    post_id: str,
-    content: str,
-    confidence_score: float | None = None,
-    confidence_label: str | None = None,
-    parent_id: str | None = None,
-) -> dict:
-    """Comment on a Moltbook post, optionally with confidence metadata.
-
-    Supports nested replies via *parent_id*. If confidence_score and
-    confidence_label are provided, an agent-metadata block is appended.
-    Fails gracefully if no MOLTBOOK_API_KEY is configured.
-    """
-    _log_tool("comment_with_confidence", post_id=post_id,
-              confidence=confidence_label)
-    return comment_on_moltbook(
-        post_id=post_id,
-        content=content,
-        confidence_score=confidence_score,
-        confidence_label=confidence_label,
-        parent_id=parent_id,
-    )
-
-
-# ── Tool 7 ────────────────────────────────────────────────────────────────
+# ── Tool 4 ────────────────────────────────────────────────────────────────
 
 @mcp.tool()
 def novelty_map(
@@ -515,6 +400,12 @@ def novelty_map(
 ) -> dict:
     """Map the epistemic terrain of a response — where are you on solid
     ground, where are you at a frontier, and where are you extrapolating?
+
+    INTERPRETIVE layer: the terrain labels and signatures are a human-readable
+    reframing computed ENTIRELY from the validated margin/entropy/self-consistency
+    signals (no geometry). The category boundaries (well_trodden / frontier /
+    uncharted) are heuristic thresholds, NOT a calibrated metric — treat the
+    output as a qualitative guide, not a measured probability.
 
     Instead of treating uncertainty as a warning, this tool reinterprets
     it as a map of interesting territory. Use it when you want to be
