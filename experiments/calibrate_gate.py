@@ -179,30 +179,62 @@ def main():
     rng = np.random.RandomState(SEED)
     import random; random.seed(SEED)
 
-    Xs, ys = [], []
+    Xs, ys, tids = [], [], []
     for t in tasks:
         items = load_task(t, args.n, rng)
         print(f"\n--- {t}: generating {len(items)} ---")
         X, y = generate(items, args.model)
         print(f"    accuracy={y.mean():.3f}")
-        Xs.append(X); ys.append(y)
+        Xs.append(X); ys.append(y); tids.extend([t] * len(y))
     X = np.vstack(Xs); y = np.concatenate(ys)
+    task_arr = np.array(tids)
     print(f"\nTotal {len(y)} examples, overall accuracy={y.mean():.3f}")
 
+    # save raw rows so future analyses never need to regenerate
+    rows_path = Path(__file__).parent / "calibrate_gate_rows.npz"
+    np.savez(rows_path, X=X, y=y, task=task_arr, model=np.array([args.model]))
+    print(f"Saved raw rows -> {rows_path}")
+
+    def oof_probs(Xin):
+        skf = StratifiedKFold(5, shuffle=True, random_state=SEED)
+        out = np.zeros(len(y))
+        for tr, te in skf.split(Xin, y):
+            sc = StandardScaler().fit(Xin[tr])
+            clf = LogisticRegression(max_iter=1000).fit(sc.transform(Xin[tr]), y[tr])
+            out[te] = clf.predict_proba(sc.transform(Xin[te]))[:, 1]
+        return out
+
     # out-of-fold raw probs from logistic on standardized features
-    skf = StratifiedKFold(5, shuffle=True, random_state=SEED)
-    oof = np.zeros(len(y))
-    for tr, te in skf.split(X, y):
-        sc = StandardScaler().fit(X[tr])
-        clf = LogisticRegression(max_iter=1000).fit(sc.transform(X[tr]), y[tr])
-        oof[te] = clf.predict_proba(sc.transform(X[te]))[:, 1]
+    oof = oof_probs(X)
+
+    # --- the decisive checks (review finding 1) -----------------------------
+    # (a) WITHIN-task AUC of the pooled model: does pooling merely hide
+    #     within-task discrimination behind between-task base-rate mixing?
+    within = {}
+    for t in tasks:
+        m = task_arr == t
+        if len(np.unique(y[m])) >= 2:
+            within[t] = round(float(roc_auc_score(y[m], oof[m])), 4)
+
+    # (b) pooled AUC after PER-TASK feature standardization — an UNSUPERVISED
+    #     offset fix (needs no labels at deploy time, just a rolling z-score).
+    #     If this recovers the per-task AUCs, the gate IS general up to offsets.
+    Xz = X.copy().astype(np.float64)
+    for t in tasks:
+        m = task_arr == t
+        mu, sd = X[m].mean(axis=0), X[m].std(axis=0) + 1e-9
+        Xz[m] = (X[m] - mu) / sd
+    oof_z = oof_probs(Xz)
+    auc_pooled_znorm = round(float(roc_auc_score(y, oof_z)), 4)
 
     # isotonic recalibration on the OOF probs
     iso = IsotonicRegression(out_of_bounds="clip").fit(oof, y)
     oof_cal = iso.predict(oof)
 
     metrics = {
-        "auc": round(float(roc_auc_score(y, oof)), 4),
+        "auc_pooled": round(float(roc_auc_score(y, oof)), 4),
+        "auc_within_task": within,
+        "auc_pooled_after_pertask_znorm": auc_pooled_znorm,
         "brier_raw": round(float(brier_score_loss(y, oof)), 4),
         "brier_calibrated": round(float(brier_score_loss(y, oof_cal)), 4),
         "ece_raw": round(ece(oof, y), 4),
@@ -212,7 +244,10 @@ def main():
     }
     print("\n--- calibration quality (out-of-fold) ---")
     for k, v in metrics.items():
-        print(f"  {k:20s}: {v}")
+        print(f"  {k:32s}: {v}")
+    print("\n  READ: if auc_within_task >> auc_pooled, pooling was hiding real")
+    print("        discrimination; if znorm recovers it, an unsupervised rolling")
+    print("        z-score makes the gate general WITHOUT per-task labels.")
     print("\n  reliability (calibrated):")
     for r in reliability_table(oof_cal, y):
         print(f"    {r['bin']}  n={r['n']:4d}  pred={r['mean_pred']:.2f}  actual={r['actual_acc']:.2f}")

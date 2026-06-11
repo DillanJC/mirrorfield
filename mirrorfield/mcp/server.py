@@ -33,6 +33,7 @@ from mcp.server.fastmcp import FastMCP
 
 from .uncertainty import (
     build_novelty_map,
+    calibrated_p_correct,
     classify_confidence,
     compute_boundary_ratio,
     compute_confidence_score,
@@ -285,6 +286,16 @@ def confidence_report(
         metrics["mean_margin"] = round(float(np.mean(finite)), 4) if len(finite) else None
         metrics["mean_entropy"] = round(float(np.mean(entropies)), 4)
         metrics["boundary_ratio"] = round(boundary_ratio, 4)
+
+        # Calibrated P(correct) — only when a calibration file is installed.
+        # Modest discriminator (per-task AUC 0.60-0.74); see calibrated_p_correct.
+        if metrics["mean_margin"] is not None:
+            p_correct = calibrated_p_correct(
+                metrics["mean_margin"], metrics["mean_entropy"],
+                metrics["boundary_ratio"],
+            )
+            if p_correct is not None:
+                metrics["p_correct_calibrated"] = p_correct
 
     if num_alternatives is not None:
         metrics["num_alternatives"] = num_alternatives

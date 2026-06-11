@@ -266,6 +266,59 @@ def compute_confidence_score(
     return round(np.clip(score, 0.0, 1.0), 4)
 
 
+_GATE_CALIBRATION_CACHE: dict | None = None
+_GATE_CALIBRATION_MISSING = False
+
+
+def load_gate_calibration() -> dict | None:
+    """Load exported gate calibration (gate_calibration.json) if present.
+
+    The file is produced by experiments/calibrate_gate.py and contains
+    numpy-applicable parameters: feature scaler, logistic coefficients, and an
+    isotonic lookup table mapping raw probability -> calibrated P(correct).
+    Returns None if the file is absent or unreadable (the gate then reports
+    only the heuristic confidence score).
+    """
+    global _GATE_CALIBRATION_CACHE, _GATE_CALIBRATION_MISSING
+    if _GATE_CALIBRATION_CACHE is not None or _GATE_CALIBRATION_MISSING:
+        return _GATE_CALIBRATION_CACHE
+    import json
+    from pathlib import Path
+    path = Path(__file__).parent / "gate_calibration.json"
+    try:
+        _GATE_CALIBRATION_CACHE = json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        _GATE_CALIBRATION_MISSING = True
+        return None
+    return _GATE_CALIBRATION_CACHE
+
+
+def calibrated_p_correct(
+    mean_margin: float,
+    mean_entropy: float,
+    boundary_ratio: float,
+) -> float | None:
+    """Calibrated probability that the assessed response is correct.
+
+    Applies the exported calibration (scaler -> logistic -> isotonic table)
+    using numpy only. Honest limits, from the validation that produced it:
+    the probability is well-calibrated to the training mix (Qwen2.5-3B on
+    RTE/QNLI/SST-2) but discriminates modestly (per-task AUC 0.60-0.74);
+    comparing scores ACROSS different task types benefits from normalizing
+    against recent same-context traffic. Returns None if no calibration
+    file is installed.
+    """
+    calib = load_gate_calibration()
+    if calib is None:
+        return None
+    feat = np.array([mean_margin, mean_entropy, boundary_ratio], dtype=np.float64)
+    z = (feat - np.array(calib["scaler_mean"])) / np.array(calib["scaler_scale"])
+    logit = float(np.dot(np.array(calib["logreg_coef"]), z)) + calib["logreg_intercept"]
+    p_raw = 1.0 / (1.0 + np.exp(-logit))
+    p_cal = float(np.interp(p_raw, calib["isotonic_x"], calib["isotonic_y"]))
+    return round(p_cal, 4)
+
+
 def classify_confidence(score: float) -> str:
     """Map a 0-1 confidence score to a human-readable label."""
     if score >= 0.8:

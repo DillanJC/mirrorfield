@@ -276,10 +276,36 @@ SST-2, fit StandardScaler->LogisticRegression->isotonic, exported numpy params t
 predicts near the base rate (~0.83) for almost everything; a constant 0.835 would
 also score ECE~0 and be useless. AUC 0.53 shows it barely separates right from
 wrong WHEN POOLED ACROSS TASKS. Per-task the gate is modest-but-real (RTE 0.60,
-QNLI 0.65 at 3B, §4f); pooling washes it out -> the margin/entropy->wrongness
-relationship is task-idiosyncratic. Implication: there is NO good general
-cross-task probability gate from these signals. A per-task calibrated gate is
-modestly useful but is not a general tool. Report: `calibrate_gate_report.json`.
+QNLI 0.65 at 3B, §4f); pooling washes it out. Report: `calibrate_gate_report.json`.
+**SUPERSEDED by §4h — the pooled-AUC conclusion was too pessimistic.**
+
+### §4h. Fresh-eyes review fix, 2026-06-11 — the gate IS general (up to a z-score)
+
+A model-switch review (Fable) flagged that §4g's pooled AUC conflates within-task
+discrimination with between-task base-rate/offset mixing (Simpson's-paradox-style).
+Re-ran with within-task evaluation + an UNSUPERVISED per-task z-score of the
+features (no labels used; raw rows now saved to `calibrate_gate_rows.npz`):
+
+| evaluation | AUC (95% CI) |
+|------------|--------------|
+| pooled, raw features (the §4g number) | 0.529 [0.474, 0.585] — chance |
+| **pooled, per-task z-normed features** | **0.634 [0.579, 0.689] — REAL** |
+| 10x shuffled-label null on znorm pipeline | mean 0.478, max 0.539 — clears it |
+| znorm within QNLI | 0.736 [0.659, 0.804] |
+| znorm within RTE | 0.608 [0.516, 0.697] |
+| znorm within SST-2 | 0.501 [0.367, 0.643] — inconclusive (only 23 errors) |
+
+**Upgraded conclusion:** the §4g "per-task labels required" verdict was wrong. The
+gate's signal is general **up to a per-task score offset**, and removing that
+offset needs NO labels — just standardizing recent confidence features (deployable
+as a rolling z-score over recent same-context traffic). Pooled discrimination
+recovers to 0.63, matching the per-task band; QNLI is strongest (0.74), SST-2
+unmeasurable (too few errors at 91% accuracy).
+
+Caveats: the z-norm here used full-task statistics (label-blind but transductive);
+a deployed rolling window approximates it and should be validated. One model, three
+tasks. Verified per project norm: bootstrap CI + 10-shuffle null + consistency with
+per-task numbers, all passed.
 
 ---
 
@@ -297,11 +323,13 @@ geometry add-on does NOT survive at all.
 0.5B but FAILED to replicate on QNLI, its edge was a seeding-bug artifact, and it
 COLLAPSED to chance at 3B. Not a win. The expensive Nx path is not justified.
 
-**THE buildable tool — lean log-prob gate** (§4f): margin/entropy/boundary predicts
-wrong outputs at AUC 0.60-0.65 across easy AND hard tasks at 3B (both CIs clear
-0.5), is cheap (single pass), and IMPROVES with model scale. This is what the
-leaned MCP already ships (commit c8b571e). The one genuinely useful, validated,
-scale-friendly result to come out of the project.
+**THE buildable tool — lean log-prob gate** (§4f, upgraded by §4h):
+margin/entropy/boundary predicts wrong outputs at AUC 0.60-0.74 per task at 3B,
+is cheap (single pass), IMPROVES with model scale, and is **general up to an
+unsupervised per-task z-score** (pooled 0.63 [0.58, 0.69] after normalizing
+feature offsets — no labels needed, deployable as a rolling z-score). This is
+what the leaned MCP ships (commit c8b571e). The one genuinely useful, validated,
+scale-friendly result of the project.
 
 **Does NOT survive:** AUC=1.0 poison detection as a general claim (circular —
 now confirmed by R3 on real SST-2: chance once the trigger varies);

@@ -22,26 +22,28 @@
 
 ---
 
-## The one thing that works: a standard uncertainty gate
+## The one thing that works: a standard uncertainty gate (with known limits)
 
 The original motivation was sound: **can a model flag a likely-wrong output before it
-is sent?** The answer is yes — but with textbook log-probability signals, not geometry.
+is sent?** The answer is a qualified yes — with textbook log-probability signals
+(token margin + entropy + boundary ratio), not geometry. The full characterization,
+across two model sizes and three tasks with ground-truth correctness labels
+(`mcp_uncertainty_ablation*.py`, `selfconsistency_multi.py`, `calibrate_gate.py`):
 
-Non-circular test (`mcp_uncertainty_ablation.py`): a small instruct model classifies
-300 balanced SST-2 sentences; the label is **ground-truth correctness** (independent of
-any geometry). Predicting "this output is wrong":
+| Question | Answer | Evidence |
+|----------|--------|----------|
+| Does geometry add anything? | **No** | ΔAUC ≈ 0, CI spans 0, on both tasks tested |
+| Do log-prob signals work? | **Yes, modestly, per task** | AUC 0.60–0.74 per task at 3B (CIs clear 0.5) |
+| Does it survive harder tasks? | **Only at scale** | At 0.5B, chance on RTE; at 3B, works on RTE + QNLI |
+| Does expensive N× self-consistency sampling beat it? | **No** | A 0.5B "win" failed replication and collapsed at 3B |
+| Is it one general gate? | **Up to a score offset** | Pooled cross-task AUC is chance (0.53) raw, but recovers to **0.63 [0.58, 0.69]** after an *unsupervised* per-task z-score of the features (no labels needed) |
 
-| Feature set | AUC |
-|-------------|-----|
-| **Standard** (token margin + entropy + boundary ratio) | **0.667** |
-| Geometry alone (sequence PR + embedding PR) | 0.535 (≈ chance) |
-| Standard + geometry | 0.668 |
-| Δ from adding geometry | **+0.001**, 95% CI **[−0.05, +0.05]** |
-| Shuffled-label null control | −0.07 (passes) |
-
-**Conclusion:** ship the gate on margin + entropy + boundary ratio. The geometry layer
-is decorative and is being removed. The MCP server remains useful as an honest
-uncertainty-awareness tool (present / verify / abstain), minus the geometric claims.
+**Conclusion:** ship the gate on margin + entropy + boundary ratio, single-pass and
+cheap. It is a modest, real signal — not a reliable "knows when it's wrong" oracle.
+It improves with model scale, and deploying it across mixed tasks requires
+normalizing confidence scores against recent same-context traffic (a rolling
+z-score). The geometry layer was decorative and has been removed; the MCP server
+ships as an honest uncertainty-awareness tool (present / verify / abstain).
 
 ---
 
@@ -73,7 +75,8 @@ geometric cluster. Against a real, attacker-chosen backdoor they are at chance.
 
 ## What honestly survives
 
-- **A working uncertainty gate** on standard log-prob signals (AUC 0.667, non-circular).
+- **A working uncertainty gate** on standard log-prob signals (AUC 0.60–0.74 per
+  task at 3B; general across tasks after unsupervised score normalization).
 - **A weak behavioral-instability correlation** (borderline participation ratio,
   r ≈ −0.5; ~6% of variance). Real, but not a detector on its own.
 - **A Goodhart / metric-gaming detector** built during the intervention experiments,
@@ -98,7 +101,9 @@ geometric cluster. Against a real, attacker-chosen backdoor they are at chance.
 |---------|--------|
 | Blind circularity test (R0–R2) | `experiments/track1_poison/test_filter_blind.py` |
 | Real backdoor + confound controls (R3) | `test_filter_r3_real.py`, `test_filter_r3_controls.py` |
-| MCP uncertainty ablation (the keeper) | `experiments/mcp_uncertainty_ablation.py` |
+| MCP uncertainty ablation (v1 + harder tasks) | `experiments/mcp_uncertainty_ablation.py`, `_v2.py` |
+| Self-consistency tested and rejected | `experiments/selfconsistency_multi.py` |
+| Calibration + cross-task generality | `experiments/calibrate_gate.py` |
 
 All run locally (CPU/GPU), no paid API required. Each writes a JSON results file and
 includes a negative control (shuffled labels must give ≈ chance / Δ ≈ 0).
