@@ -257,6 +257,29 @@ reproducible). `selfconsistency_Qwen25_3B_Instruct_results.json`.
 across easy+hard tasks), and it IMPROVES with model scale. The expensive Nx
 self-consistency path is NOT justified. This is exactly what the leaned MCP already
 ships (§ commit c8b571e). Geometry remains dead; scale is the gate's friend.
+BUT see §4g: the gate's discrimination is PER-TASK, not cross-task.
+
+### §4g. Calibration (Road A step 1), 2026-06-07 — calibrated but NOT cross-task
+
+`calibrate_gate.py`: generated 750 labeled examples on Qwen2.5-3B across RTE+QNLI+
+SST-2, fit StandardScaler->LogisticRegression->isotonic, exported numpy params to
+`mirrorfield/mcp/gate_calibration.json`. Key numbers (5-fold out-of-fold):
+
+| metric | value |
+|--------|-------|
+| base rate correct | 0.835 |
+| **AUC (pooled, cross-task)** | **0.529 — ~chance** |
+| ECE raw -> calibrated | 0.020 -> 0.000 |
+| reliability bins | all predictions in [0.7,0.9] ~ base rate |
+
+**The catch — calibration != discrimination.** ECE hit ~0 only because the model
+predicts near the base rate (~0.83) for almost everything; a constant 0.835 would
+also score ECE~0 and be useless. AUC 0.53 shows it barely separates right from
+wrong WHEN POOLED ACROSS TASKS. Per-task the gate is modest-but-real (RTE 0.60,
+QNLI 0.65 at 3B, §4f); pooling washes it out -> the margin/entropy->wrongness
+relationship is task-idiosyncratic. Implication: there is NO good general
+cross-task probability gate from these signals. A per-task calibrated gate is
+modestly useful but is not a general tool. Report: `calibrate_gate_report.json`.
 
 ---
 

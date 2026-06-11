@@ -1,0 +1,31 @@
+{
+  "metrics": {
+    "auc": 0.5289,
+    "brier_raw": 0.1387,
+    "brier_calibrated": 0.1368,
+    "ece_raw": 0.0201,
+    "ece_calibrated": 0.0,
+    "base_rate_correct": 0.8347,
+    "n": 750
+  },
+  "reliability": [
+    {
+      "bin": "[0.7,0.8)",
+      "n": 339,
+      "mean_pred": 0.796,
+      "actual_acc": 0.796
+    },
+    {
+      "bin": "[0.8,0.9)",
+      "n": 410,
+      "mean_pred": 0.866,
+      "actual_acc": 0.866
+    },
+    {
+      "bin": "[0.9,1.0)",
+      "n": 1,
+      "mean_pred": 1.0,
+      "actual_acc": 1.0
+    }
+  ]
+}
