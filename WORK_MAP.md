@@ -305,7 +305,29 @@ unmeasurable (too few errors at 91% accuracy).
 Caveats: the z-norm here used full-task statistics (label-blind but transductive);
 a deployed rolling window approximates it and should be validated. One model, three
 tasks. Verified per project norm: bootstrap CI + 10-shuffle null + consistency with
-per-task numbers, all passed.
+per-task numbers, all passed. -> validated in §4i.
+
+### §4i. Deployment validation, 2026-06-11 — rolling form holds; needs context streams
+
+`validate_rolling_gate.py` (pure CPU, from saved rows). Three questions:
+
+| test | result |
+|------|--------|
+| 1. Causal ROLLING z-score (W=50, only past items) vs 4h's idealized full-stats | **0.635 [0.579, 0.691] vs 0.638 — identical. Deployable form loses nothing.** |
+| 2. LEAVE-ONE-TASK-OUT: train on 2 tasks, deploy on the UNSEEN 3rd w/ rolling norm | unseen QNLI **0.723 [0.644, 0.799]**; unseen RTE **0.633 [0.547, 0.719]** — both clear 0.5 and their 5x null bands. Unseen SST-2 0.47 [0.34, 0.61] — unmeasurable (18 errors after warmup), consistent w/ 4h. |
+| 3. MIXED-STREAM stress: rolling window over an interleaved all-task stream | **0.519 [0.463, 0.575] — chance. FAILS.** |
+
+**Deployment picture, final:**
+- The gate **transfers to tasks it has never seen** (QNLI 0.72, RTE 0.63) using only
+  a label-free rolling z-score — true generality on the measurable tasks.
+- **Hard requirement discovered:** the rolling window must contain SAME-CONTEXT
+  traffic. An interleaved multi-task stream contaminates the normalization stats
+  (the per-task offsets it exists to remove stay blended in) and the signal dies.
+  Deploy with per-session / per-context buffers, never one global buffer.
+- Mechanism makes sense: the z-score's entire job is removing per-context offsets;
+  mixing contexts in the window defeats it by construction.
+
+Results: `validate_rolling_gate_results.json`.
 
 ---
 

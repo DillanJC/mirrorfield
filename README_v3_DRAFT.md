@@ -37,6 +37,8 @@ across two model sizes and three tasks with ground-truth correctness labels
 | Does it survive harder tasks? | **Only at scale** | At 0.5B, chance on RTE; at 3B, works on RTE + QNLI |
 | Does expensive N× self-consistency sampling beat it? | **No** | A 0.5B "win" failed replication and collapsed at 3B |
 | Is it one general gate? | **Up to a score offset** | Pooled cross-task AUC is chance (0.53) raw, but recovers to **0.63 [0.58, 0.69]** after an *unsupervised* per-task z-score of the features (no labels needed) |
+| Does it work on tasks it was never trained on? | **Yes, where measurable** | Trained on 2 tasks, deployed on the unseen 3rd with a causal rolling z-score: QNLI **0.72 [0.64, 0.80]**, RTE **0.63 [0.55, 0.72]** |
+| Any deployment constraint? | **Yes — context-separated streams** | The rolling window must hold same-context traffic; an interleaved multi-task stream contaminates the normalization and the signal drops to chance (0.52) |
 
 **Conclusion:** ship the gate on margin + entropy + boundary ratio, single-pass and
 cheap. It is a modest, real signal — not a reliable "knows when it's wrong" oracle.
