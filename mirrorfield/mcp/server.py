@@ -32,6 +32,7 @@ import time
 from mcp.server.fastmcp import FastMCP
 
 from .uncertainty import (
+    RollingGate,
     build_novelty_map,
     calibrated_p_correct,
     classify_confidence,
@@ -68,6 +69,10 @@ def _log_tool(name: str, **kwargs):
 
 
 mcp = FastMCP("mirrorfield", instructions="Uncertainty awareness for AI agents")
+
+# Per-context rolling gate (validated deployable form, WORK_MAP 4h/4i).
+# One buffer per context_id; mixing contexts in one buffer breaks the signal.
+_ROLLING_GATE = RollingGate(window=50, min_history=5)
 
 
 # ── Calibration constants (exposed as resource) ──────────────────────────
@@ -261,12 +266,22 @@ def confidence_report(
     logprobs: list[float] | None = None,
     top_logprobs: list[dict] | None = None,
     num_alternatives: int | None = None,
+    context_id: str | None = None,
 ) -> dict:
     """High-level confidence assessment from available log-prob signals.
 
     Accepts whatever data is available and degrades gracefully.
     Returns a confidence score, label, uncertain spans, explanation,
     raw metrics, and a recommendation (proceed / verify / abstain).
+
+    context_id (recommended): a stable identifier for the current stream of
+    same-kind work (e.g. a session or task-type id). When provided, the report
+    also includes p_correct_relative — the response's confidence z-scored
+    against the last ~50 outputs in the SAME context, then calibrated. This is
+    the validated cross-task form of the gate (it transfers to unseen task
+    types). Use one context_id per kind of work; mixing different kinds of work
+    under one id degrades the relative signal to chance. The first few calls in
+    a context report warming_up=true with no relative probability.
     """
     _log_tool("confidence_report", text_len=len(text),
               has_logprobs=logprobs is not None,
@@ -296,6 +311,17 @@ def confidence_report(
             )
             if p_correct is not None:
                 metrics["p_correct_calibrated"] = p_correct
+
+            # Context-relative P(correct) — the validated cross-task form.
+            # z-scores this response against recent SAME-context traffic.
+            if context_id is not None:
+                rel = _ROLLING_GATE.score(
+                    context_id, metrics["mean_margin"],
+                    metrics["mean_entropy"], metrics["boundary_ratio"],
+                )
+                metrics["p_correct_relative"] = rel["p_correct_relative"]
+                metrics["context_buffer_size"] = rel["buffer_size"]
+                metrics["context_warming_up"] = rel["warming_up"]
 
     if num_alternatives is not None:
         metrics["num_alternatives"] = num_alternatives

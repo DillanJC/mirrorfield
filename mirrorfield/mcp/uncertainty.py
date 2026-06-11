@@ -282,14 +282,9 @@ def load_gate_calibration() -> dict | None:
     global _GATE_CALIBRATION_CACHE, _GATE_CALIBRATION_MISSING
     if _GATE_CALIBRATION_CACHE is not None or _GATE_CALIBRATION_MISSING:
         return _GATE_CALIBRATION_CACHE
-    import json
-    from pathlib import Path
-    path = Path(__file__).parent / "gate_calibration.json"
-    try:
-        _GATE_CALIBRATION_CACHE = json.loads(path.read_text())
-    except (OSError, json.JSONDecodeError):
+    _GATE_CALIBRATION_CACHE = _load_calibration_file("gate_calibration.json")
+    if _GATE_CALIBRATION_CACHE is None:
         _GATE_CALIBRATION_MISSING = True
-        return None
     return _GATE_CALIBRATION_CACHE
 
 
@@ -312,11 +307,84 @@ def calibrated_p_correct(
     if calib is None:
         return None
     feat = np.array([mean_margin, mean_entropy, boundary_ratio], dtype=np.float64)
+    return round(_apply_calibration(feat, calib), 4)
+
+
+def _load_calibration_file(filename: str) -> dict | None:
+    """Load a calibration JSON sitting next to this module, or None."""
+    import json
+    from pathlib import Path
+    path = Path(__file__).parent / filename
+    try:
+        return json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _apply_calibration(feat: np.ndarray, calib: dict) -> float:
+    """scaler -> logistic -> isotonic lookup, numpy only."""
     z = (feat - np.array(calib["scaler_mean"])) / np.array(calib["scaler_scale"])
     logit = float(np.dot(np.array(calib["logreg_coef"]), z)) + calib["logreg_intercept"]
     p_raw = 1.0 / (1.0 + np.exp(-logit))
-    p_cal = float(np.interp(p_raw, calib["isotonic_x"], calib["isotonic_y"]))
-    return round(p_cal, 4)
+    return float(np.interp(p_raw, calib["isotonic_x"], calib["isotonic_y"]))
+
+
+class RollingGate:
+    """Per-context rolling gate — the validated deployable form (WORK_MAP 4h/4i).
+
+    Keeps a rolling window of recent raw features PER CONTEXT, z-scores each new
+    observation against its own context's past, and applies the relative
+    calibration (gate_calibration_relative.json) to produce P(correct).
+
+    Validation behind this design:
+      - rolling (past-only) matches idealized full-stats normalization
+        (0.635 vs 0.638 pooled AUC);
+      - transfers to tasks never seen in training (unseen QNLI 0.72, RTE 0.63);
+      - REQUIRES same-context windows — mixing contexts in one buffer collapses
+        the signal to chance. Callers must pass a stable context_id per
+        session/task-type and never share one buffer across contexts.
+    """
+
+    def __init__(self, window: int = 50, min_history: int = 5):
+        from collections import deque
+        self._deque = deque  # kept for buffer construction
+        self.window = window
+        self.min_history = min_history
+        self.buffers: dict[str, "deque"] = {}
+        self.calib = _load_calibration_file("gate_calibration_relative.json")
+
+    def score(
+        self,
+        context_id: str,
+        mean_margin: float,
+        mean_entropy: float,
+        boundary_ratio: float,
+    ) -> dict:
+        """Score one observation against its context's history, then record it.
+
+        Causal: the current observation is z-scored against PAST observations
+        only, and appended to the buffer afterwards. Returns a dict with
+        p_correct_relative (None while warming up or if no calibration file),
+        buffer_size, and warming_up.
+        """
+        buf = self.buffers.get(context_id)
+        if buf is None:
+            buf = self._deque(maxlen=self.window)
+            self.buffers[context_id] = buf
+
+        feat = np.array([mean_margin, mean_entropy, boundary_ratio], dtype=np.float64)
+        result: dict = {"buffer_size": len(buf), "warming_up": len(buf) < self.min_history}
+
+        if self.calib is not None and len(buf) >= self.min_history:
+            past = np.array(buf)
+            mu, sd = past.mean(axis=0), past.std(axis=0) + 1e-9
+            zfeat = (feat - mu) / sd
+            result["p_correct_relative"] = round(_apply_calibration(zfeat, self.calib), 4)
+        else:
+            result["p_correct_relative"] = None
+
+        buf.append(feat)
+        return result
 
 
 def classify_confidence(score: float) -> str:
