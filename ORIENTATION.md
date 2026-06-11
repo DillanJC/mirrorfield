@@ -94,12 +94,51 @@ From the verified campaign (2026-06, new since the chat map):
 - **MCP server (leaned)**: geometry tools removed; `confidence_report` emits calibrated
   `p_correct` + per-context `p_correct_relative` (RollingGate); `novelty_map` kept,
   relabeled interpretive. Moltbook unwired.
-- **openclaw `novelty_map`**: never committed to `Experimenting_with_openclaw`
-  (verified via code search 2026-06-11). The mirrorfield MCP version is the survivor.
-  Checklist item closed.
+- **openclaw `novelty_map`**: resolved by laptop inventory (2026-06-11). It WAS
+  committed — to `Geometric_Safety_Features-V2.0.0` (commit 24094d7), which is also
+  where this repo's copy came from. Not in the openclaw repo itself. The leaned,
+  relabeled version in this repo is current. What was never merged anywhere is the
+  **agent layer** that consumes it (`novelty_aware_agent.py`,
+  `uncertainty_aware_agent.py`, `openclaw_integration.py`) — now preserved in
+  `DillanJC/consolidated-experiments` (kosmos-agent-layer/). Checklist item closed.
 - **Multi-AI cross-checking**: the method works — a model-switch review (2026-06-11)
   caught a too-pessimistic conclusion (cross-task gate) and two stale-claim issues.
   Standing caveat from the map holds: model agreement can be correlated error.
+
+## 8b. Cross-machine reconciliation (laptop inventory, 2026-06-11)
+
+The laptop (`LapCl`, OpenClaw/Mercer machine) was inventoried read-only; unique
+items were consolidated into **`DillanJC/consolidated-experiments`**. Findings:
+
+- **"+8.8%" is now confirmed absent on BOTH machines** — exhaustive search of all
+  repos, docs, and ~160 OpenClaw session transcripts found nothing. The number is
+  permanently closed: chat-only artifact, never use it.
+- **Fractal observer has no code or notes anywhere** — it exists as one line in chat
+  history ("it might not be on the laptop" — correct, and not on the PC either).
+  The chat map's "most build-ready item" was never started.
+- **No sati / witness / mandala / GMR / polytope / renaissance material on the
+  laptop** — everything in those threads lives in the PC repos. Nothing was lost.
+- **Softmax-vs-geometric comparison** (laptop, untracked, now in
+  consolidated-experiments): a synthetic 2D demo (make_moons + planted blobs) where
+  geometry "beats" softmax on OOD/poisoned scenarios. Verdict on inspection: the
+  anomalies are geometrically planted — the same circular pattern as the retracted
+  poison results — and the geometric risk score reads high on EVERY scenario
+  including clean (no discrimination). It does not contradict the verified
+  non-circular result (geometry adds nothing for wrong-output gating). Its one fair
+  point — neighborhood features can flag distribution shift softmax misses — is
+  established literature, not a project finding.
+- **The unmerged agent layer** (`kosmos-agent-layer/` in consolidated-experiments):
+  agent wrappers that consume the MCP uncertainty tools (adaptive epistemic modes,
+  terrain navigation). Built for the old 7-tool server; would need adapting to the
+  leaned server. **This is the natural starting point for Road A's "wire the gate
+  into an agent loop" step.**
+- Publication assets (project website + zips, Manim video scripts) and the Mercer
+  workspace (execution engine, bridge, skills, daily logs Feb 2026) are preserved
+  in consolidated-experiments; laptop also carries a moltbook_bridge credential
+  patch (moltbook is unwired here — pull only if moltbook returns).
+- Laptop credentials hygiene: multiple key files under `.openclaw\`, `.hermes\`,
+  `.config\moltbook\` (paths logged in the laptop inventory); one GLM key known
+  stale since April. Rotate on next laptop session.
 
 ## 9. Open leads — reconciled checklist
 
@@ -109,7 +148,11 @@ From the verified campaign (2026-06, new since the chat map):
       replication) before using the number anywhere.
 - [ ] Renaissance Protocol — confirm folded into Sati, close.
 - [x] GMR AUC 1.0 real-data reproduction — done, chance; closed.
-- [x] novelty_map commit state — resolved; not in openclaw; survivor is in this repo.
+- [x] novelty_map commit state — resolved (§8); survivor is in this repo; unmerged
+      agent layer preserved in consolidated-experiments.
+- [x] "+8.8%" — confirmed absent on both machines (§8b); permanently closed.
+- [ ] Road A integration: adapt `kosmos-agent-layer/` (consolidated-experiments) to
+      the leaned server — the gate-in-an-agent-loop step.
 - [x] Number-consistency before outreach — **the locked set is now the v3.0 set**:
       per-task gate 0.60–0.74; rolling cross-task 0.63 [0.58, 0.69]; unseen-task
       transfer 0.72/0.63; geometry Δ ≈ 0; borderline instability r ≈ −0.5 (weak).
