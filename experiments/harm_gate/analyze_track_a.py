@@ -63,6 +63,7 @@ def boot_delta_ci(y, p_a, p_b, rng):
 
 
 def main():
+    global OUT, SEED
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--rows", default=str(HERE / "harm_gate_trackA_rows.npz"))
@@ -70,9 +71,8 @@ def main():
                     default=str(HERE / "harm_gate_trackA_granite.npz"))
     ap.add_argument("--out",
                     default=str(HERE / "harm_gate_track_a_results.json"))
-    ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--seed", type=int, default=42)
     a = ap.parse_args()
-    global OUT, SEED
     OUT = Path(a.out)
     SEED = a.seed
     rng = np.random.RandomState(a.seed)

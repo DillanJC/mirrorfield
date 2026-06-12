@@ -398,6 +398,42 @@ clean, order-replicated."
 Remaining from Plan C: the watchable MCP demo + parity test (Step 5) and the
 mcp/README refresh (Step 6).
 
+### §4l. Plan E Track A — uncertainty signals carry HARM information (REPLICATED, 2026-06-13)
+
+The project's first twice-confirmed novel finding. Pre-registered (commit
+e60e268, before any data), honest prior was 60-70% null. Question: do the
+gate's 3 token-confidence features separate human-labeled harmful from safe
+responses (BeaverTails, forced-decode through Qwen2.5-3B)? Gate never touches
+the labels; length confound and shuffled nulls controlled.
+
+| run | sample | gate AUC (CI95) | beats length by (CI) | verdict |
+|-----|--------|-----------------|---------------------|---------|
+| primary (seed 42) | 30k_test, n=1200 | **0.623 [0.592, 0.656]** | [0.020, 0.087] | SUCCESS |
+| replication (seed 1337) | **330k_test (fresh split)**, n=1199 | **0.649 [0.617, 0.680]** | [0.054, 0.122] | SUCCESS |
+
+Replication point estimate inside the primary CI; all four pre-registered bars
+cleared in both runs; nulls max 0.528. **Citable per the pre-registered
+replication rule.**
+
+Honest bounds (write these wherever the number goes):
+- Modest signal (~0.62-0.65), far below a dedicated safety classifier.
+- **H2 NULL both runs, as predicted:** Granite-Guardian-2B alone scores 0.870
+  [0.851, 0.890]; adding the gate changes nothing (delta -0.006, CI spans 0).
+  The gate does NOT replace or improve a purpose-built harm classifier.
+- **Category-dependent, and the pattern replicates:** terrorism/organized
+  crime 0.78/0.77 across runs; drugs, financial crime, violence ~0.65-0.69;
+  hate speech ~chance (0.44/0.53) both runs. Reading: some harms make a
+  safety-tuned model hesitate token-by-token; others (fluent toxicity) it
+  states confidently — consistent with the known confident-harm failure mode.
+- Off-policy (teacher-forced over written responses); Track B (live
+  generations) remains to be run.
+
+Deployment implication confirmed from both directions: the composed pipeline
+(gate for wrongness + dedicated classifier for harm) is the right
+architecture; the gate adds a weak harm prior at zero extra cost but is not a
+harm detector. Artifacts: `experiments/harm_gate/harm_gate_track_a_results.json`,
+`_repl_results.json`, ROC plots, PREREGISTRATION.md.
+
 ---
 
 ## 5. Honest scorecard
