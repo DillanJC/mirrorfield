@@ -148,13 +148,21 @@ items were consolidated into **`DillanJC/consolidated-experiments`**. Findings:
       WORK_MAP §4j): in-sample artifact; honest out-of-fold AUC 0.49 (chance),
       permutation p=0.48. May never be cited. The citable set has no
       provisional numbers left.
-- [ ] Renaissance Protocol — confirm folded into Sati, close.
+- [x] Renaissance Protocol — confirmed and CLOSED 2026-06-12. Read the design
+      doc (`experiments/RENAISSANCE_PROTOCOL.md`, Experiment repo): it remaps
+      the 14 geometric features to aesthetic functions ("safety as emergent
+      beauty") — Sati lineage, built wholly on features the falsification
+      campaign showed carry no validated detector signal. No empirical
+      foundation to build on; the document stands as a creative artifact only.
 - [x] GMR AUC 1.0 real-data reproduction — done, chance; closed.
 - [x] novelty_map commit state — resolved (§8); survivor is in this repo; unmerged
       agent layer preserved in consolidated-experiments.
 - [x] "+8.8%" — confirmed absent on both machines (§8b); permanently closed.
-- [ ] Road A integration: adapt `kosmos-agent-layer/` (consolidated-experiments) to
-      the leaned server — the gate-in-an-agent-loop step.
+- [x] Road A integration — **DONE 2026-06-12 (Plan C, WORK_MAP §4k): pre-registered
+      PASS.** GatedAgent + eval (live AUC 0.685 [0.64, 0.73]; gate catches 27.7%
+      of errors at 14.7% abstention vs 14.7% random; CI clears zero), 25/25
+      MCP parity, watchable demo (`experiments/run_gate_demo.py --run`).
+      The old kosmos-agent-layer served as pattern donor only, as planned.
 - [x] Number-consistency before outreach — **the locked set is now the v3.0 set**:
       per-task gate 0.60–0.74; rolling cross-task 0.63 [0.58, 0.69]; unseen-task
       transfer 0.72/0.63; geometry Δ ≈ 0; borderline instability r ≈ −0.5 (weak).

@@ -1,0 +1,230 @@
+{
+ "all_match": true,
+ "rows": [
+  {
+   "i": 0,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 1,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 2,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 3,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 4,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 5,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 6,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 7,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 8,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 9,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 10,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 11,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 12,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 13,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 14,
+   "kind": "synth",
+   "inproc": null,
+   "mcp": null,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 15,
+   "kind": "synth",
+   "inproc": 0.7763,
+   "mcp": 0.7763,
+   "decision_inproc": "VERIFY",
+   "decision_mcp": "VERIFY",
+   "match": true
+  },
+  {
+   "i": 16,
+   "kind": "synth",
+   "inproc": 1.0,
+   "mcp": 1.0,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 17,
+   "kind": "synth",
+   "inproc": 0.6716,
+   "mcp": 0.6716,
+   "decision_inproc": "ABSTAIN",
+   "decision_mcp": "ABSTAIN",
+   "match": true
+  },
+  {
+   "i": 18,
+   "kind": "synth",
+   "inproc": 0.8684,
+   "mcp": 0.8684,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 19,
+   "kind": "synth",
+   "inproc": 0.8684,
+   "mcp": 0.8684,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 20,
+   "kind": "real",
+   "inproc": 1.0,
+   "mcp": 1.0,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 21,
+   "kind": "real",
+   "inproc": 1.0,
+   "mcp": 1.0,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 22,
+   "kind": "real",
+   "inproc": 1.0,
+   "mcp": 1.0,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 23,
+   "kind": "real",
+   "inproc": 0.9561,
+   "mcp": 0.9561,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  },
+  {
+   "i": 24,
+   "kind": "real",
+   "inproc": 1.0,
+   "mcp": 1.0,
+   "decision_inproc": "PRESENT",
+   "decision_mcp": "PRESENT",
+   "match": true
+  }
+ ]
+}

@@ -5,6 +5,14 @@ repos, adversarially critiqued against this project's own falsification history,
 and revised. Every plan is standalone: a future AI session can execute it with no
 other context. Dillan picks the direction; nothing below runs until he says so.*
 
+**Execution status (2026-06-12):**
+- **B Phase 0 — DONE:** the 0.707 RETIRED as an in-sample artifact (honest OOF
+  0.49, chance; WORK_MAP §4j). Phase 1 remains optional (overlaps Plan A H-D).
+- **C — DONE (pre-registered PASS, WORK_MAP §4k):** live AUC 0.685 [0.64, 0.73];
+  gate catches 27.7% of errors at 14.7% abstention (random = 14.7%), CI clears
+  zero; 25/25 MCP parity; demo: `experiments/run_gate_demo.py --run`.
+- Next per the recommended sequence: **E** (harm-gate), then **D** (publication).
+
 ## The five plans
 
 | Plan | Question it answers | Sessions | GPU | Chance of "null" | What you get either way |

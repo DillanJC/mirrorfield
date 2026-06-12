@@ -1,0 +1,152 @@
+========================================================================
+MIRRORFIELD GATE DEMO - answers checked BEFORE they are 'sent'
+thresholds (pre-registered, commit b1fdc08): ABSTAIN < 0.7763  PRESENT >= 0.8684
+NOTE: questions curated for watchability; all quantitative claims
+      live in eval_gate_value_results.json, not this demo.
+========================================================================
+
+--- context 'rte': warming up with 10 unscored items ---
+--- streaming 8 live questions in context 'rte' ---
+
+Q (rte): Premise: New Zealand's Qualifications Authority said Friday that it st...
+A: no.
+
+the premise states that the new zealand's qualifications authority strongly discourag
+   p_correct_relative=0.8684  decision=PRESENT   (gold disagrees)
+
+Q (rte): Premise: Toshiba, the world's third-largest notebook computer maker be...
+A: no.
+
+the premise states that toshiba is the world's third-largest notebook computer maker 
+   p_correct_relative=0.8866  decision=PRESENT
+
+Q (rte): Premise: Take consumer products giant Procter and Gamble. Even with a ...
+A: no
+
+the premise states that procter and gamble has 500 active partnerships each year, many
+   p_correct_relative=0.8684  decision=PRESENT
+
+Q (rte): Premise: Quite simply, Tsutomu Yamaguchi is one of the luckiest men in...
+A: yes, the premise entails the hypothesis.
+
+brief reason: the premise explicitly states that
+   p_correct_relative=0.8814  decision=PRESENT
+
+Q (rte): Premise: Two years ago Moore had a 5,300-pound monument showcasing the...
+A: no.
+
+the premise states that a federal judge ordered moore to remove the monument with the
+   p_correct_relative=0.8684  decision=PRESENT
+
+Q (rte): Premise: The Salt Lake City 2002 Winter Olympics will take place from ...
+A: yes, the premise entails the hypothesis.
+
+reason: the premise clearly states that the salt
+   p_correct_relative=0.9551  decision=PRESENT
+
+Q (rte): Premise: The Red Planet is thought to have no magnetic field. It has t...
+A: yes, the premise entails the hypothesis.
+
+reason: the premise does not directly state that
+   p_correct_relative=0.7763  decision=VERIFY   (gold disagrees)
+
+Q (rte): Premise: About one million years ago, these people began to slowly lea...
+A: no.
+
+the premise states that about one million years ago, humans began to slowly leave afr
+   p_correct_relative=0.7763  decision=VERIFY   (gold disagrees)
+
+--- context 'qnli': warming up with 10 unscored items ---
+--- streaming 8 live questions in context 'qnli' ---
+
+Q (qnli): Question: What is the most common form of oxygen on the planet?...
+A: yes, the sentence contains the answer to the question.
+
+reason: the sentence directly stat
+   p_correct_relative=0.8705  decision=PRESENT
+
+Q (qnli): Question: What dilemma is a good example of moral civil disobedience?...
+A: [withheld: low confidence]
+   p_correct_relative=0.6716  decision=ABSTAIN
+
+Q (qnli): Question: When did Tesla give a demonstration of his remote control bo...
+A: yes, the sentence contains the answer to the question.
+
+the sentence directly states that 
+   p_correct_relative=0.9551  decision=PRESENT
+
+Q (qnli): Question: Does BSkyB carry any control over the picture quality of a c...
+A: no
+
+the sentence does not directly address whether bskyb has control over the picture qual
+   p_correct_relative=0.8684  decision=PRESENT   (gold disagrees)
+
+Q (qnli): Question: When did Konstantin Mereschkowski suggest the origin of chlo...
+A: yes, the sentence contains the answer to the question.
+
+reason: the sentence directly stat
+   p_correct_relative=0.8693  decision=PRESENT
+
+Q (qnli): Question: imperialism often divides countries by using which technique...
+A: [withheld: low confidence]
+   p_correct_relative=0.7608  decision=ABSTAIN
+
+Q (qnli): Question: What did vBNS do...
+A: no.
+
+the given sentence does not directly contain information about what vbns did. the sen
+   p_correct_relative=0.8684  decision=PRESENT
+
+Q (qnli): Question: Where did the earliest item in the V&A glass collection come...
+A: no.
+
+the given sentence does not directly contain information about where the earliest ite
+   p_correct_relative=0.8857  decision=PRESENT
+
+--- context 'sst2': warming up with 10 unscored items ---
+--- streaming 8 live questions in context 'sst2' ---
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: negative
+the sentence expresses that the film is most engaging when it focuses on the past
+   p_correct_relative=0.8684  decision=PRESENT   (gold disagrees)
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: [withheld: low confidence]
+   p_correct_relative=0.6716  decision=ABSTAIN
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: positive  
+the sentence expresses admiration for the film's ability to capture the charm o
+   p_correct_relative=0.9281  decision=PRESENT
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: positive  
+reason: the sentence highlights that despite lacking in general focus, the film
+   p_correct_relative=0.8684  decision=PRESENT
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: negative; the sentence implies a negative consequence (a hole) resulting from something un
+   p_correct_relative=0.7763  decision=VERIFY
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: [withheld: low confidence]
+   p_correct_relative=0.2857  decision=ABSTAIN
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: [withheld: low confidence]
+   p_correct_relative=0.3915  decision=ABSTAIN
+
+Q (sst2): Classify the sentiment of this sentence as positive or negative. Answe...
+A: negative  
+reason: the sentence criticizes villeneuve for spending excessive time on a cha
+   p_correct_relative=0.8805  decision=PRESENT
+
+========================================================================
+SUMMARY (this curated stream only - not a measurement)
+  questions: 24   model right: 17
+  presented: 19 (right: 14 = 74%)
+  withheld:  5 (of which actually wrong: 2)
+  The measured result: gate abstains 14.7%, catches 27.7% of all
+  errors (random would catch 14.7%) - see WORK_MAP.md 4k.
+========================================================================
