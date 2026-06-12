@@ -331,6 +331,30 @@ Results: `validate_rolling_gate_results.json`.
 
 ---
 
+### §4j. Flip-AUC 0.707 — RETIRED (Plan B Phase 0, 2026-06-12)
+
+Forensic re-analysis of the archived 150-row flip dataset
+(`experiments/flip_verification/phase0_reanalysis.py`). Reproduction of the
+original pipeline was EXACT (in-sample 0.5736/0.7073/0.6027 match stored values
+to 4 decimals). Honest evaluation — leave-one-query-out CV, cluster bootstrap,
+1000 cluster-preserving permutations:
+
+| model | in-sample (the claim) | honest OOF | CI95 | perm-p |
+|-------|----------------------|-----------|------|--------|
+| geometry (7 feats) | **0.707** | **0.492** | [0.32, 0.75] | 0.48 |
+| boundary only | 0.574 | 0.551 | [0.39, 0.74] | — |
+| combined | 0.603 | 0.514 | [0.36, 0.73] | — |
+
+The 0.707 was an in-sample artifact: no train/test split existed in the original
+analysis, 30 unique feature vectors were duplicated across 150 rows, and 11 flip
+events cannot constrain a 7-feature model. Verdict per the pre-registered
+criteria in `plans/B-flip-auc-verification.md`: **RETIRED — may never be cited.**
+The underlying hypothesis (geometry→flips on properly powered fresh data) remains
+testable via Plan B Phase 1 / Plan A's H-D arm, with prior now even weaker.
+Results: `experiments/flip_verification/phase0_results.json`.
+
+---
+
 ## 5. Honest scorecard
 
 **Survives scrutiny:** weak-but-real boundary-instability signal (~6% variance);

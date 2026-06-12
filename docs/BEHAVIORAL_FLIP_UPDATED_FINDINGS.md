@@ -1,8 +1,14 @@
 # Behavioral Flip Experiment - Updated Findings
 
+> ⚠️ **SUPERSEDED (2026-06-12).** The headline AUC 0.707 below was an in-sample
+> artifact (no train/test split; 30 unique feature vectors; 11 events). Honest
+> out-of-fold evaluation lands at chance (0.49, permutation p = 0.48). The
+> number is **retired** and may not be cited. See
+> `BEHAVIORAL_FLIP_VERIFICATION_REPORT.md` and `WORK_MAP.md` §4j.
+
 **Date:** January 2026
 **Status:** Follow-up analyses complete
-**Outcome:** **Hypothesis partially validated** ✓
+**Outcome:** ~~**Hypothesis partially validated** ✓~~ (retracted — see banner)
 
 ---
 

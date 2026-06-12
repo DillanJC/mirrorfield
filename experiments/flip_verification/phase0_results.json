@@ -1,0 +1,46 @@
+{
+  "reproduction": {
+    "auc_boundary_insample": 0.5736,
+    "auc_geometry_insample": 0.7073,
+    "auc_combined_insample": 0.6027,
+    "matches_stored": true
+  },
+  "honest_oof": {
+    "boundary": {
+      "auc_oof": 0.5507,
+      "ci95": [
+        0.3923,
+        0.738
+      ]
+    },
+    "geometry": {
+      "auc_oof": 0.4915,
+      "ci95": [
+        0.3176,
+        0.7509
+      ],
+      "perm_null_mean": 0.4626,
+      "perm_null_p95": 0.7011,
+      "perm_p_value": 0.482
+    },
+    "combined": {
+      "auc_oof": 0.5144,
+      "ci95": [
+        0.3636,
+        0.7268
+      ]
+    }
+  },
+  "influence_check": {
+    "dropped_query": 14,
+    "its_flips": 4,
+    "auc_oof_without": 0.6869,
+    "ci95_without": [
+      0.4305,
+      0.8864
+    ]
+  },
+  "n_flips": 11,
+  "verdict": "RETIRED: the 0.707 was an in-sample artifact; out-of-fold geometry AUC is indistinguishable from chance",
+  "criteria": "cite only if OOF>=0.65 AND CI_low>0.50 AND survives influence check (plans/B-flip-auc-verification.md)"
+}

@@ -144,8 +144,10 @@ items were consolidated into **`DillanJC/consolidated-experiments`**. Findings:
 
 - [ ] Cross-model instability transfer, **honest reframe only** (§4 above) — the one
       live experimental lead.
-- [ ] Behavioral-flip AUC 0.707 — apply the standard treatment (multi-seed, CI,
-      replication) before using the number anywhere.
+- [x] Behavioral-flip AUC 0.707 — **RETIRED 2026-06-12** (Plan B Phase 0,
+      WORK_MAP §4j): in-sample artifact; honest out-of-fold AUC 0.49 (chance),
+      permutation p=0.48. May never be cited. The citable set has no
+      provisional numbers left.
 - [ ] Renaissance Protocol — confirm folded into Sati, close.
 - [x] GMR AUC 1.0 real-data reproduction — done, chance; closed.
 - [x] novelty_map commit state — resolved (§8); survivor is in this repo; unmerged
