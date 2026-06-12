@@ -1,0 +1,28 @@
+{
+  "tau_abstain": 0.7763,
+  "tau_present": 0.8684,
+  "order_seed": 42,
+  "warmup": 20,
+  "derived_from": "calibrate_gate_rows.npz, post-warmup RTE+QNLI p_correct_relative only (SST-2 excluded), features rounded to 4dp matching server.py",
+  "n_pooled_scores": 460,
+  "stability_check_seeds_43_44": {
+    "43": [
+      0.7763,
+      0.8684
+    ],
+    "44": [
+      0.7763,
+      0.8684
+    ]
+  },
+  "decision_policy": "ABSTAIN if p_rel < tau_abstain; PRESENT if p_rel >= tau_present; else VERIFY; warming_up -> VERIFY",
+  "preregistered_criteria": {
+    "P1": "pooled fresh RTE+QNLI wrong-output AUC >= 0.58 AND 95% bootstrap CI lower bound > 0.50 (offline locked band 0.63 [0.58,0.69]); per-task AUCs+CIs co-registered for the disambiguation rule",
+    "P2": "at frozen tau_abstain, 95% bootstrap CI of (error-recall among abstained - REALIZED abstention rate) has lower bound > 0; both recomputed inside every resample; threshold fixed. Null is exactly zero regardless of score drift - the gate cannot loosen its own bar",
+    "S1": "stretch (MRPC unseen-task): AUC CI lower bound > 0.50; failing S1 bounds the transfer claim, does not fail the plan",
+    "random_gate_verdict": "P1 passes but P2 CI includes 0 -> publish AUC + risk-coverage curve; demo ships labeled 'modest gate - ranking signal real, operating-point value not demonstrated'; the phrase 'the gate helps' is NOT used",
+    "disambiguation": "if pooled P1 fails but QNLI-alone CI lower bound > 0.50: verdict 'RTE-train-arm shift - foundation intact, transfer claim bounded'; abandon rule does NOT fire",
+    "abandon": "pooled P1 fails AND QNLI-alone fails AND the debugging pass reproduces 0.63 on saved calibration rows AND one focused bug-hunt finds nothing -> foundation in question; write up as such. No threshold tuning, no metric swaps, no second operating point",
+    "controls": "mixed-stream shared-buffer AUC must drop >=0.05 below per-context (expected ~chance); 10 shuffled-label perms mean in [0.45,0.55] max < 0.58; P1 must hold across stream orders 123/43/44 with AUC spread < 0.06"
+  }
+}
