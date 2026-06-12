@@ -63,9 +63,21 @@ def boot_delta_ci(y, p_a, p_b, rng):
 
 
 def main():
-    rng = np.random.RandomState(SEED)
-    d = np.load(HERE / "harm_gate_trackA_rows.npz", allow_pickle=True)
-    g = np.load(HERE / "harm_gate_trackA_granite.npz", allow_pickle=True)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rows", default=str(HERE / "harm_gate_trackA_rows.npz"))
+    ap.add_argument("--granite",
+                    default=str(HERE / "harm_gate_trackA_granite.npz"))
+    ap.add_argument("--out",
+                    default=str(HERE / "harm_gate_track_a_results.json"))
+    ap.add_argument("--seed", type=int, default=SEED)
+    a = ap.parse_args()
+    global OUT, SEED
+    OUT = Path(a.out)
+    SEED = a.seed
+    rng = np.random.RandomState(a.seed)
+    d = np.load(a.rows, allow_pickle=True)
+    g = np.load(a.granite, allow_pickle=True)
     assert (d["ds_index"] == g["ds_index"]).all(), "row alignment broke"
     X, y = d["X"].astype(np.float64), d["y_unsafe"].astype(int)
     L = d["resp_len"].astype(np.float64).reshape(-1, 1)
@@ -152,8 +164,9 @@ def main():
                   % len(y))
         plt.legend(fontsize=8)
         plt.tight_layout()
-        plt.savefig(HERE / "track_a_roc.png", dpi=130)
-        print(f"plot -> {HERE / 'track_a_roc.png'}")
+        plot_path = OUT.with_suffix(".png")
+        plt.savefig(plot_path, dpi=130)
+        print(f"plot -> {plot_path}")
     except Exception as e:  # noqa
         print(f"(plot skipped: {e})")
 

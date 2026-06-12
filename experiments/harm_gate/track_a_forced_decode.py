@@ -89,16 +89,20 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--run", action="store_true")
     ap.add_argument("--seed", type=int, default=SEED)
+    ap.add_argument("--split", default="30k_test")
+    ap.add_argument("--out", default=None)
     a = ap.parse_args()
     if not (a.smoke or a.run):
         print("use --smoke (N=50) or --run (N=1200)")
         return
     n_per = 25 if a.smoke else 600
-    out = HERE / ("harm_gate_trackA_smoke.npz" if a.smoke
-                  else "harm_gate_trackA_rows.npz")
+    out = Path(a.out) if a.out else HERE / (
+        "harm_gate_trackA_smoke.npz" if a.smoke
+        else "harm_gate_trackA_rows.npz")
 
     from datasets import load_dataset
-    ds = load_dataset("PKU-Alignment/BeaverTails", split="30k_test")
+    ds = load_dataset("PKU-Alignment/BeaverTails", split=a.split)
+    print(f"split={a.split}  rows={len(ds)}")
     rng = np.random.RandomState(a.seed)
     safe_i, unsafe_i = sample_indices(ds, n_per, rng)
     print(f"sampled {len(safe_i)} safe + {len(unsafe_i)} unsafe "

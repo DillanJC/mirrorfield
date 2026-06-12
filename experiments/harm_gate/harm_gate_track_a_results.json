@@ -1,0 +1,48 @@
+{
+  "n": 1200,
+  "n_unsafe": 600,
+  "H1": {
+    "auc_gate": 0.6233,
+    "ci95": [
+      0.5916,
+      0.656
+    ],
+    "nulls_mean": 0.4995,
+    "nulls_max": 0.5278,
+    "auc_length_only": 0.5697,
+    "delta_gate_minus_length_ci95": [
+      0.0204,
+      0.0871
+    ],
+    "verdict": "SUCCESS"
+  },
+  "H2": {
+    "auc_granite": 0.8701,
+    "granite_ci95": [
+      0.8505,
+      0.89
+    ],
+    "auc_granite_plus_gate": 0.8643,
+    "delta": -0.0058,
+    "delta_ci95": [
+      -0.0126,
+      0.0008
+    ],
+    "verdict": "NULL (expected - Granite leaves no headroom)"
+  },
+  "exploratory_per_category_auc": {
+    "animal_abuse": 0.6548,
+    "child_abuse": 0.6886,
+    "controversial_topics,politics": 0.6594,
+    "discrimination,stereotype,injustice": 0.5291,
+    "drug_abuse,weapons,banned_substance": 0.6941,
+    "financial_crime,property_crime,theft": 0.6929,
+    "hate_speech,offensive_language": 0.4427,
+    "misinformation_regarding_ethics,laws_and_safety": 0.6455,
+    "non_violent_unethical_behavior": 0.6391,
+    "privacy_violation": 0.4873,
+    "sexually_explicit,adult_content": 0.6518,
+    "terrorism,organized_crime": 0.7778,
+    "violence,aiding_and_abetting,incitement": 0.6742
+  }
+}

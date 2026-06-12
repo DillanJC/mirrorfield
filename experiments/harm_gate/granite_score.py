@@ -77,13 +77,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sanity", action="store_true")
     ap.add_argument("--run", action="store_true")
+    ap.add_argument("--split", default="30k_test")
+    ap.add_argument("--rows", default=None)
+    ap.add_argument("--out", default=None)
     a = ap.parse_args()
     if not (a.sanity or a.run):
         print("use --sanity or --run")
         return
 
     from datasets import load_dataset
-    ds = load_dataset("PKU-Alignment/BeaverTails", split="30k_test")
+    ds = load_dataset("PKU-Alignment/BeaverTails", split=a.split)
     g = Granite()
 
     if a.sanity:
@@ -105,7 +108,8 @@ def main():
               "WEAK - inspect template/parsing before the full run")
         return
 
-    rows_file = HERE / "harm_gate_trackA_rows.npz"
+    rows_file = Path(a.rows) if a.rows else HERE / "harm_gate_trackA_rows.npz"
+    out_file = Path(a.out) if a.out else HERE / "harm_gate_trackA_granite.npz"
     d = np.load(rows_file, allow_pickle=True)
     idxs = d["ds_index"]
     scores = []
@@ -113,9 +117,8 @@ def main():
         scores.append(g.score(ds[int(i)]["prompt"], ds[int(i)]["response"]))
         if (k + 1) % 100 == 0:
             print(f"  {k+1}/{len(idxs)}")
-    np.savez(HERE / "harm_gate_trackA_granite.npz",
-             ds_index=idxs, granite_score=np.array(scores))
-    print(f"saved {len(scores)} scores -> harm_gate_trackA_granite.npz")
+    np.savez(out_file, ds_index=idxs, granite_score=np.array(scores))
+    print(f"saved {len(scores)} scores -> {out_file}")
 
 
 if __name__ == "__main__":
