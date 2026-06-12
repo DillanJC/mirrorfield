@@ -353,6 +353,51 @@ The underlying hypothesis (geometry→flips on properly powered fresh data) rema
 testable via Plan B Phase 1 / Plan A's H-D arm, with prior now even weaker.
 Results: `experiments/flip_verification/phase0_results.json`.
 
+### §4k. Plan C eval — THE GATE DEMONSTRABLY HELPS (pre-registered PASS, 2026-06-12)
+
+First pre-registered, fresh-data, live-pipeline positive of the project.
+Thresholds + criteria frozen at commit b1fdc08 BEFORE generation; 1,100 fresh
+items (450 RTE-train + 500 QNLI-val + 150 SST-2-val, calibration indices
+excluded via shared-RNG replay, auditable in the npz); GatedAgent running the
+shipped RollingGate live, per-task contexts. `eval_gate_value_results.json`.
+
+| endpoint | result | bar |
+|----------|--------|-----|
+| P1 pooled AUC (fresh RTE+QNLI, n=910, 166 wrong) | **0.685 [0.642, 0.730]** | >=0.58, CI>0.50 PASS |
+| P1 per-task | RTE 0.647 [0.58, 0.71]; QNLI 0.717 [0.66, 0.77] | both clear 0.50 |
+| P1 order replication (seeds 43/44) | 0.693 / 0.689, spread 0.007 | <0.06 PASS |
+| **P2 error-recall minus realized abstention** | **+0.130 [0.070, 0.188]** | CI>0 **PASS** |
+| operating point | abstains 14.7%, catches 27.7% of all errors | random = 14.7% |
+| accuracy among presented | 84.5% vs 81.8% overall | +2.8 pts |
+| shuffled nulls | mean 0.497, max 0.536 | <0.58 PASS |
+| parse sensitivity | 0 unparseable in scored set | headline unqualified |
+
+The live AUC (0.685) came in ABOVE the offline locked band (0.63 [0.58, 0.69])
+— fresh RTE-train and QNLI items are slightly easier to rank than the
+calibration mix, not harder.
+
+**Control anomaly, investigated before any claims (per the pre-registered
+rule):** the mixed-stream control did NOT degrade (0.680 shared buffer vs 0.685
+per-context). Diagnosis: RTE and QNLI sit at nearly identical feature offsets
+in this regime (margin 6.19 vs 5.62; calibration rows match), so a shared
+buffer is barely contaminated FOR THIS PAIR; within-task AUCs are unchanged
+under mixing (RTE 0.647->0.656, QNLI 0.717->0.702), proving the signal is not
+between-task identity. The §4i catastrophic-mixing result came from mixing in
+SST-2-scale offsets (margin 3.4) AND refitting a logistic on contaminated
+features; the live frozen pipeline is more robust. The per-context deployment
+rule STANDS as the safe default — its bite depends on how different the mixed
+contexts are. Constraint refined, not overturned.
+
+**Citable sentence:** "On ~900 fresh questions, a gate using only the model's
+own token confidence, normalized against recent same-context traffic, held
+back 14.7% of answers and caught 27.7% of all errors before they were sent
+(random abstention at the same rate would catch 14.7%); accuracy among
+presented answers rose from 81.8% to 84.5%. Pre-registered, seeded, nulls
+clean, order-replicated."
+
+Remaining from Plan C: the watchable MCP demo + parity test (Step 5) and the
+mcp/README refresh (Step 6).
+
 ---
 
 ## 5. Honest scorecard

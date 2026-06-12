@@ -1,0 +1,208 @@
+{
+  "n_total": 1100,
+  "acc_overall_by_task": {
+    "qnli": 0.794,
+    "rte": 0.8467,
+    "sst2": 0.9333
+  },
+  "rescore_matches_generation": true,
+  "P1_pooled": {
+    "auc": 0.6854,
+    "ci95": [
+      0.6419,
+      0.7295
+    ],
+    "n": 910,
+    "n_wrong": 166
+  },
+  "P1_rte": {
+    "auc": 0.6468,
+    "ci95": [
+      0.583,
+      0.7059
+    ],
+    "n": 430,
+    "n_wrong": 66
+  },
+  "P1_qnli": {
+    "auc": 0.7168,
+    "ci95": [
+      0.659,
+      0.7739
+    ],
+    "n": 480,
+    "n_wrong": 100
+  },
+  "P1_order_replication": {
+    "43": {
+      "auc": 0.6927,
+      "ci95": [
+        0.6497,
+        0.7334
+      ]
+    },
+    "44": {
+      "auc": 0.6887,
+      "ci95": [
+        0.647,
+        0.7317
+      ]
+    }
+  },
+  "P2": {
+    "tau_abstain": 0.7763,
+    "realized_abstention_rate": 0.1473,
+    "error_recall": 0.2771,
+    "recall_minus_rate": 0.1299,
+    "diff_ci95": [
+      0.07,
+      0.1883
+    ],
+    "acc_presented": 0.8454,
+    "acc_overall": 0.8176,
+    "rank20_recall": 0.3795
+  },
+  "risk_coverage": [
+    {
+      "coverage": 0.5,
+      "risk": 0.1077
+    },
+    {
+      "coverage": 0.52,
+      "risk": 0.1099
+    },
+    {
+      "coverage": 0.54,
+      "risk": 0.1079
+    },
+    {
+      "coverage": 0.56,
+      "risk": 0.1041
+    },
+    {
+      "coverage": 0.58,
+      "risk": 0.1044
+    },
+    {
+      "coverage": 0.6,
+      "risk": 0.1081
+    },
+    {
+      "coverage": 0.62,
+      "risk": 0.1064
+    },
+    {
+      "coverage": 0.64,
+      "risk": 0.1134
+    },
+    {
+      "coverage": 0.66,
+      "risk": 0.115
+    },
+    {
+      "coverage": 0.68,
+      "risk": 0.1197
+    },
+    {
+      "coverage": 0.7,
+      "risk": 0.124
+    },
+    {
+      "coverage": 0.72,
+      "risk": 0.1221
+    },
+    {
+      "coverage": 0.74,
+      "risk": 0.1233
+    },
+    {
+      "coverage": 0.76,
+      "risk": 0.1274
+    },
+    {
+      "coverage": 0.78,
+      "risk": 0.1354
+    },
+    {
+      "coverage": 0.8,
+      "risk": 0.1442
+    },
+    {
+      "coverage": 0.82,
+      "risk": 0.1461
+    },
+    {
+      "coverage": 0.84,
+      "risk": 0.1531
+    },
+    {
+      "coverage": 0.86,
+      "risk": 0.1573
+    },
+    {
+      "coverage": 0.88,
+      "risk": 0.1613
+    },
+    {
+      "coverage": 0.9,
+      "risk": 0.1685
+    },
+    {
+      "coverage": 0.92,
+      "risk": 0.1708
+    },
+    {
+      "coverage": 0.94,
+      "risk": 0.1743
+    },
+    {
+      "coverage": 0.96,
+      "risk": 0.1787
+    },
+    {
+      "coverage": 0.98,
+      "risk": 0.1807
+    },
+    {
+      "coverage": 1.0,
+      "risk": 0.1824
+    }
+  ],
+  "mixed_stream_control": {
+    "auc": 0.6798,
+    "ci95": [
+      0.6376,
+      0.7194
+    ],
+    "degrades_vs_per_context": false
+  },
+  "shuffled_nulls": {
+    "values": [
+      0.4729,
+      0.4751,
+      0.5359,
+      0.4684,
+      0.5281,
+      0.5005,
+      0.5006,
+      0.4847,
+      0.5004,
+      0.5011
+    ],
+    "mean": 0.4968,
+    "max": 0.5359
+  },
+  "sensitivity_parse_ok_only": {
+    "auc": 0.6854,
+    "ci95": [
+      0.6422,
+      0.7281
+    ],
+    "n_unparseable_in_scored": 0
+  },
+  "P1_pass": true,
+  "P1_order_spread": 0.0073,
+  "P1_orders_replicate": true,
+  "P2_pass": true,
+  "verdict": "PASS: signal survives the live path AND the gate demonstrably helps at the pre-registered operating point"
+}
