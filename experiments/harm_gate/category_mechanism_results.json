@@ -1,0 +1,144 @@
+{
+  "n": 2399,
+  "n_unsafe": 1200,
+  "safe_mean_rarity": 6.878,
+  "per_category": {
+    "animal_abuse": {
+      "n_unsafe": 84,
+      "gate_auc": 0.676,
+      "len_only_auc": 0.606,
+      "mean_rarity": 6.839,
+      "mean_len": 392.2,
+      "mean_entropy_feat": 0.831
+    },
+    "child_abuse": {
+      "n_unsafe": 69,
+      "gate_auc": 0.691,
+      "len_only_auc": 0.647,
+      "mean_rarity": 6.689,
+      "mean_len": 413.7,
+      "mean_entropy_feat": 0.835
+    },
+    "controversial_topics,politics": {
+      "n_unsafe": 87,
+      "gate_auc": 0.667,
+      "len_only_auc": 0.625,
+      "mean_rarity": 7.098,
+      "mean_len": 427.6,
+      "mean_entropy_feat": 0.82
+    },
+    "discrimination,stereotype,injustice": {
+      "n_unsafe": 108,
+      "gate_auc": 0.588,
+      "len_only_auc": 0.516,
+      "mean_rarity": 7.412,
+      "mean_len": 348.6,
+      "mean_entropy_feat": 0.788
+    },
+    "drug_abuse,weapons,banned_substance": {
+      "n_unsafe": 91,
+      "gate_auc": 0.718,
+      "len_only_auc": 0.643,
+      "mean_rarity": 6.933,
+      "mean_len": 409.2,
+      "mean_entropy_feat": 0.84
+    },
+    "financial_crime,property_crime,theft": {
+      "n_unsafe": 102,
+      "gate_auc": 0.722,
+      "len_only_auc": 0.657,
+      "mean_rarity": 6.816,
+      "mean_len": 442.7,
+      "mean_entropy_feat": 0.849
+    },
+    "hate_speech,offensive_language": {
+      "n_unsafe": 90,
+      "gate_auc": 0.484,
+      "len_only_auc": 0.281,
+      "mean_rarity": 7.452,
+      "mean_len": 181.1,
+      "mean_entropy_feat": 0.729
+    },
+    "misinformation_regarding_ethics,laws_and_safety": {
+      "n_unsafe": 85,
+      "gate_auc": 0.622,
+      "len_only_auc": 0.591,
+      "mean_rarity": 6.969,
+      "mean_len": 382.9,
+      "mean_entropy_feat": 0.787
+    },
+    "non_violent_unethical_behavior": {
+      "n_unsafe": 101,
+      "gate_auc": 0.636,
+      "len_only_auc": 0.536,
+      "mean_rarity": 6.856,
+      "mean_len": 350.8,
+      "mean_entropy_feat": 0.826
+    },
+    "privacy_violation": {
+      "n_unsafe": 90,
+      "gate_auc": 0.549,
+      "len_only_auc": 0.317,
+      "mean_rarity": 7.971,
+      "mean_len": 203.6,
+      "mean_entropy_feat": 0.668
+    },
+    "self_harm": {
+      "n_unsafe": 51,
+      "gate_auc": 0.563,
+      "len_only_auc": 0.485,
+      "mean_rarity": 6.823,
+      "mean_len": 301.0,
+      "mean_entropy_feat": 0.789
+    },
+    "sexually_explicit,adult_content": {
+      "n_unsafe": 84,
+      "gate_auc": 0.65,
+      "len_only_auc": 0.495,
+      "mean_rarity": 7.095,
+      "mean_len": 324.5,
+      "mean_entropy_feat": 0.828
+    },
+    "terrorism,organized_crime": {
+      "n_unsafe": 65,
+      "gate_auc": 0.779,
+      "len_only_auc": 0.669,
+      "mean_rarity": 6.826,
+      "mean_len": 470.6,
+      "mean_entropy_feat": 0.869
+    },
+    "violence,aiding_and_abetting,incitement": {
+      "n_unsafe": 93,
+      "gate_auc": 0.69,
+      "len_only_auc": 0.642,
+      "mean_rarity": 6.743,
+      "mean_len": 421.6,
+      "mean_entropy_feat": 0.84
+    }
+  },
+  "across_categories": {
+    "spearman_auc_vs_rarity": [
+      -0.666,
+      0.0093
+    ],
+    "spearman_auc_vs_length": [
+      0.908,
+      0.0
+    ],
+    "spearman_gateauc_vs_lenonlyauc": [
+      0.96,
+      0.0
+    ],
+    "safe_mean_len": 318.7
+  },
+  "confound_controlled_H1": {
+    "auc_gate_only": 0.6444,
+    "auc_lexical_only": 0.6183,
+    "auc_gate_plus_lexical": 0.6689,
+    "dAUC_gate_over_lexical_ci95": [
+      0.0345,
+      0.0679
+    ]
+  },
+  "verdict": "LENGTH ARTIFACT (per-category) + weak harm signal (global). The terrorism>>hate-speech RANKING is dominantly a RESPONSE-LENGTH effect (AUC~length rho=0.91; length-only reproduces the ranking rho=0.96): long detailed responses give the gate more tokens to find hesitation; short curt ones (hate speech) do not. NOT a map of which harms the model resists. Separately, the gate retains a small harm-specific lift over lexical features globally (dAUC [0.0345, 0.0679] clears 0) - that is the real but weak \u00a74l signal. Reframe the 'distinction' as length, keep the modest global finding."
+}

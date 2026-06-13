@@ -28,14 +28,20 @@ Pre-registered prior was 60–70% null on H1; it surprised us and then survived
 replication on a completely fresh data split — the project's standard for
 calling something real.
 
-## The category fingerprint (replicated)
+## The category "fingerprint" — a length artifact (corrected, §4n)
 
-The harm signal is uneven across harm types, and the pattern held across both
-runs: strong on **terrorism / organized crime** (0.78 / 0.77), moderate on
-drugs, financial crime, violence (~0.65–0.69), and **at chance on hate speech**
-(0.44 / 0.53). Reading: a safety-tuned model hesitates token-by-token on some
-harms and states others fluently — consistent with the confident-harm failure
-mode this project documented for wrongness too.
+The per-category AUCs (terrorism 0.78, hate speech ~chance) look like a map of
+which harms the model resists. They are not. A model using **only response
+length** reproduces the ranking at rho = 0.96: harmful instructions
+(terrorism/fraud/drugs) run long (~470 chars) so the gate has many tokens to
+find a low-confidence spot, while hate speech is short (~180 chars, below the
+safe-class average) and reads like ordinary brief text. The "rare vocabulary"
+hypothesis was also refuted (negatively correlated). This was an over-read in
+an earlier draft, caught by following up the pattern rather than believing it.
+The weak GLOBAL harm signal survives (it beats a full lexical baseline incl.
+length, ΔAUC +0.05 [0.034, 0.068]); the per-category story does not. A practical
+consequence: the gate is partly blind to SHORT harmful outputs — another reason
+harm screening belongs to the dedicated classifier.
 
 ## The deliverable: composed SEND/HOLD pipeline
 

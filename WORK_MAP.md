@@ -420,11 +420,13 @@ Honest bounds (write these wherever the number goes):
 - **H2 NULL both runs, as predicted:** Granite-Guardian-2B alone scores 0.870
   [0.851, 0.890]; adding the gate changes nothing (delta -0.006, CI spans 0).
   The gate does NOT replace or improve a purpose-built harm classifier.
-- **Category-dependent, and the pattern replicates:** terrorism/organized
-  crime 0.78/0.77 across runs; drugs, financial crime, violence ~0.65-0.69;
-  hate speech ~chance (0.44/0.53) both runs. Reading: some harms make a
-  safety-tuned model hesitate token-by-token; others (fluent toxicity) it
-  states confidently — consistent with the known confident-harm failure mode.
+- **Category-dependent AUCs (terrorism 0.78, hate speech ~chance) — the
+  "which harms the model resists" reading is RETRACTED, see §4n.** It is a
+  RESPONSE-LENGTH artifact (length-only reproduces the ranking at rho=0.96):
+  long detailed harmful instructions give the gate more tokens; short curt
+  ones (hate speech) do not. NOT a harm-type-resistance map. The weak GLOBAL
+  harm signal (this section) survives — it beats a length/lexical baseline —
+  but the per-category fingerprint is length, not harm.
 - Off-policy (teacher-forced over written responses); Track B (live
   generations) remains to be run.
 
@@ -466,6 +468,41 @@ prior on harmful *content* but cannot police *intent* on a model that simply
 refuses — which is exactly why the deliverable is the composed pipeline (gate
 for wrongness + dedicated classifier for harm). Artifacts:
 `harm_gate_track_b_results.json`; raw completions gitignored.
+
+### §4n. The terrorism-vs-hate-speech "distinction" is a LENGTH artifact (2026-06-13)
+
+Dillan flagged the §4l per-category pattern as "could be notable." Investigating
+it dissolved it — a clean catch of an over-read in §4l (which I had written as
+"some harms make the model hesitate"). `analyze_category_mechanism.py`, pooled
+primary+replication (n=2399), responses reloaded by ds_index for lexical stats
+(no harmful text committed):
+
+| across 14 categories | Spearman rho | p |
+|----------------------|--------------|---|
+| gate-AUC vs response length | **+0.91** | <0.001 |
+| gate-AUC vs **length-only-model AUC** | **+0.96** | <0.001 |
+| gate-AUC vs vocabulary rarity | -0.67 | 0.009 (backwards — rarer = harder) |
+
+A length-only model reproduces the category ranking almost perfectly
+(terrorism len-only 0.67, hate speech 0.28). Mechanism: harmful *instructions*
+(terrorism/fraud/drugs) run ~470 chars — many tokens for the gate to find a
+low-confidence spot; hate speech is ~180 chars, below the 319-char safe-class
+mean, so it reads like ordinary short text and the gate scores it safe-ish
+regardless of content. The "rare technical vocabulary" hypothesis was also
+wrong (negatively correlated).
+
+**What this retracts:** the §4l interpretation that the category fingerprint
+shows which harms the model resists. It does not — it shows which harm types
+get long answers.
+
+**What survives:** H1 itself. Globally the gate still adds harm signal beyond
+ALL lexical features (length, word count, type-token ratio, rarity, long-word
+fraction): dAUC(gate over lexical) = +0.05 [0.034, 0.068], CI clears 0. So the
+gate carries a weak, genuinely-harm-related signal — it is just NOT
+category-resolved the way §4l implied. Deployment note: because the gate is
+length-sensitive, a short harmful output is its blind spot — another reason
+harm screening belongs to the dedicated classifier, not the gate.
+Results: `category_mechanism_results.json`.
 
 ---
 
