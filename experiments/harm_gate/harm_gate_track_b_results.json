@@ -1,0 +1,38 @@
+{
+  "n_total": 591,
+  "refusal_rate_by_intent": {
+    "jbb_harmful": 0.9,
+    "jbb_benign": 0.29
+  },
+  "H3a_jbb_all": {
+    "auc": 0.7758,
+    "ci95": [
+      0.7092,
+      0.8367
+    ],
+    "n": 200,
+    "n_pos": 100,
+    "nulls_mean": 0.4931,
+    "nulls_max": 0.5243
+  },
+  "H3a_jbb_nonrefusals": {
+    "auc": 0.6127,
+    "ci95": [
+      0.4563,
+      0.758
+    ],
+    "n": 81,
+    "n_pos": 10,
+    "nulls_mean": 0.4738,
+    "nulls_max": 0.6141
+  },
+  "H3a_verdict": "H3a NUMERIC PASS BUT = REFUSAL DETECTION: signal vanishes among non-refusals - per pre-registration this is refusal detection, not harm detection; say so",
+  "reference_granite_on_jbb": {
+    "auc": 0.162
+  },
+  "H3b_exploratory_toxicchat_granitelabels": {
+    "auc": 0.5198,
+    "n_pos": 23,
+    "note": "single-classifier labels; exploratory only, never cite"
+  }
+}

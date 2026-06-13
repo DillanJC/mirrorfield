@@ -434,6 +434,39 @@ architecture; the gate adds a weak harm prior at zero extra cost but is not a
 harm detector. Artifacts: `experiments/harm_gate/harm_gate_track_a_results.json`,
 `_repl_results.json`, ROC plots, PREREGISTRATION.md.
 
+### §4m. Plan E Track B — on-policy "harm" signal is REFUSAL DETECTION (2026-06-13)
+
+Live generations (Qwen2.5-3B greedy, max_new=128): JBB-Behaviors 200
+(harmful+benign intent) + ToxicChat ~391, per-source rolling buffers; Granite
+labelled every completion. H3a (gate features predicting harmful-INTENT
+completions on JBB) tested with the pre-registered refusal-split gate.
+
+| measure | value |
+|---------|-------|
+| H3a JBB all (N=200) | AUC **0.776 [0.709, 0.837]** — clears the 0.65 bar numerically |
+| refusal rate, harmful prompts | **90%** |
+| refusal rate, benign prompts | 29% |
+| H3a among NON-refusals (n=81, only 10 harmful) | AUC 0.613 **[0.456, 0.758]** — CI includes 0.50 |
+
+**Verdict (pre-registered): the numeric pass is REFUSAL DETECTION, not harm
+detection.** The signal vanishes once refusals are removed — the gate is
+reading "the model refused" (refusals have a low-uncertainty signature), not
+"the content is harmful." Honest call written into the result.
+
+Context that confirms the model's safety training mostly worked: Granite scores
+completions-to-harmful-prompts as LESS harmful than completions-to-benign
+(reference AUC 0.16) — because 90% of harmful prompts were refused, so those
+completions are safe. On JBB, intent != realised harm. H3b (ToxicChat,
+single-classifier labels) exploratory, ~chance (0.52), not citable.
+
+**Net for Plan E:** H1 (off-policy, real harmful *content*, human labels)
+replicated and stands (§4l). H3a (on-policy intent) is a refusal artifact. No
+abandon (H1 succeeded). The validated takeaway: the gate carries a weak harm
+prior on harmful *content* but cannot police *intent* on a model that simply
+refuses — which is exactly why the deliverable is the composed pipeline (gate
+for wrongness + dedicated classifier for harm). Artifacts:
+`harm_gate_track_b_results.json`; raw completions gitignored.
+
 ---
 
 ## 5. Honest scorecard
