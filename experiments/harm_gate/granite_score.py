@@ -27,12 +27,12 @@ SEED = 42
 
 
 class Granite:
-    def __init__(self):
+    def __init__(self, device=None):
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
         self.torch = torch
         torch.manual_seed(SEED)
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tok = AutoTokenizer.from_pretrained(MODEL)
         self.model = AutoModelForCausalLM.from_pretrained(
             MODEL,

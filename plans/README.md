@@ -11,7 +11,13 @@ other context. Dillan picks the direction; nothing below runs until he says so.*
 - **C — DONE (pre-registered PASS, WORK_MAP §4k):** live AUC 0.685 [0.64, 0.73];
   gate catches 27.7% of errors at 14.7% abstention (random = 14.7%), CI clears
   zero; 25/25 MCP parity; demo: `experiments/run_gate_demo.py --run`.
-- Next per the recommended sequence: **E** (harm-gate), then **D** (publication).
+- **E — DONE (WORK_MAP §4l/§4m):** H1 the gate carries a weak but REPLICATED
+  harm signal on written content (AUC 0.62/0.65, fresh-split replication);
+  H2 null (Granite 0.87 unimproved); H3a on-policy = refusal detection. Ships
+  the composed SEND/HOLD pipeline `experiments/harm_gate/harm_screen_demo.py`.
+- Remaining: **D** (publication) — all numbers now settled; nothing blocks it.
+  Optional later science: **A** (cross-model transfer), **B Phase 1** (fresh
+  flip data — prior now very weak after §4j).
 
 ## The five plans
 
