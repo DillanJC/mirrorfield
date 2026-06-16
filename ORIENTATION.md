@@ -113,9 +113,17 @@ items were consolidated into **`DillanJC/consolidated-experiments`**. Findings:
 - **"+8.8%" is now confirmed absent on BOTH machines** — exhaustive search of all
   repos, docs, and ~160 OpenClaw session transcripts found nothing. The number is
   permanently closed: chat-only artifact, never use it.
-- **Fractal observer has no code or notes anywhere** — it exists as one line in chat
-  history ("it might not be on the laptop" — correct, and not on the PC either).
-  The chat map's "most build-ready item" was never started.
+- **Fractal observer — CLARIFIED & CLOSED (Dillan, 2026-06-13).** No code exists on
+  any machine. Dillan's recollection: the "fractal observer" was really the
+  **witness node** — the geometric detection/witnessing front-end intended to
+  integrate with **GMR** as its action layer (detection → rectification, the §3
+  pipeline GMR → Iterative Zoom → k-NN features → Witness Node). That closes the
+  loose end rather than reopening it: BOTH halves are already dead — GMR's
+  real-data reproduction came back at chance (§4 / checklist), and the geometric
+  "witness signal" the node would consume did not survive the falsification
+  campaign (§5). So the fractal observer is not a separate unbuilt idea to chase;
+  it's a name for the geometric witness/detection concept, which is closed with the
+  rest of the geometric line. Nothing to build under it without a surviving signal.
 - **No sati / witness / mandala / GMR / polytope / renaissance material on the
   laptop** — everything in those threads lives in the PC repos. Nothing was lost.
 - **Softmax-vs-geometric comparison** (laptop, untracked, now in
