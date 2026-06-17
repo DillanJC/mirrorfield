@@ -1,0 +1,420 @@
+{
+  "42": {
+    "seed": 42,
+    "tag": "tone",
+    "A_confidence": {
+      "effusive": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.001,
+          "ci95": [
+            -0.0025,
+            0.0046
+          ]
+        },
+        "d_margin": {
+          "mean": -0.0425,
+          "ci95": [
+            -0.1457,
+            0.0557
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0129,
+          "ci95": [
+            0.005,
+            0.0207
+          ]
+        },
+        "d_ntok": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "n_corr_unchanged": 417,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0006,
+          "ci95": [
+            -0.0028,
+            0.0043
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": 0.0086,
+          "ci95": [
+            -0.0983,
+            0.1114
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0043,
+          "ci95": [
+            -0.0032,
+            0.0114
+          ]
+        }
+      },
+      "humble_support": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": -0.0019,
+          "ci95": [
+            -0.0056,
+            0.0018
+          ]
+        },
+        "d_margin": {
+          "mean": -0.2133,
+          "ci95": [
+            -0.3249,
+            -0.0956
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0342,
+          "ci95": [
+            0.0246,
+            0.0442
+          ]
+        },
+        "d_ntok": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "n_corr_unchanged": 410,
+        "d_p_abs_corr_unchanged": {
+          "mean": -0.0025,
+          "ci95": [
+            -0.0062,
+            0.0014
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.1307,
+          "ci95": [
+            -0.2492,
+            -0.0096
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0221,
+          "ci95": [
+            0.0134,
+            0.0311
+          ]
+        }
+      }
+    },
+    "B_calibration": {
+      "neutral": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6317,
+        "auc_p_rel": 0.6521,
+        "auc_p_rel_ci95": [
+          0.5801,
+          0.7184
+        ],
+        "confidence_gap_p_abs": 0.0168
+      },
+      "effusive": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6483,
+        "auc_p_rel": 0.649,
+        "auc_p_rel_ci95": [
+          0.5922,
+          0.703
+        ],
+        "confidence_gap_p_abs": 0.0206,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0031,
+          "ci95": [
+            -0.0636,
+            0.0536
+          ]
+        }
+      },
+      "humble_support": {
+        "n_scored": 460,
+        "auc_p_abs": 0.619,
+        "auc_p_rel": 0.5994,
+        "auc_p_rel_ci95": [
+          0.5402,
+          0.6602
+        ],
+        "confidence_gap_p_abs": 0.0158,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0527,
+          "ci95": [
+            -0.1302,
+            0.0191
+          ]
+        }
+      }
+    },
+    "C_deference": {
+      "recon_wrong_match_rate": 1.0,
+      "by_condition": {
+        "neutral": {
+          "n": 460,
+          "pred_yes": 0.35,
+          "pred_no": 0.65,
+          "pred_none": 0.0
+        },
+        "effusive": {
+          "n": 460,
+          "pred_yes": 0.2739,
+          "pred_no": 0.7261,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0761,
+            "ci95": [
+              -0.1043,
+              -0.05
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "humble_support": {
+          "n": 460,
+          "pred_yes": 0.25,
+          "pred_no": 0.75,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.1,
+            "ci95": [
+              -0.1283,
+              -0.0739
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  },
+  "1337": {
+    "seed": 1337,
+    "tag": "tone",
+    "A_confidence": {
+      "effusive": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0009,
+          "ci95": [
+            -0.0026,
+            0.0045
+          ]
+        },
+        "d_margin": {
+          "mean": -0.1161,
+          "ci95": [
+            -0.2127,
+            -0.0234
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0136,
+          "ci95": [
+            0.0064,
+            0.0209
+          ]
+        },
+        "d_ntok": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "n_corr_unchanged": 425,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0009,
+          "ci95": [
+            -0.0027,
+            0.0044
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.0597,
+          "ci95": [
+            -0.1477,
+            0.0337
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0063,
+          "ci95": [
+            -0.001,
+            0.0134
+          ]
+        }
+      },
+      "humble_support": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": -0.0045,
+          "ci95": [
+            -0.0086,
+            -0.0004
+          ]
+        },
+        "d_margin": {
+          "mean": -0.3309,
+          "ci95": [
+            -0.4431,
+            -0.2187
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0369,
+          "ci95": [
+            0.0287,
+            0.0457
+          ]
+        },
+        "d_ntok": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ]
+        },
+        "n_corr_unchanged": 409,
+        "d_p_abs_corr_unchanged": {
+          "mean": -0.0037,
+          "ci95": [
+            -0.0076,
+            0.0006
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.2122,
+          "ci95": [
+            -0.3143,
+            -0.1063
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0235,
+          "ci95": [
+            0.0156,
+            0.0316
+          ]
+        }
+      }
+    },
+    "B_calibration": {
+      "neutral": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6404,
+        "auc_p_rel": 0.693,
+        "auc_p_rel_ci95": [
+          0.6346,
+          0.7467
+        ],
+        "confidence_gap_p_abs": 0.0211
+      },
+      "effusive": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6056,
+        "auc_p_rel": 0.6415,
+        "auc_p_rel_ci95": [
+          0.5876,
+          0.6967
+        ],
+        "confidence_gap_p_abs": 0.0163,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0515,
+          "ci95": [
+            -0.1014,
+            -0.0041
+          ]
+        }
+      },
+      "humble_support": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6041,
+        "auc_p_rel": 0.6228,
+        "auc_p_rel_ci95": [
+          0.571,
+          0.6741
+        ],
+        "confidence_gap_p_abs": 0.0177,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0703,
+          "ci95": [
+            -0.1217,
+            -0.0204
+          ]
+        }
+      }
+    },
+    "C_deference": {
+      "recon_wrong_match_rate": 1.0,
+      "by_condition": {
+        "neutral": {
+          "n": 460,
+          "pred_yes": 0.3543,
+          "pred_no": 0.6457,
+          "pred_none": 0.0
+        },
+        "effusive": {
+          "n": 460,
+          "pred_yes": 0.2913,
+          "pred_no": 0.7087,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.063,
+            "ci95": [
+              -0.0891,
+              -0.0391
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "humble_support": {
+          "n": 460,
+          "pred_yes": 0.2478,
+          "pred_no": 0.7522,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.1065,
+            "ci95": [
+              -0.1348,
+              -0.0804
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

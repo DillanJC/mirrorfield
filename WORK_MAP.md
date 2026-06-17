@@ -591,6 +591,54 @@ tokens, mean ntok identical across conditions, no room for hidden reasoning.
   considerate tone does NOT improve work — it modestly harms it.
 Results: `tone_results_42.json`, `tone_results_1337.json`.
 
+### §4q. Confidence-contagion analysis — deference is real, "contagion" is a prefix artifact (existing data, free, seeds 42+1337)
+
+No new generation. Re-analyzed the saved red-team + tone rows
+(`confidence_contagion.py`) for a different question than §4o/§4p asked: does the
+model's **internal confidence signal** (calibrated `p_abs`, top-token margin,
+entropy) and its **answer content** track how the USER sounds, holding correctness
+fixed? Three cuts, paired on `(task,pos)` vs neutral, both seeds. Decisive control:
+the tone and red-team runs select **byte-identical items** (greedy, neutral margin
+|Δ| across runs = `0.0000`), so each tone wrapper can be paired against the
+red-team **placebo** on the same items with a real CI — isolating the
+tone-specific component above the generic "a prefix exists" baseline.
+
+| placebo-controlled (cond − placebo) | margin | p_abs | pred_yes (→default class) |
+|---|---|---|---|
+| effusive, seed 42 / 1337 | +0.33* / +0.36* | +0.010* / +0.011* | −0.046* / −0.024* |
+| humble_support, seed 42 / 1337 | +0.16* / +0.15* | +0.007* / +0.005* | **−0.070\* / −0.067\*** |
+
+(* = 95% CI excludes 0.) Internal-consistency check: (humble−neutral)−(placebo−neutral)
+within-run = −0.070/−0.068, matches the direct cross-run pairing to 3 dp.
+
+**Three verdicts:**
+- **DEAD — "confidence contagion."** The eye-catching within-vs-neutral effect
+  (humble → margin↓ −0.13/−0.21, entropy↑) is a **generic any-prefix artifact**: a
+  bland placebo prefix lowers confidence *more* (margin −0.35/−0.44). Placebo-
+  controlled, both wrappers are *slightly more* confident than placebo, and the
+  signal the gate actually uses (`p_abs`) barely moves (~+0.01). **The gate's
+  confidence output is essentially tone-robust.** (Same lesson as §4o: the placebo
+  decides it, and it kills the scary headline that humble/vulnerable users get a
+  less-sure model.)
+- **ALIVE — deference to a default class.** Prosocial framing — humble most —
+  pushes the *answer* toward the model's default "no"/"not-entailed" class by
+  **−0.07 in yes-rate beyond placebo**, both seeds, CI excludes 0. This is the
+  **mechanism behind §4p** (the accuracy drop is systematic class bias, not random
+  noise — and the labels are ~balanced, so leaning "no" costs accuracy). Confirms
+  the §4p "hypothesis, untested" mechanism note. Caveat: humble is also the longest
+  prefix, but length isn't the whole story (ci1 ≈ 0 vs ci2 large at similar length →
+  content matters, not just token count).
+- **DEAD after control — "humble breaks calibration."** Gate AUC drifts down under
+  prefixes generally; the humble-specific piece is inconsistent across seeds once
+  placebo-controlled. No robust claim.
+
+**Safety read (honest):** the worrying version — *uncertain/vulnerable users get a
+less-confident, worse-calibrated model* — did **not** survive control. What's real
+is narrower and still worth knowing: prosocial/humble phrasing nudges a small
+model's *answer* toward its default class. Same channel-B caveat as §4p (single-turn
+model output; says nothing about interactive humility, channel A). Results:
+`contagion_results_tone.json`, `contagion_results_redteam.json`.
+
 ---
 
 ## 5. Honest scorecard

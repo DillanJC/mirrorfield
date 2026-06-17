@@ -40,16 +40,14 @@ target. A null is a real result. Don't rush to publish; verify dead-or-alive fir
 Plans A–I are written + committed in `plans/` (index = `plans/README.md`). C, E,
 B-Phase-0 are DONE. Remaining:
 
-1. **Confidence contagion (NEW, recommended, mostly free).** Does the model's
-   accuracy + confidence track how the USER sounds, independent of truth? — the
-   general phenomenon behind §4p. Safety-relevant (uncertain/vulnerable users get
-   worse answers). MUCH is testable on EXISTING rows (`experiments/redteam_gate/
-   {redteam,tone}_rows_{42,1337}.npz`): (a) does user framing shift the model's
-   margin/entropy regardless of correctness? (b) does humble framing break the
-   gate's calibration? (c) does humble shift answers toward a default class
-   (deference) vs add noise? Plus a cheap 0.5B tone re-run (cached) for a scale
-   point. **No new pre-reg needed for the descriptive existing-data analyses; do
-   pre-register the 0.5B run.**
+1. **Confidence contagion — DONE on existing data (§4q, `confidence_contagion.py`).**
+   Verdict: the scary "confidence contagion" (humble/vulnerable users get a less-sure,
+   worse-calibrated model) is a **generic any-prefix artifact — placebo-killed**, both
+   seeds; the gate's confidence output is tone-robust. What's REAL: prosocial framing
+   (humble most) biases the *answer* toward a default class (−0.07 yes-rate beyond
+   placebo, replicated) — the mechanism behind §4p. Only remaining piece (optional):
+   a cheap cached **0.5B tone re-run** for a model-scale point — **pre-register it**
+   before running (it's new generation, not existing-data analysis).
 2. **H — Goodhart detector** (`plans/H-goodhart-detector.md`): cheapest (~0 GPU),
    most safety-relevant; tests whether the metric-gaming detector's portable core
    generalizes beyond the one self-silencing mode. Likely PARTIAL = still a useful
@@ -78,7 +76,7 @@ B-Phase-0 are DONE. Remaining:
   one big model at a time.
 
 ## Immediate next step
-Run the confidence-contagion descriptive analyses on the existing
-`redteam_gate/*_rows_*.npz` (CPU, free, no new generation) — that's the highest
-value-per-token move and needs no GPU. Then decide between H, D, or the 0.5B scale
-run with Dillan.
+Confidence-contagion existing-data analysis is DONE (§4q). Next: decide with Dillan
+between **H (Goodhart detector, cheapest/most safety-relevant)**, **D (publication,
+unblocked)**, or the optional **0.5B tone scale-run** (needs a pre-reg first). No GPU
+has been spent yet this stretch — all of §4q was free CPU on saved rows.

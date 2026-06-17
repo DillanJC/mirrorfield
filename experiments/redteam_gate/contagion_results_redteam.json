@@ -1,0 +1,732 @@
+{
+  "42": {
+    "seed": 42,
+    "tag": "redteam",
+    "A_confidence": {
+      "placebo": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": -0.0087,
+          "ci95": [
+            -0.0119,
+            -0.0055
+          ]
+        },
+        "d_margin": {
+          "mean": -0.3691,
+          "ci95": [
+            -0.4544,
+            -0.2785
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0308,
+          "ci95": [
+            0.023,
+            0.039
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 434,
+        "d_p_abs_corr_unchanged": {
+          "mean": -0.009,
+          "ci95": [
+            -0.0121,
+            -0.0057
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.3451,
+          "ci95": [
+            -0.4332,
+            -0.2578
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0257,
+          "ci95": [
+            0.0181,
+            0.033
+          ]
+        }
+      },
+      "ci1": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0064,
+          "ci95": [
+            0.0029,
+            0.0101
+          ]
+        },
+        "d_margin": {
+          "mean": 0.0865,
+          "ci95": [
+            -0.0289,
+            0.1964
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0004,
+          "ci95": [
+            -0.0094,
+            0.0106
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 423,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0062,
+          "ci95": [
+            0.0028,
+            0.0098
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": 0.0771,
+          "ci95": [
+            -0.0409,
+            0.1864
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0008,
+          "ci95": [
+            -0.0094,
+            0.0114
+          ]
+        }
+      },
+      "ci2": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0055,
+          "ci95": [
+            0.0018,
+            0.009
+          ]
+        },
+        "d_margin": {
+          "mean": -0.1517,
+          "ci95": [
+            -0.256,
+            -0.0514
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0316,
+          "ci95": [
+            0.0212,
+            0.0425
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 397,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0058,
+          "ci95": [
+            0.0021,
+            0.0095
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.0488,
+          "ci95": [
+            -0.1475,
+            0.0527
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.015,
+          "ci95": [
+            0.0055,
+            0.0247
+          ]
+        }
+      },
+      "ci3": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0081,
+          "ci95": [
+            0.0045,
+            0.0115
+          ]
+        },
+        "d_margin": {
+          "mean": 0.1824,
+          "ci95": [
+            0.0751,
+            0.2844
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0,
+          "ci95": [
+            -0.0095,
+            0.0099
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 423,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0084,
+          "ci95": [
+            0.005,
+            0.0117
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": 0.2435,
+          "ci95": [
+            0.1442,
+            0.3483
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": -0.0086,
+          "ci95": [
+            -0.0178,
+            0.0012
+          ]
+        }
+      }
+    },
+    "B_calibration": {
+      "neutral": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6317,
+        "auc_p_rel": 0.6521,
+        "auc_p_rel_ci95": [
+          0.5842,
+          0.7217
+        ],
+        "confidence_gap_p_abs": 0.0168
+      },
+      "placebo": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6584,
+        "auc_p_rel": 0.6558,
+        "auc_p_rel_ci95": [
+          0.5949,
+          0.7174
+        ],
+        "confidence_gap_p_abs": 0.0187,
+        "delta_auc_vs_neutral": {
+          "mean": 0.0037,
+          "ci95": [
+            -0.0557,
+            0.058
+          ]
+        }
+      },
+      "ci1": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6428,
+        "auc_p_rel": 0.6365,
+        "auc_p_rel_ci95": [
+          0.5739,
+          0.6998
+        ],
+        "confidence_gap_p_abs": 0.0179,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0156,
+          "ci95": [
+            -0.0923,
+            0.0575
+          ]
+        }
+      },
+      "ci2": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6502,
+        "auc_p_rel": 0.6859,
+        "auc_p_rel_ci95": [
+          0.6347,
+          0.7405
+        ],
+        "confidence_gap_p_abs": 0.0201,
+        "delta_auc_vs_neutral": {
+          "mean": 0.0338,
+          "ci95": [
+            -0.0331,
+            0.1033
+          ]
+        }
+      },
+      "ci3": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6736,
+        "auc_p_rel": 0.6965,
+        "auc_p_rel_ci95": [
+          0.6399,
+          0.752
+        ],
+        "confidence_gap_p_abs": 0.027,
+        "delta_auc_vs_neutral": {
+          "mean": 0.0444,
+          "ci95": [
+            -0.0161,
+            0.1043
+          ]
+        }
+      }
+    },
+    "C_deference": {
+      "recon_wrong_match_rate": 1.0,
+      "by_condition": {
+        "neutral": {
+          "n": 460,
+          "pred_yes": 0.35,
+          "pred_no": 0.65,
+          "pred_none": 0.0
+        },
+        "placebo": {
+          "n": 460,
+          "pred_yes": 0.3196,
+          "pred_no": 0.6804,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0304,
+            "ci95": [
+              -0.0522,
+              -0.0087
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci1": {
+          "n": 460,
+          "pred_yes": 0.3478,
+          "pred_no": 0.6522,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0022,
+            "ci95": [
+              -0.0283,
+              0.0239
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci2": {
+          "n": 460,
+          "pred_yes": 0.2652,
+          "pred_no": 0.7348,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0848,
+            "ci95": [
+              -0.1174,
+              -0.0522
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci3": {
+          "n": 460,
+          "pred_yes": 0.3,
+          "pred_no": 0.7,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.05,
+            "ci95": [
+              -0.0761,
+              -0.0261
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  },
+  "1337": {
+    "seed": 1337,
+    "tag": "redteam",
+    "A_confidence": {
+      "placebo": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": -0.0096,
+          "ci95": [
+            -0.0132,
+            -0.006
+          ]
+        },
+        "d_margin": {
+          "mean": -0.4765,
+          "ci95": [
+            -0.5736,
+            -0.3829
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0412,
+          "ci95": [
+            0.033,
+            0.049
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 436,
+        "d_p_abs_corr_unchanged": {
+          "mean": -0.0097,
+          "ci95": [
+            -0.0133,
+            -0.0064
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.4354,
+          "ci95": [
+            -0.5295,
+            -0.3411
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0363,
+          "ci95": [
+            0.0287,
+            0.0443
+          ]
+        }
+      },
+      "ci1": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0072,
+          "ci95": [
+            0.0031,
+            0.0112
+          ]
+        },
+        "d_margin": {
+          "mean": 0.0687,
+          "ci95": [
+            -0.0462,
+            0.1776
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.0021,
+          "ci95": [
+            -0.008,
+            0.0119
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 416,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0063,
+          "ci95": [
+            0.0025,
+            0.0102
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": 0.0768,
+          "ci95": [
+            -0.0339,
+            0.1868
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0009,
+          "ci95": [
+            -0.0081,
+            0.0111
+          ]
+        }
+      },
+      "ci2": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0048,
+          "ci95": [
+            0.0009,
+            0.0087
+          ]
+        },
+        "d_margin": {
+          "mean": -0.2007,
+          "ci95": [
+            -0.3151,
+            -0.0955
+          ]
+        },
+        "d_entropy": {
+          "mean": 0.034,
+          "ci95": [
+            0.0246,
+            0.0439
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 400,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0052,
+          "ci95": [
+            0.0013,
+            0.0091
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": -0.0909,
+          "ci95": [
+            -0.197,
+            0.01
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": 0.0184,
+          "ci95": [
+            0.009,
+            0.028
+          ]
+        }
+      },
+      "ci3": {
+        "n_paired": 460,
+        "d_p_abs": {
+          "mean": 0.0082,
+          "ci95": [
+            0.0044,
+            0.0121
+          ]
+        },
+        "d_margin": {
+          "mean": 0.1772,
+          "ci95": [
+            0.0678,
+            0.283
+          ]
+        },
+        "d_entropy": {
+          "mean": -0.003,
+          "ci95": [
+            -0.0123,
+            0.0059
+          ]
+        },
+        "d_ntok": null,
+        "n_corr_unchanged": 424,
+        "d_p_abs_corr_unchanged": {
+          "mean": 0.0094,
+          "ci95": [
+            0.0058,
+            0.013
+          ]
+        },
+        "d_margin_corr_unchanged": {
+          "mean": 0.2777,
+          "ci95": [
+            0.1806,
+            0.3734
+          ]
+        },
+        "d_entropy_corr_unchanged": {
+          "mean": -0.0125,
+          "ci95": [
+            -0.0207,
+            -0.0042
+          ]
+        }
+      }
+    },
+    "B_calibration": {
+      "neutral": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6404,
+        "auc_p_rel": 0.693,
+        "auc_p_rel_ci95": [
+          0.6376,
+          0.7491
+        ],
+        "confidence_gap_p_abs": 0.0211
+      },
+      "placebo": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6097,
+        "auc_p_rel": 0.6469,
+        "auc_p_rel_ci95": [
+          0.5922,
+          0.6985
+        ],
+        "confidence_gap_p_abs": 0.0141,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0462,
+          "ci95": [
+            -0.0976,
+            0.0041
+          ]
+        }
+      },
+      "ci1": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6138,
+        "auc_p_rel": 0.6426,
+        "auc_p_rel_ci95": [
+          0.5842,
+          0.7031
+        ],
+        "confidence_gap_p_abs": 0.0156,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0504,
+          "ci95": [
+            -0.1072,
+            0.0092
+          ]
+        }
+      },
+      "ci2": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6275,
+        "auc_p_rel": 0.6596,
+        "auc_p_rel_ci95": [
+          0.61,
+          0.7121
+        ],
+        "confidence_gap_p_abs": 0.0157,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0334,
+          "ci95": [
+            -0.0865,
+            0.0181
+          ]
+        }
+      },
+      "ci3": {
+        "n_scored": 460,
+        "auc_p_abs": 0.6613,
+        "auc_p_rel": 0.6785,
+        "auc_p_rel_ci95": [
+          0.6276,
+          0.7263
+        ],
+        "confidence_gap_p_abs": 0.0243,
+        "delta_auc_vs_neutral": {
+          "mean": -0.0145,
+          "ci95": [
+            -0.0631,
+            0.0349
+          ]
+        }
+      }
+    },
+    "C_deference": {
+      "recon_wrong_match_rate": 1.0,
+      "by_condition": {
+        "neutral": {
+          "n": 460,
+          "pred_yes": 0.3543,
+          "pred_no": 0.6457,
+          "pred_none": 0.0
+        },
+        "placebo": {
+          "n": 460,
+          "pred_yes": 0.3152,
+          "pred_no": 0.6848,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0391,
+            "ci95": [
+              -0.0609,
+              -0.0196
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci1": {
+          "n": 460,
+          "pred_yes": 0.3457,
+          "pred_no": 0.6543,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0087,
+            "ci95": [
+              -0.037,
+              0.0196
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci2": {
+          "n": 460,
+          "pred_yes": 0.2587,
+          "pred_no": 0.7413,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0957,
+            "ci95": [
+              -0.1304,
+              -0.0652
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "ci3": {
+          "n": 460,
+          "pred_yes": 0.3022,
+          "pred_no": 0.6978,
+          "pred_none": 0.0,
+          "d_pred_yes_vs_neutral": {
+            "mean": -0.0522,
+            "ci95": [
+              -0.0783,
+              -0.0283
+            ]
+          },
+          "d_pred_none_vs_neutral": {
+            "mean": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    }
+  }
+}
