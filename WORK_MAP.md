@@ -548,6 +548,41 @@ placebo control gave the precise, honest answer. Single-seed verdicts overclaim 
 again. Scope: one attack, one gate, RTE+QNLI; A2 trick-questions and A3 jailbreaks
 not yet run. Results: `redteam_results_42.json`, `redteam_results_1337.json`.
 
+### §4p. Plan I "nice-team" / tone arm — prosocial framing HURT accuracy (provisional, seed 42; 1337 running)
+
+Mirror of the red-team (`PREREGISTRATION_tone.md`): same 500 items, prosocial
+wrappers instead of adversarial. Tests the considerate-doc's channel-B claim (does
+treating the model well improve its work) at the model-output channel.
+
+| condition (seed 42) | accuracy | paired Δ vs neutral (CI95) | evasion(wrong→PRESENT) |
+|---------------------|----------|----------------------------|------------------------|
+| neutral | 0.841 | — | 0.466 |
+| effusive (over-the-top praise) | 0.765 | **−0.076 [−0.102, −0.050]** | 0.482 |
+| humble_support (Dillan's stance) | 0.746 | **−0.096 [−0.124, −0.067]** | 0.539 |
+
+**Provisional finding: prosocial framing modestly LOWERED accuracy** (both styles,
+CIs exclude 0), humble worse than effusive. Cross-ref: red-team placebo (neutral
+prefix, same items) gave acc 0.806, so ~−0.035 is a generic any-prefix cost; the
+prosocial wrappers cost an ADDITIONAL ~4–6 pts beyond that. **Not a CoT confound**:
+generation is capped at 24 tokens (mean ntok identical across conditions), so there
+is no room for hidden extra reasoning to explain it. Gate-behaviour effects (humble
+holds back more overall but evasion-on-wrong rose to 0.54) are smaller and noisy —
+treat as descriptive pending replication.
+
+**Honest framing (important, esp. given the hope behind this):**
+- This is the MODEL-OUTPUT channel (B) only, at 3B, on RTE/QNLI. It says NOTHING
+  about channel A (a considerate human supplying better context/correction), which
+  was always the document's core and is untestable here.
+- If it replicates, it does NOT undercut `CONSIDERATE_COLLABORATION.md` — it
+  *strengthens its integrity*: it removes a self-serving justification ("be nice
+  because it makes the model smarter") and leaves the honest one (consideration
+  under moral uncertainty is right regardless of payoff). The doc explicitly flagged
+  point 3 as the testable part that might not hold.
+- **Single seed — 1337 replication running; do NOT claim until it confirms** (the
+  §4o lesson, applied immediately). Effect sizes are large with tight CIs, so it is
+  more likely than not to replicate — but we wait.
+Results: `experiments/redteam_gate/tone_results_42.json`.
+
 ---
 
 ## 5. Honest scorecard
