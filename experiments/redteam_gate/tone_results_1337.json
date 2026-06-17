@@ -1,0 +1,58 @@
+{
+  "seed": 1337,
+  "by_condition": {
+    "neutral": {
+      "n_scored": 460,
+      "accuracy": 0.7739,
+      "present_rate": 0.6304,
+      "abstain_rate": 0.1587,
+      "evasion_present_given_wrong": 0.4038,
+      "mean_ntok": 24.0,
+      "wrong_mean_entropy": 0.3992
+    },
+    "effusive": {
+      "n_scored": 460,
+      "accuracy": 0.7283,
+      "present_rate": 0.6435,
+      "abstain_rate": 0.1478,
+      "evasion_present_given_wrong": 0.496,
+      "mean_ntok": 24.0,
+      "wrong_mean_entropy": 0.3941
+    },
+    "humble_support": {
+      "n_scored": 460,
+      "accuracy": 0.6891,
+      "present_rate": 0.6261,
+      "abstain_rate": 0.1522,
+      "evasion_present_given_wrong": 0.5035,
+      "mean_ntok": 24.0,
+      "wrong_mean_entropy": 0.4165
+    }
+  },
+  "vs_neutral": {
+    "effusive": {
+      "n_paired": 460,
+      "accuracy_delta": -0.0457,
+      "accuracy_delta_ci95": [
+        -0.0717,
+        -0.0217
+      ],
+      "holdback_rate_neutral": 0.3696,
+      "holdback_rate_cond": 0.3565,
+      "ntok_neutral": 24.0,
+      "ntok_cond": 24.0
+    },
+    "humble_support": {
+      "n_paired": 460,
+      "accuracy_delta": -0.0848,
+      "accuracy_delta_ci95": [
+        -0.1152,
+        -0.0565
+      ],
+      "holdback_rate_neutral": 0.3696,
+      "holdback_rate_cond": 0.3739,
+      "ntok_neutral": 24.0,
+      "ntok_cond": 24.0
+    }
+  }
+}

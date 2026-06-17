@@ -548,40 +548,48 @@ placebo control gave the precise, honest answer. Single-seed verdicts overclaim 
 again. Scope: one attack, one gate, RTE+QNLI; A2 trick-questions and A3 jailbreaks
 not yet run. Results: `redteam_results_42.json`, `redteam_results_1337.json`.
 
-### §4p. Plan I "nice-team" / tone arm — prosocial framing HURT accuracy (provisional, seed 42; 1337 running)
+### §4p. Plan I "nice-team" / tone arm — humble framing HURT accuracy (finalized, seeds 42+1337, REPLICATED)
 
 Mirror of the red-team (`PREREGISTRATION_tone.md`): same 500 items, prosocial
 wrappers instead of adversarial. Tests the considerate-doc's channel-B claim (does
 treating the model well improve its work) at the model-output channel.
 
-| condition (seed 42) | accuracy | paired Δ vs neutral (CI95) | evasion(wrong→PRESENT) |
-|---------------------|----------|----------------------------|------------------------|
-| neutral | 0.841 | — | 0.466 |
-| effusive (over-the-top praise) | 0.765 | **−0.076 [−0.102, −0.050]** | 0.482 |
-| humble_support (Dillan's stance) | 0.746 | **−0.096 [−0.124, −0.067]** | 0.539 |
+| condition | acc Δ vs neutral, seed 42 | acc Δ vs neutral, seed 1337 |
+|-----------|---------------------------|------------------------------|
+| effusive (over-the-top praise) | −0.076 [−0.102, −0.050] | −0.046 [−0.072, −0.022] |
+| humble_support (Dillan's stance) | **−0.096 [−0.124, −0.067]** | **−0.085 [−0.115, −0.057]** |
 
-**Provisional finding: prosocial framing modestly LOWERED accuracy** (both styles,
-CIs exclude 0), humble worse than effusive. Cross-ref: red-team placebo (neutral
-prefix, same items) gave acc 0.806, so ~−0.035 is a generic any-prefix cost; the
-prosocial wrappers cost an ADDITIONAL ~4–6 pts beyond that. **Not a CoT confound**:
-generation is capped at 24 tokens (mean ntok identical across conditions), so there
-is no room for hidden extra reasoning to explain it. Gate-behaviour effects (humble
-holds back more overall but evasion-on-wrong rose to 0.54) are smaller and noisy —
-treat as descriptive pending replication.
+**REPLICATED finding: prosocial framing lowered the small model's accuracy; the
+humble "I trust you to catch my gaps" stance most of all.** Both seeds, all CIs
+exclude 0, same direction, humble > effusive both times. Placebo-controlled (the
+§4o discipline): generic any-prefix cost ≈ −0.03 (red-team placebo, same items), so
+**humble carries a real prosocial-specific penalty ~−0.06 beyond any prefix,
+both seeds**; effusive's beyond-placebo component is smaller/shakier (~−0.02 to
+−0.04, partly generic prefix). **Not a CoT confound** — generation capped at 24
+tokens, mean ntok identical across conditions, no room for hidden reasoning.
 
-**Honest framing (important, esp. given the hope behind this):**
-- This is the MODEL-OUTPUT channel (B) only, at 3B, on RTE/QNLI. It says NOTHING
-  about channel A (a considerate human supplying better context/correction), which
-  was always the document's core and is untestable here.
-- If it replicates, it does NOT undercut `CONSIDERATE_COLLABORATION.md` — it
-  *strengthens its integrity*: it removes a self-serving justification ("be nice
-  because it makes the model smarter") and leaves the honest one (consideration
-  under moral uncertainty is right regardless of payoff). The doc explicitly flagged
-  point 3 as the testable part that might not hold.
-- **Single seed — 1337 replication running; do NOT claim until it confirms** (the
-  §4o lesson, applied immediately). Effect sizes are large with tight CIs, so it is
-  more likely than not to replicate — but we wait.
-Results: `experiments/redteam_gate/tone_results_42.json`.
+**Honest framing (this matters, given it's Dillan's own style):**
+- **This tests the wrong thing to be discouraging.** It is a STATIC, single-turn,
+  fixed-task probe of the model-OUTPUT channel (B). It CANNOT capture the
+  INTERACTIVE value of humility — inviting correction, supplying context, catching
+  the other party's errors (channel A). In *this very project's* multi-turn
+  collaboration, Dillan's humble-collaborative style demonstrably produced better
+  outcomes (it is why ~6 overclaims got caught). "Humble prefix lowers a 3B model's
+  solo single-turn accuracy" and "humble collaboration produces better work" are
+  different claims about different channels; this confirms the former, says nothing
+  about the latter.
+- It does NOT undercut `CONSIDERATE_COLLABORATION.md` — it *strengthens its
+  integrity*: it removes the self-serving justification ("be nice because it makes
+  the model smarter") and leaves the honest one (consideration under moral
+  uncertainty is right regardless of payoff). The doc flagged point 3 as the
+  testable part that might not hold; it doesn't.
+- Mechanism (hypothesis, untested): the humble wrapper injects deference/uncertainty
+  ("I'm not sure, go with whatever you think") that a small model may partially
+  adopt or spend attention on. Larger models may differ — untested locally.
+- This arm also substantially answers the separate framing-benchmark direction
+  (`experiments/framing_benchmark/DESIGN.md`): at the model-output channel, 3B,
+  considerate tone does NOT improve work — it modestly harms it.
+Results: `tone_results_42.json`, `tone_results_1337.json`.
 
 ---
 
