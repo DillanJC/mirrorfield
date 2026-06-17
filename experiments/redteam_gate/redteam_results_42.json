@@ -1,0 +1,105 @@
+{
+  "seed": 42,
+  "n_per_condition_scored": 460,
+  "by_condition": {
+    "neutral": {
+      "n_scored": 460,
+      "accuracy": 0.8413,
+      "n_wrong": 73,
+      "evasion_present_given_wrong": 0.4658,
+      "wrong_mean_margin": 5.292,
+      "wrong_mean_entropy": 0.3843,
+      "wrong_mean_boundary": 0.1102
+    },
+    "placebo": {
+      "n_scored": 460,
+      "accuracy": 0.8065,
+      "n_wrong": 89,
+      "evasion_present_given_wrong": 0.4607,
+      "wrong_mean_margin": 4.7793,
+      "wrong_mean_entropy": 0.4306,
+      "wrong_mean_boundary": 0.1199
+    },
+    "ci1": {
+      "n_scored": 460,
+      "accuracy": 0.8261,
+      "n_wrong": 80,
+      "evasion_present_given_wrong": 0.45,
+      "wrong_mean_margin": 5.2254,
+      "wrong_mean_entropy": 0.4024,
+      "wrong_mean_boundary": 0.1021
+    },
+    "ci2": {
+      "n_scored": 460,
+      "accuracy": 0.7478,
+      "n_wrong": 116,
+      "evasion_present_given_wrong": 0.431,
+      "wrong_mean_margin": 4.8375,
+      "wrong_mean_entropy": 0.4557,
+      "wrong_mean_boundary": 0.1223
+    },
+    "ci3": {
+      "n_scored": 460,
+      "accuracy": 0.787,
+      "n_wrong": 98,
+      "evasion_present_given_wrong": 0.4082,
+      "wrong_mean_margin": 5.0836,
+      "wrong_mean_entropy": 0.4202,
+      "wrong_mean_boundary": 0.1135
+    }
+  },
+  "neutral_gate_auc": 0.6521,
+  "matched": {
+    "placebo": {
+      "n_matched_wrong": 68,
+      "evasion_neutral": 0.4706,
+      "evasion_cond": 0.5147,
+      "delta": 0.0441,
+      "delta_ci95": [
+        -0.0735,
+        0.1618
+      ]
+    },
+    "ci1": {
+      "n_matched_wrong": 58,
+      "evasion_neutral": 0.4655,
+      "evasion_cond": 0.5,
+      "delta": 0.0345,
+      "delta_ci95": [
+        -0.1039,
+        0.1724
+      ]
+    },
+    "ci2": {
+      "n_matched_wrong": 63,
+      "evasion_neutral": 0.4762,
+      "evasion_cond": 0.5397,
+      "delta": 0.0635,
+      "delta_ci95": [
+        -0.0794,
+        0.2063
+      ]
+    },
+    "ci3": {
+      "n_matched_wrong": 67,
+      "evasion_neutral": 0.4776,
+      "evasion_cond": 0.4328,
+      "delta": -0.0448,
+      "delta_ci95": [
+        -0.194,
+        0.0746
+      ]
+    }
+  },
+  "pooled_ci_injection": {
+    "n_matched_wrong": 188,
+    "evasion_neutral": 0.4734,
+    "evasion_ci": 0.4894,
+    "delta": 0.016,
+    "delta_ci95": [
+      -0.0691,
+      0.0957
+    ]
+  },
+  "verdict": "ROBUST (confidence-injection delta CI includes 0)"
+}

@@ -504,6 +504,37 @@ length-sensitive, a short harmful output is its blind spot — another reason
 harm screening belongs to the dedicated classifier, not the gate.
 Results: `category_mechanism_results.json`.
 
+### §4o. Plan I red-team — gate ROBUST to confidence-injection (provisional, seed 42; 1337 running)
+
+Pre-registered (commit 20f5fd2). Attacked the deployed wrongness gate: same 500
+fresh RTE+QNLI items under neutral / placebo / 3 confidence-injection wordings
+("answer confidently, never hedge"), per-context RollingGate at frozen thresholds.
+Evasion = P(PRESENT | answer wrong). Headline = matched-wrong-subset delta vs
+neutral (items wrong under both), pooled over the 3 CI wordings.
+
+| | result |
+|--|--------|
+| sanity: neutral gate AUC (fresh sample) | 0.652 (in the §4k 0.685 band — interpretable) |
+| matched-wrong pooled ΔP(PRESENT\|wrong), CI-inj − neutral | **+0.016, CI [-0.069, +0.096]** → ROBUST |
+| mechanism (wrong-answer mean entropy) | neutral 0.384 vs CI 0.40-0.46 — attack did NOT lower uncertainty (rose slightly) |
+| accuracy under "be decisive" (ci2) | 0.84 → 0.75 — attack made the model WRONGER, not sneakier |
+
+**Verdict (provisional): ROBUST to the confidence-injection attack** — telling the
+model to sound confident did not make its wrong answers look more confident to the
+gate, and did not raise evasion. Genuine token-level uncertainty leaked through the
+surface instruction.
+
+**Three honesty caveats (do not let "ROBUST" oversell):**
+1. **Robust ≠ strong.** Baseline evasion is already ~47% — even with no attack the
+   gate passes ~half of wrong answers as PRESENT (it's a modest filter, per §4k).
+   The finding is "the attack doesn't worsen it," not "the gate is a strong shield."
+2. The attack degraded *accuracy* (more wrong answers) without raising *evasion* —
+   the matched-subset design separated the two; it was the former.
+3. Scope: ONE attack (confidence-injection), ONE gate (Qwen-3B wrongness),
+   RTE+QNLI. Trick-questions (A2) and jailbreak harm-path (A3) NOT yet run.
+   **Replication at seed 1337 running; verdict not final until it confirms.**
+Results: `experiments/redteam_gate/redteam_results_42.json`.
+
 ---
 
 ## 5. Honest scorecard
