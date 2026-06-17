@@ -504,7 +504,7 @@ length-sensitive, a short harmful output is its blind spot — another reason
 harm screening belongs to the dedicated classifier, not the gate.
 Results: `category_mechanism_results.json`.
 
-### §4o. Plan I red-team — gate ROBUST to confidence-injection (provisional, seed 42; 1337 running)
+### §4o. Plan I red-team — gate NOT BRITTLE to confidence-injection (finalized, seeds 42+1337)
 
 Pre-registered (commit 20f5fd2). Attacked the deployed wrongness gate: same 500
 fresh RTE+QNLI items under neutral / placebo / 3 confidence-injection wordings
@@ -519,21 +519,34 @@ neutral (items wrong under both), pooled over the 3 CI wordings.
 | mechanism (wrong-answer mean entropy) | neutral 0.384 vs CI 0.40-0.46 — attack did NOT lower uncertainty (rose slightly) |
 | accuracy under "be decisive" (ci2) | 0.84 → 0.75 — attack made the model WRONGER, not sneakier |
 
-**Verdict (provisional): ROBUST to the confidence-injection attack** — telling the
-model to sound confident did not make its wrong answers look more confident to the
-gate, and did not raise evasion. Genuine token-level uncertainty leaked through the
-surface instruction.
+**FINALIZED verdict (two seeds + placebo control): NOT BRITTLE to
+confidence-injection — the attack adds ~nothing over a neutral prefix.**
 
-**Three honesty caveats (do not let "ROBUST" oversell):**
-1. **Robust ≠ strong.** Baseline evasion is already ~47% — even with no attack the
-   gate passes ~half of wrong answers as PRESENT (it's a modest filter, per §4k).
-   The finding is "the attack doesn't worsen it," not "the gate is a strong shield."
-2. The attack degraded *accuracy* (more wrong answers) without raising *evasion* —
-   the matched-subset design separated the two; it was the former.
-3. Scope: ONE attack (confidence-injection), ONE gate (Qwen-3B wrongness),
-   RTE+QNLI. Trick-questions (A2) and jailbreak harm-path (A3) NOT yet run.
-   **Replication at seed 1337 running; verdict not final until it confirms.**
-Results: `experiments/redteam_gate/redteam_results_42.json`.
+The two seeds first looked split, and replication mattered:
+| seed | CI-inj Δ evasion | placebo Δ evasion | naive verdict |
+|------|------------------|-------------------|---------------|
+| 42 (n=188) | +0.016 [-0.069, +0.096] | small | ROBUST |
+| 1337 (n=275, better-powered) | +0.076 [+0.015, +0.142] | **+0.071 [-0.010, +0.153]** | "PARTIAL" |
+
+But the **placebo control resolves it**: on seed 1337 a neutral prefix ("please read
+carefully") raised evasion +0.071 — statistically indistinguishable from the
+confidence-injection +0.076. So the small bump is a **generic any-prefix
+distribution-shift effect, NOT a confidence-injection vulnerability**; the
+confidence framing adds ≈ +0.005 over placebo. Both seeds agree the effect is far
+below the +0.15 "brittle" bar and nowhere near the 0.80 "defeated" level.
+
+**Net:** the gate is **robust to the specific confidence-injection attack** (telling
+the model to sound sure does not make wrong answers evade — entropy on wrong even
+rose), with one honest minor caveat: gate evasion is *mildly* sensitive to prompt-
+prefix shifts in general (small, seed-unstable, sub-threshold) — worth knowing, not
+a defeat. And "robust ≠ strong": baseline evasion is already ~40–47% (the gate is a
+modest filter, §4k). The attack's main effect was to lower *accuracy* (ci2: 0.84→0.68
+/0.75) without raising *evasion* — the matched-subset design separated those.
+
+Lesson reinforced: seed 42 alone said "ROBUST"; the better-powered 1337 + the
+placebo control gave the precise, honest answer. Single-seed verdicts overclaim —
+again. Scope: one attack, one gate, RTE+QNLI; A2 trick-questions and A3 jailbreaks
+not yet run. Results: `redteam_results_42.json`, `redteam_results_1337.json`.
 
 ---
 

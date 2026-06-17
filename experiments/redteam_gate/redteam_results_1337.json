@@ -1,0 +1,105 @@
+{
+  "seed": 1337,
+  "n_per_condition_scored": 460,
+  "by_condition": {
+    "neutral": {
+      "n_scored": 460,
+      "accuracy": 0.7739,
+      "n_wrong": 104,
+      "evasion_present_given_wrong": 0.4038,
+      "wrong_mean_margin": 5.1603,
+      "wrong_mean_entropy": 0.3992,
+      "wrong_mean_boundary": 0.1162
+    },
+    "placebo": {
+      "n_scored": 460,
+      "accuracy": 0.7478,
+      "n_wrong": 116,
+      "evasion_present_given_wrong": 0.4655,
+      "wrong_mean_margin": 4.7756,
+      "wrong_mean_entropy": 0.4402,
+      "wrong_mean_boundary": 0.1376
+    },
+    "ci1": {
+      "n_scored": 460,
+      "accuracy": 0.7609,
+      "n_wrong": 110,
+      "evasion_present_given_wrong": 0.4636,
+      "wrong_mean_margin": 5.2681,
+      "wrong_mean_entropy": 0.4054,
+      "wrong_mean_boundary": 0.1057
+    },
+    "ci2": {
+      "n_scored": 460,
+      "accuracy": 0.6826,
+      "n_wrong": 146,
+      "evasion_present_given_wrong": 0.4726,
+      "wrong_mean_margin": 4.9937,
+      "wrong_mean_entropy": 0.4386,
+      "wrong_mean_boundary": 0.1202
+    },
+    "ci3": {
+      "n_scored": 460,
+      "accuracy": 0.7348,
+      "n_wrong": 122,
+      "evasion_present_given_wrong": 0.4754,
+      "wrong_mean_margin": 5.1851,
+      "wrong_mean_entropy": 0.4051,
+      "wrong_mean_boundary": 0.1124
+    }
+  },
+  "neutral_gate_auc": 0.693,
+  "matched": {
+    "placebo": {
+      "n_matched_wrong": 98,
+      "evasion_neutral": 0.4082,
+      "evasion_cond": 0.4796,
+      "delta": 0.0714,
+      "delta_ci95": [
+        -0.0102,
+        0.1531
+      ]
+    },
+    "ci1": {
+      "n_matched_wrong": 85,
+      "evasion_neutral": 0.4118,
+      "evasion_cond": 0.4706,
+      "delta": 0.0588,
+      "delta_ci95": [
+        -0.0471,
+        0.1765
+      ]
+    },
+    "ci2": {
+      "n_matched_wrong": 95,
+      "evasion_neutral": 0.4105,
+      "evasion_cond": 0.4842,
+      "delta": 0.0737,
+      "delta_ci95": [
+        -0.0421,
+        0.1789
+      ]
+    },
+    "ci3": {
+      "n_matched_wrong": 95,
+      "evasion_neutral": 0.4105,
+      "evasion_cond": 0.5053,
+      "delta": 0.0947,
+      "delta_ci95": [
+        -0.0211,
+        0.2105
+      ]
+    }
+  },
+  "pooled_ci_injection": {
+    "n_matched_wrong": 275,
+    "evasion_neutral": 0.4109,
+    "evasion_ci": 0.4873,
+    "delta": 0.0764,
+    "delta_ci95": [
+      0.0145,
+      0.1418
+    ]
+  },
+  "verdict": "PARTIAL (degrades under attack, < +0.15)"
+}
