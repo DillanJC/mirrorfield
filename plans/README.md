@@ -1,4 +1,8 @@
-# Project Plans — eight directions, side by side
+# Project Plans — nine directions, side by side
+
+> ▶ **CHOSEN NEXT (2026-06-13): Plan I — red-team the gate.** Pre-registration
+> first, then execute. The most goal-relevant unanswered question: can an adversary
+> who knows the gate exists slip a wrong/harmful output past it?
 
 *Two planning rounds, both grounded in the repos, adversarially critiqued against
 this project's own falsification history, and revised. A–E (2026-06-12) came out of
@@ -44,6 +48,7 @@ substance into shapes you already designed.
 | **[F — Per-step uncertainty](F-per-step-uncertainty.md)** | Does *where* the model doubts itself predict *which* answers are wrong? | ~5 | 5–8 h | ~65–75% | Hit: localizes errors / beats the whole-response mean. Null: clean, with the length confound nailed. |
 | **[G — Disagreement witness](G-disagreement-witness.md)** | Does cross-model / expert disagreement beat or add to the gate? | multi-day | 4–8 h | ~65–75% | Tests the biggest untested vein (witness/distributed/Mandala). Null closes it honestly. |
 | **[H — Goodhart detector](H-goodhart-detector.md)** | Does the metric-gaming detector generalize, or catch only one trick? | ~3 | ~0 | PARTIAL ~45% | Scope-map of the project's most safety-relevant, non-geometric survivor. Cheapest of all. |
+| **[I — Red-team the gate](I-redteam-the-gate.md)** ▶ *chosen next* | Can an adversary who knows the gate evade it (esp. "just sound confident")? | ~2–3 | 4–6 h | BRITTLE/PARTIAL ~65% | Brittle: the critical caveat (+ maybe a cheap fix) to staple on every gate claim. Robust: a real strength result. Validates the one tool before anyone relies on it. |
 
 ## Recommended sequence (Claude's view; Dillan decides)
 
