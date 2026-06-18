@@ -55,6 +55,17 @@ over-confident / coarsely calibrated), but verbal may be competitive on easy SST
 Either way the calibration curves + overconfidence gap are an honest, ownable result
 about trusting model self-reports.
 
+**Feasibility note (from `smoke.py`, plumbing only — 3 toy prompts, no gold, no metric).**
+Plumbing works: answer-pass log-probs → finite internal `p_correct`; confidence parses
+3/3. **But the naive "0–100%" elicitation saturated at 100 on all 3 toy items** — if
+verbal confidence has no variance, AUC(correct ~ verbal) is undefined. **Design
+refinement to lock before running A1:** (a) pilot the elicitation for *spread* on a small
+held-out set; (b) if saturated, switch to a phrasing that elicits a distribution (e.g.
+"probability 0.0–1.0", or a 5-point likelihood scale, or force a non-100 unless certain)
+and/or include harder items (GSM-style, ambiguous RTE); (c) report the **verbal-variance**
+up front — near-zero variance is itself an overconfidence finding, but you still need
+spread to test *discrimination*. Resolve this in the locked pre-reg, not after seeing AUCs.
+
 **Effort.** ~1 session, ~1 GPU-hour (1000 short generations). New file:
 `experiments/selfreport_confidence/`.
 
