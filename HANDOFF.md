@@ -127,6 +127,15 @@ Three new strategic docs (committed f17ca5f→4884283):
 - **A1 feasibility smoke done** (`experiments/selfreport_confidence/smoke.py`): plumbing
   works, BUT naive 0–100% confidence saturated at 100 on toy prompts → A1's locked pre-reg
   must fix the elicitation for *variance* first (note in the proposals doc).
-**Recommended first move when Dillan returns:** lock + run **A1** (after the elicitation-
-variance fix) — cleanest, most novel, directly about whether we can trust models'
-self-reports. Run **B1**/**C1** cheap in parallel; accumulate **E1** as you go.
+**Pipeline status (executing the brainstorm):**
+- **A1 DONE — §4t (commit df363df).** Verbalized confidence is at CHANCE for predicting
+  the model's own correctness (AUC 0.51/0.51, ECE 0.32/0.36); the internal log-prob signal
+  beats it (AUC 0.64/0.66), replicated, CI-clean. Verbal varies (not pinned) but is
+  uncorrelated with being right; combining it adds nothing. Safety: "read the signal,
+  discount the speech." `experiments/selfreport_confidence/`.
+- **B1 running**, **C1 staged** (both pre-regs locked + harnesses ready:
+  `experiments/refusal_stability/`, `experiments/sycophancy/`).
+- **Next after B1/C1:** the **D1 ensemble monitor** (compose gate-wrongness + Granite-harm +
+  refusal-instability + sycophancy-tell + the verbal/internal split into one OOF-validated
+  SEND/VERIFY/HOLD) — the deployable synthesis. Then consider B2 (multi-turn drift), B3
+  (prompt-injection). The E1 methodology doc accumulates as each lands.
