@@ -54,8 +54,16 @@ B-Phase-0 are DONE. Remaining:
    scope-map.
 3. **D — Publication** (`plans/D-publication-outreach.md`): all numbers settled;
    the retraction-plus-survivor story is fully tellable; nothing blocks it.
-4. **Productize/calibrate the gate (candidate, not yet planned):** turn the
-   composed SEND/HOLD into a calibrated, documented, installable tool.
+4. **Productize the gate — DONE (commits a79d1f8, 8534574, ebe68b7).** The repo is now
+   pip-installable (`pyproject.toml`; core = numpy/scipy, extras `[mcp]`,`[harm]`;
+   console script `mirrorfield-mcp`; wheel verified — calibration JSON shipped,
+   geometry/api excluded). Added the validated `decide()` (frozen thresholds on
+   p_correct_relative) + composed `send_hold_decision()` (wrongness + optional harm
+   override → SEND/VERIFY/HOLD); the `safety_gate` MCP tool; `mirrorfield/mcp/harm.py`
+   (lazy Granite wrapper — verified safe 0.001 vs harmful 0.988, pipeline HOLDs on harm);
+   7 passing decision unit tests (`tests/test_gate_decision.py`); honest v3.0 `__init__`
+   + root-README status banner; cut `moltbook_bridge.py`. Possible follow-ups: a CLI /
+   quickstart example, calibration-refresh script, PyPI publish (only if Dillan wants).
 5. **F (per-step), G (disagreement), A (cross-model geometry):** planned, heavier,
    higher null-odds. G is the biggest untested vein but ~70% null.
 6. **Plan I leftovers:** A2 trick-questions, A3 jailbreak harm-path (not run).
@@ -76,11 +84,25 @@ B-Phase-0 are DONE. Remaining:
   one big model at a time.
 
 ## Immediate next step
-Confidence-contagion (§4q, free CPU) and harm-framing (§4r, GPU) are both DONE.
-§4r headline: humble framing softens refusal STYLE (~−0.19/−0.20 vs placebo,
-REPLICATED JBB+BeaverTails) but NOT harm SUBSTANCE (Granite harm only ~+0.02; "being
-nice" does NOT jailbreak the 3B model; naive jailbreak_pos backfired). Validity caveat:
-benign-refusal bar (<0.20) missed at 0.29 — refusal-style effect is replicated-but-not-
-formally-validated, harm conclusion independent of it. Next: decide with Dillan between
-**H (Goodhart detector, cheapest)**, **D (publication, unblocked)**, **productize the
-gate**, or the optional **0.5B tone scale-run** (needs a pre-reg first).
+Confidence-contagion (§4q, free CPU), harm-framing (§4r, GPU), and **productizing the
+gate** (commits a79d1f8 / 8534574 / ebe68b7) are all DONE. §4r headline: humble framing
+softens refusal STYLE (~−0.19/−0.20 vs placebo, REPLICATED) but NOT harm SUBSTANCE
+(Granite harm ~+0.02; "being nice" does NOT jailbreak the 3B model). Open options for the
+next session: **H (Goodhart detector, cheapest)**, **D (publication, unblocked)**, the
+optional **0.5B tone scale-run** (needs a pre-reg), or productization polish (CLI/quickstart
+example, PyPI publish if wanted).
+
+### ⚠️ Environment caveat discovered while productizing (action item for Dillan)
+There are TWO `mirrorfield` package copies on this machine: the **canonical** repo
+`C:\Users\User\mirrorfield` (this repo, github DillanJC/mirrorfield — where all work +
+commits live) and a **stale copy** inside the shell's default dir
+`C:\Users\User\geometric_safety_features-Experiment\mirrorfield` (old code, still has the
+top-level geometry import). A pre-existing editable install **`geometric_safety_features`
+v1.0.0** (pointing at the Experiment dir) registers a meta-path finder that maps
+`import mirrorfield` → the STALE copy from any cwd that doesn't already contain the package
+(`.pth` files load alphabetically, so `g…` wins over `m…`). Net effect: a plain
+`import mirrorfield` / the `mirrorfield-mcp` script can silently resolve to the OLD code.
+**Fix (Dillan's call — not done autonomously):** `pip uninstall geometric_safety_features`
+(and/or `pip install -e .` from `C:\Users\User\mirrorfield`) so the canonical package wins.
+Tooling note: foreground Bash starts in the Experiment dir, so always `cd C:\Users\User\mirrorfield`
+first; verifying imports needs a cwd without a `mirrorfield/` subdir (or `python -P`).
