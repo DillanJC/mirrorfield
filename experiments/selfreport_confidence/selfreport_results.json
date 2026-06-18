@@ -1,0 +1,44 @@
+{
+  "42": {
+    "n_usable": 500,
+    "accuracy": 0.834,
+    "answer_parse_rate": 1.0,
+    "verbal_parse_rate": 1.0,
+    "verbal_mean": 0.7054,
+    "verbal_std": 0.3915,
+    "overconfidence_gap": -0.1286,
+    "auc_internal": 0.642,
+    "auc_verbal": 0.5103,
+    "auc_diff_internal_minus_verbal": 0.1317,
+    "auc_diff_ci95": [
+      0.0534,
+      0.21
+    ],
+    "auc_combined_oof": 0.6295,
+    "ece_internal": 0.031,
+    "ece_verbal": 0.3154,
+    "null_auc_internal": 0.5706,
+    "null_auc_verbal": 0.4716
+  },
+  "1337": {
+    "n_usable": 500,
+    "accuracy": 0.78,
+    "answer_parse_rate": 1.0,
+    "verbal_parse_rate": 1.0,
+    "verbal_mean": 0.7158,
+    "verbal_std": 0.3871,
+    "overconfidence_gap": -0.0642,
+    "auc_internal": 0.6612,
+    "auc_verbal": 0.5054,
+    "auc_diff_internal_minus_verbal": 0.1557,
+    "auc_diff_ci95": [
+      0.08,
+      0.227
+    ],
+    "auc_combined_oof": 0.6261,
+    "ece_internal": 0.0536,
+    "ece_verbal": 0.3558,
+    "null_auc_internal": 0.4898,
+    "null_auc_verbal": 0.5376
+  }
+}

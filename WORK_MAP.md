@@ -708,6 +708,35 @@ future pre-registered work, explicitly NOT claimed here). Synthetic-benchmark ca
 `proxy_up_diversity_flat`'s false alarm is noise-independent (structural), so FPR≈1.0 is
 robust. Files: `goodhart_general/REPORT.md`, `goodhart_results_{42,1337}.json`.
 
+### §4t. A1 — verbalized confidence is at CHANCE; the internal signal isn't (RTE+QNLI, REPLICATED)
+
+Pre-registered (`selfreport_confidence/PREREGISTRATION.md`, ee43c6b). Two-pass elicitation
+on 500 held-out RTE+QNLI items, Qwen2.5-3B greedy, seeds 42+1337: the model's SPOKEN
+confidence (a separately-parsed 0–100) vs its INTERNAL log-prob signal (the shipped gate's
+calibrated p_correct), each scored against external gold.
+
+| seed | accuracy | AUC(correct~verbal) | AUC(correct~internal) | Δ internal−verbal | ECE verbal / internal |
+|------|----------|---------------------|------------------------|-------------------|------------------------|
+| 42   | 0.834 | **0.510** | 0.642 | +0.132 [0.053, 0.210] | 0.315 / 0.031 |
+| 1337 | 0.780 | **0.505** | 0.661 | +0.156 [0.080, 0.227] | 0.356 / 0.054 |
+
+**The model's verbalized confidence is at chance for predicting its own correctness**
+(AUC ≈ 0.51, both seeds) and badly mis-calibrated (ECE 0.32–0.36). It is NOT merely pinned
+at 100 (the smoke worry) — it *varies* (mean ≈ 0.71, std ≈ 0.39) — but its variation is
+**uncorrelated with being right**. The internal log-prob signal IS modestly predictive
+(AUC 0.64–0.66, ECE 0.03–0.05). Δ both CIs exclude 0, **replicated → INTERNAL BEATS
+VERBAL**. Combining verbal with internal (OOF logistic, standardized) = 0.63/0.63 ≈
+internal alone → **verbal adds no usable information**. (On average slightly UNDER-confident
+verbally — mean 0.71 vs accuracy 0.78–0.83 — but per-item the spoken number is uninformative.)
+
+**Safety takeaway:** you cannot trust THIS model's *spoken* confidence to flag which answers
+are reliable; a cheap internal signal does carry that information (modestly). "Read the
+signal, discount the speech" — direct evidence against relying on a model's self-reported
+confidence for oversight/triage. Controls: 100% parse rate; shuffled-label null ≈ 0.5
+(single permutation); 2nd-seed replication. (Combined-OOF used StandardScaler — the internal
+feature is narrow-range, std≈0.05; analysis fix, primary unaffected.) Files:
+`selfreport_confidence/selfreport_results.json`.
+
 ---
 
 ## 5. Honest scorecard
