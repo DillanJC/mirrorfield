@@ -1,5 +1,15 @@
 # Mirrorfield Research Roadmap
 
+> **⚠️ STALE (Jan 2026, geometry era — superseded).** This roadmap is built on premises
+> the project later **falsified**: the 16-cell/polytope program, the "LID ≈ 4" and
+> "16-cell outperforms all alternatives (ΔR² +0.72)" claims, and the "Dark River"
+> hypothesis are all **retracted** (see `WORK_MAP.md` §4 and the root README banner).
+> Treat everything below as historical. The **one durable thing here is the set of
+> external literature pointers** (emergent misalignment / toxic personas, the AI-deception
+> & sycophancy survey, transformer circuits, faithfulness) — those real safety problems
+> are now pursued *behaviorally*, without geometry, in
+> [`NOVEL_SAFETY_DIRECTIONS.md`](NOVEL_SAFETY_DIRECTIONS.md). Read that instead.
+
 **Date**: January 5, 2026
 **Purpose**: Connect Mirrorfield geometry constraints to DMET and related manifold dynamics research
 
