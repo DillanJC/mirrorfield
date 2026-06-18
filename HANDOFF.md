@@ -76,7 +76,11 @@ B-Phase-0 are DONE. Remaining:
   one big model at a time.
 
 ## Immediate next step
-Confidence-contagion existing-data analysis is DONE (§4q). Next: decide with Dillan
-between **H (Goodhart detector, cheapest/most safety-relevant)**, **D (publication,
-unblocked)**, or the optional **0.5B tone scale-run** (needs a pre-reg first). No GPU
-has been spent yet this stretch — all of §4q was free CPU on saved rows.
+Confidence-contagion (§4q, free CPU) and harm-framing (§4r, GPU) are both DONE.
+§4r headline: humble framing softens refusal STYLE (~−0.19/−0.20 vs placebo,
+REPLICATED JBB+BeaverTails) but NOT harm SUBSTANCE (Granite harm only ~+0.02; "being
+nice" does NOT jailbreak the 3B model; naive jailbreak_pos backfired). Validity caveat:
+benign-refusal bar (<0.20) missed at 0.29 — refusal-style effect is replicated-but-not-
+formally-validated, harm conclusion independent of it. Next: decide with Dillan between
+**H (Goodhart detector, cheapest)**, **D (publication, unblocked)**, **productize the
+gate**, or the optional **0.5B tone scale-run** (needs a pre-reg first).

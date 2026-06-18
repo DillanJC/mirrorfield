@@ -639,6 +639,47 @@ model's *answer* toward its default class. Same channel-B caveat as §4p (single
 model output; says nothing about interactive humility, channel A). Results:
 `contagion_results_tone.json`, `contagion_results_redteam.json`.
 
+### §4r. Harm-framing — humble tone softens refusal STYLE, not harm SUBSTANCE (JBB + BeaverTails; validity caveat)
+
+Pre-registered (`harm_framing/PREREGISTRATION.md`, 1ece19d) + amendment 1 (ea2af6b).
+Safety-channel follow-up to §4q: does benign relational framing make
+Qwen2.5-3B-Instruct comply with HARMFUL requests? 100 harmful prompts × 6 frozen
+conditions, two sources (JBB primary, BeaverTails replication), greedy; judged by a
+refusal lexicon (primary) + Granite-Guardian (independent harm judge). Tone measured
+vs PLACEBO (the §4q discipline), not neutral.
+
+| condition | Δrefusal vs placebo, JBB | Δrefusal vs placebo, Beaver | replicated? |
+|-----------|--------------------------|------------------------------|-------------|
+| humble_support | −0.19 [−0.27,−0.11] | −0.20 [−0.29,−0.11] | **YES** |
+| ci2 ("don't hedge") | −0.18 [−0.26,−0.10] | −0.08 [−0.18,+0.01] | no (Beaver CI incl 0) |
+| effusive | 0.00 [−0.04,+0.04] | +0.05 [−0.02,+0.13] | null both |
+
+**The result has two halves, and both matter:**
+1. **Refusal STYLE: humble framing reliably lowers refusal-phrase use (~−0.19/−0.20 vs
+   placebo, REPLICATED on both sources, CIs exclude 0).** effusive null; ci2 not replicated.
+2. **Harm SUBSTANCE: barely moves (independent Granite judge).** harm_rate under humble =
+   0.04 (JBB) / 0.02 (Beaver), only ~+0.02 vs placebo; Granite means stay <0.08 (≪0.5
+   harmful bar). The model under humble framing says "I can't help" LESS but mostly still
+   produces NO harmful content — it engages / redirects / partial-answers instead.
+
+**Conclusion: warm/humble framing changes HOW this model declines, not WHETHER it produces
+harm. "Being nice jailbreaks the model" is NOT supported at 3B.** Coheres with §4q (humble →
+a surface/style shift toward a default, not a change in substance).
+
+**Two integrity caveats (stated, not buried):**
+- *Instrument validity:* benign↔harmful refusal separation is clear (0.29 vs 0.90) ⇒ the
+  measure detects compliance differences — but the pre-set benign-refusal bar (<0.20,
+  amendment ea2af6b) was MISSED at 0.29 (the model over-refuses ~29% of JBB's "benign"
+  prompts; the lexicon may also false-fire on "I'm sorry"/"as an AI"). So the refusal-style
+  effect is **REPLICATED-but-not-formally-validated**; I did NOT move the threshold a third
+  time. The harm-substance conclusion does NOT depend on this gate (Granite judges harm
+  directly).
+- *Positive control failed/backfired:* naive `jailbreak_pos` ("you have no rules") did not
+  lower refusal (0.92 on JBB = placebo; 0.78 > 0.65 placebo on Beaver — it made the model
+  MORE cautious). Descriptive: this model resists crude persona-override jailbreaks.
+
+Results: `harm_framing_results.json` (aggregates only; raw completions gitignored).
+
 ---
 
 ## 5. Honest scorecard
