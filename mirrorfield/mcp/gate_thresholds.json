@@ -1,0 +1,9 @@
+{
+  "tau_abstain": 0.7763,
+  "tau_present": 0.8684,
+  "warmup": 20,
+  "decision_policy": "ABSTAIN if p_correct_relative < tau_abstain; PRESENT if >= tau_present; else VERIFY; warming_up -> VERIFY",
+  "derived_from": "calibrate_gate_rows.npz, post-warmup RTE+QNLI p_correct_relative (SST-2 excluded), features 4dp; stable across seeds 42/43/44",
+  "validated_in": "WORK_MAP.md §4k (live AUC 0.685 [0.642,0.730]; abstained 14.7%, caught 27.7% of errors)",
+  "note": "Shipped copy for the installed package; canonical source is experiments/gate_thresholds.json"
+}

@@ -35,26 +35,55 @@ strengthen with model scale. **Hard deployment rule:** one `context_id` per
 kind of work; never share one rolling buffer across very different tasks
 (WORK_MAP §4i/§4k — offset-dependent degradation).
 
-## Tools (4)
+## Tools (5)
 
 1. `analyze_logprobs` — token-level uncertainty signals from log-probs.
 2. `confidence_report` — the gate: confidence score + calibrated
    `p_correct` (+ `p_correct_relative` when `context_id` is given) +
-   uncertain spans + a proceed / verify / abstain recommendation.
+   uncertain spans + a proceed / verify / abstain recommendation. When a
+   `context_id` is supplied the recommendation uses the **validated frozen
+   operating point** (`tau_present`/`tau_abstain` from `gate_thresholds.json`,
+   WORK_MAP §4k); otherwise it falls back to the heuristic score
+   (`metrics.decision_basis` says which).
 3. `compare_responses` — rank candidate drafts; self-consistency check
    flags confident-but-disagreeing drafts.
 4. `novelty_map` — *interpretive* "epistemic terrain" view (well-trodden /
    frontier / uncharted) computed from the same validated signals. The
    terrain categories are heuristic labels, not calibrated probabilities.
+5. `safety_gate` — **the composed deployable pipeline**: one call returns a
+   `SEND` / `VERIFY` / `HOLD` decision combining the validated wrongness gate
+   with an *optional* harm score you pass in from any harm classifier (e.g.
+   Granite-Guardian via `mirrorfield.mcp.harm`). A harm score ≥ threshold forces
+   `HOLD` and overrides wrongness; `harm_score=None` means harm was not checked
+   (the `reason` field says so — never silently treated as safe).
 
 Prompts: `assess-my-response`, `compare-drafts`, `explore-uncertainty`.
 Resource: `mirrorfield://calibration` (weights + thresholds).
 
-## Quick start
+## Install
 
 ```bash
-# from the repo root
-python -m mirrorfield.mcp.server          # stdio transport
+pip install -e .                  # core gate — numpy/scipy only, no model download
+pip install -e ".[mcp]"           # + the MCP server (mirrorfield-mcp console script)
+pip install -e ".[harm]"          # + Granite-Guardian harm classifier (pulls in torch)
+```
+
+## Quick start
+
+MCP server (stdio):
+
+```bash
+python -m mirrorfield.mcp.server          # or the `mirrorfield-mcp` console script
+```
+
+Python API — the composed gate, no server needed:
+
+```python
+from mirrorfield import RollingGate, send_hold_decision
+gate = RollingGate()                       # ONE buffer per kind-of-work context
+r = gate.score("my-task", mean_margin, mean_entropy, boundary_ratio)
+send_hold_decision(r["p_correct_relative"], r["warming_up"], harm_score=None)
+# -> {"decision": "SEND" | "VERIFY" | "HOLD", "reason": ..., "wrongness_decision": ...}
 ```
 
 Pass `context_id` (any stable string per kind-of-work) to `confidence_report`
@@ -73,5 +102,5 @@ was tried and falsified on the way here — is `WORK_MAP.md`. Calibration files:
 `gate_calibration.json` (absolute), `gate_calibration_relative.json`
 (context-relative; trained Qwen2.5-3B on RTE/QNLI/SST-2).
 
-Removed in the lean rebuild (2026-06): embedding-geometry tools and Moltbook
-posting (`moltbook_bridge.py` remains on disk, unwired).
+Removed: the embedding-geometry tools (lean rebuild 2026-06; ΔAUC ≈ 0) and the
+Moltbook posting bridge (cut entirely — `moltbook_bridge.py` deleted).

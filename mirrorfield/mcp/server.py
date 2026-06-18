@@ -14,6 +14,9 @@ Tools:
   4. novelty_map         – interpretive "epistemic terrain" view (presentation
                            layer over the SAME margin/entropy signals; the
                            terrain categories are interpretive, not calibrated)
+  5. safety_gate         – composed SEND / VERIFY / HOLD decision: the validated
+                           wrongness gate + an optional caller-supplied harm
+                           score. The deployable pipeline (modest, not an oracle)
 
 Prompts:
   - assess-my-response  – guided workflow for single-response assessment
@@ -41,8 +44,10 @@ from .uncertainty import (
     compute_self_consistency,
     compute_token_entropies,
     compute_token_margins,
+    decide,
     find_uncertain_spans,
     generate_explanation,
+    send_hold_decision,
 )
 
 import numpy as np
@@ -61,6 +66,7 @@ _handler.setFormatter(logging.Formatter(
     })
 ))
 _log.addHandler(_handler)
+_log.propagate = False  # don't double-emit through the root logger's handlers
 
 
 def _log_tool(name: str, **kwargs):
@@ -338,13 +344,24 @@ def confidence_report(
         uncertain_spans = find_uncertain_spans(tokens, margins)
     metrics["uncertain_span_count"] = len(uncertain_spans)
 
-    # Recommendation
-    if score >= 0.7:
-        recommendation = "proceed"
-    elif score >= 0.4:
-        recommendation = "verify"
+    # Recommendation — prefer the VALIDATED operating point (frozen thresholds on
+    # p_correct_relative, WORK_MAP §4k) when a context-relative probability is
+    # available; otherwise fall back to the heuristic confidence score.
+    p_rel = metrics.get("p_correct_relative")
+    if p_rel is not None or metrics.get("context_warming_up"):
+        gate_dec = decide(p_rel, bool(metrics.get("context_warming_up", False)))
+        metrics["gate_decision"] = gate_dec
+        metrics["decision_basis"] = "validated_relative"
+        recommendation = {"PRESENT": "proceed", "VERIFY": "verify",
+                          "ABSTAIN": "abstain"}[gate_dec]
     else:
-        recommendation = "abstain"
+        metrics["decision_basis"] = "heuristic_score"
+        if score >= 0.7:
+            recommendation = "proceed"
+        elif score >= 0.4:
+            recommendation = "verify"
+        else:
+            recommendation = "abstain"
 
     explanation = generate_explanation(metrics)
 
@@ -493,9 +510,71 @@ def novelty_map(
     return result
 
 
+# ── Tool 5 ────────────────────────────────────────────────────────────────
+
+@mcp.tool()
+def safety_gate(
+    text: str,
+    top_logprobs: list[dict] | None = None,
+    context_id: str | None = None,
+    harm_score: float | None = None,
+    harm_threshold: float = 0.5,
+) -> dict:
+    """Composed SEND / VERIFY / HOLD decision — the deployable pipeline.
+
+    Combines the validated WRONGNESS gate (computed from top_logprobs + a
+    per-context rolling buffer) with an OPTIONAL harm score you supply from any
+    harm classifier (e.g. Granite-Guardian). Returns SEND (present it), VERIFY
+    (present but flag / double-check), or HOLD (do not send — likely wrong, or
+    harmful when harm_score >= harm_threshold).
+
+    Pass a stable context_id (one per kind of work) to enable the validated
+    context-relative probability; the first few calls warm up and return VERIFY.
+    harm_score=None means harm is NOT checked and the decision rests on wrongness
+    alone (the `reason` field says so) — supply a harm score for the full
+    pipeline. The wrongness gate is modest (AUC ~0.69), not an oracle.
+    """
+    _log_tool("safety_gate", text_len=len(text),
+              has_top_logprobs=top_logprobs is not None,
+              has_context=context_id is not None,
+              harm_checked=harm_score is not None)
+
+    p_rel = None
+    warming = False
+    metrics: dict = {}
+    if top_logprobs is not None:
+        margins = compute_token_margins(top_logprobs)
+        entropies = compute_token_entropies(top_logprobs)
+        br = compute_boundary_ratio(margins)
+        finite = margins[np.isfinite(margins)]
+        mm = round(float(np.mean(finite)), 4) if len(finite) else None
+        me = round(float(np.mean(entropies)), 4)
+        if mm is not None:
+            metrics = {"mean_margin": mm, "mean_entropy": me,
+                       "boundary_ratio": round(br, 4)}
+            pc = calibrated_p_correct(mm, me, br)
+            if pc is not None:
+                metrics["p_correct_calibrated"] = pc
+            if context_id is not None:
+                rel = _ROLLING_GATE.score(context_id, mm, me, br)
+                p_rel = rel["p_correct_relative"]
+                warming = rel["warming_up"]
+                metrics["p_correct_relative"] = p_rel
+                metrics["context_warming_up"] = warming
+
+    result = send_hold_decision(p_rel, warming, harm_score, harm_threshold)
+    result["metrics"] = metrics
+    return result
+
+
 # ── Entry point ───────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
+def main() -> None:
+    """Console entry point (``mirrorfield-mcp``). Transport defaults to stdio."""
     transport = sys.argv[1] if len(sys.argv) > 1 else "stdio"
     _log.info(f"starting mirrorfield MCP server transport={transport}")
     mcp.run(transport=transport)
+
+
+if __name__ == "__main__":
+    main()

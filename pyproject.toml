@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mirrorfield"
+version = "3.0.0"
+description = "An honest, modest uncertainty gate for LLM outputs: decide SEND / VERIFY / HOLD before an answer is sent."
+readme = "mirrorfield/mcp/README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mirrorfield Project" }]
+keywords = ["llm", "uncertainty", "ai-safety", "calibration", "mcp", "guardrail"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Core gate is pure numpy/scipy — no torch, no model download.
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+# MCP server (exposes the gate as tools to any MCP client, e.g. Claude Desktop)
+mcp = ["mcp[cli]>=1.20"]
+# Harm half of the composed SEND/HOLD pipeline (Granite-Guardian classifier)
+harm = ["torch>=2.0", "transformers>=4.40", "huggingface_hub>=0.23"]
+all = ["mcp[cli]>=1.20", "torch>=2.0", "transformers>=4.40", "huggingface_hub>=0.23"]
+
+[project.scripts]
+mirrorfield-mcp = "mirrorfield.mcp.server:main"
+
+[project.urls]
+Repository = "https://github.com/DillanJC/mirrorfield"
+
+[tool.setuptools.packages.find]
+# Ship only the product (gate + MCP server). The falsified geometry subpackage and
+# the legacy api/ module stay in the repo for the research record but are NOT packaged.
+include = ["mirrorfield*"]
+exclude = ["mirrorfield.geometry*", "mirrorfield.api*"]
+
+[tool.setuptools.package-data]
+"mirrorfield.mcp" = ["*.json"]

@@ -8,10 +8,10 @@ log-probabilities and embedding vectors. Pure numpy/scipy — no torch dependenc
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
-from mirrorfield.geometry.phase2_weather_features import (
-    compute_participation_ratio,
-    compute_spectral_entropy,
-)
+# NOTE: the dead embedding-geometry path (compute_embedding_pr) imports its two
+# geometry helpers lazily inside that function, so importing this module never
+# pulls in mirrorfield.geometry. The shipped product (gate + novelty map) is
+# pure numpy/scipy and geometry-free.
 
 
 # ---------------------------------------------------------------------------
@@ -126,6 +126,8 @@ def compute_embedding_pr(embeddings: np.ndarray, k: int = 20) -> dict:
         Dict with pr_mean, pr_min, se_mean, g_ratio, effective_dim,
         and correlation_dim (if N > 50).
     """
+    from mirrorfield.geometry.phase2_weather_features import (  # lazy: dead path only
+        compute_participation_ratio, compute_spectral_entropy)
     embeddings = np.asarray(embeddings, dtype=np.float64)
     if embeddings.ndim == 1:
         embeddings = embeddings.reshape(1, -1)
@@ -327,6 +329,81 @@ def _apply_calibration(feat: np.ndarray, calib: dict) -> float:
     logit = float(np.dot(np.array(calib["logreg_coef"]), z)) + calib["logreg_intercept"]
     p_raw = 1.0 / (1.0 + np.exp(-logit))
     return float(np.interp(p_raw, calib["isotonic_x"], calib["isotonic_y"]))
+
+
+# ---------------------------------------------------------------------------
+# Validated decision policy (gate_thresholds.json) + composed SEND/HOLD
+# ---------------------------------------------------------------------------
+
+_GATE_THRESHOLDS_CACHE: dict | None = None
+
+
+def load_gate_thresholds() -> dict:
+    """Frozen operating point for the gate (gate_thresholds.json next to this
+    module). The thresholds were locked on held-out data BEFORE the live
+    evaluation (WORK_MAP §4k) and apply to p_correct_relative (the RollingGate
+    output), not the absolute p_correct. Falls back to the validated defaults if
+    the file is absent."""
+    global _GATE_THRESHOLDS_CACHE
+    if _GATE_THRESHOLDS_CACHE is None:
+        t = _load_calibration_file("gate_thresholds.json") or {}
+        _GATE_THRESHOLDS_CACHE = {
+            "tau_abstain": float(t.get("tau_abstain", 0.7763)),
+            "tau_present": float(t.get("tau_present", 0.8684)),
+        }
+    return _GATE_THRESHOLDS_CACHE
+
+
+def decide(p_correct_relative: float | None, warming_up: bool = False) -> str:
+    """The validated wrongness-gate decision for one response.
+
+    Returns "PRESENT" (confident enough to show), "VERIFY" (show but flag /
+    double-check), or "ABSTAIN" (hold back — likely wrong), applying the frozen
+    thresholds to p_correct_relative. While the context is warming up, or when no
+    relative probability is available, returns "VERIFY" — the safe default; the
+    gate never silently PRESENTs without signal."""
+    if warming_up or p_correct_relative is None:
+        return "VERIFY"
+    th = load_gate_thresholds()
+    if p_correct_relative < th["tau_abstain"]:
+        return "ABSTAIN"
+    if p_correct_relative >= th["tau_present"]:
+        return "PRESENT"
+    return "VERIFY"
+
+
+def send_hold_decision(
+    p_correct_relative: float | None = None,
+    warming_up: bool = False,
+    harm_score: float | None = None,
+    harm_threshold: float = 0.5,
+) -> dict:
+    """Composed SEND / VERIFY / HOLD decision — the deployable pipeline.
+
+    Two independent checks, honestly separated:
+      * wrongness (validated, ours): the gate's decide() on p_correct_relative.
+      * harm (optional, NOT ours): a harm probability from any classifier
+        (e.g. Granite-Guardian via mirrorfield.mcp.harm). Pass harm_score in
+        [0,1]; >= harm_threshold forces HOLD and OVERRIDES the wrongness gate.
+
+    Mapping: harmful -> HOLD; otherwise PRESENT->SEND, ABSTAIN->HOLD,
+    VERIFY->VERIFY. harm_score=None means harm was NOT checked — the decision
+    rests on wrongness alone and `reason` says so, so a caller never mistakes
+    "not checked" for "safe". Returns {decision, reason, wrongness_decision,
+    harm_score}."""
+    wrong = decide(p_correct_relative, warming_up)
+    if harm_score is not None and harm_score >= harm_threshold:
+        return {"decision": "HOLD", "reason": "harmful_content",
+                "wrongness_decision": wrong,
+                "harm_score": round(float(harm_score), 4)}
+    decision = {"PRESENT": "SEND", "ABSTAIN": "HOLD", "VERIFY": "VERIFY"}[wrong]
+    reason = {"PRESENT": "confident_and_clear", "ABSTAIN": "likely_wrong",
+              "VERIFY": ("warming_up" if warming_up else "uncertain")}[wrong]
+    if decision == "SEND" and harm_score is None:
+        reason += " (harm not checked)"
+    return {"decision": decision, "reason": reason,
+            "wrongness_decision": wrong,
+            "harm_score": (round(float(harm_score), 4) if harm_score is not None else None)}
 
 
 class RollingGate:
