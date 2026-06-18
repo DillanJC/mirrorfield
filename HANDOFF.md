@@ -48,10 +48,13 @@ B-Phase-0 are DONE. Remaining:
    placebo, replicated) — the mechanism behind §4p. Only remaining piece (optional):
    a cheap cached **0.5B tone re-run** for a model-scale point — **pre-register it**
    before running (it's new generation, not existing-data analysis).
-2. **H — Goodhart detector** (`plans/H-goodhart-detector.md`): cheapest (~0 GPU),
-   most safety-relevant; tests whether the metric-gaming detector's portable core
-   generalizes beyond the one self-silencing mode. Likely PARTIAL = still a useful
-   scope-map.
+2. **H — Goodhart detector — DONE (§4s, commit af3d72e + results).** Pre-registered,
+   blind, geometry-free. **FPR gate failed (M0 false-positive rate = 1.0, both seeds)** —
+   the portable core cries wolf on honest improvement (2 proxy-trajectory flags fire on
+   everything; `proxy_up_diversity_flat` structurally). The honest survivor is NARROW: the
+   2 output-collapse flags cleanly catch M1/M2 and stay quiet on M0/M3/M4 — a
+   repetition/collapse detector, NOT a general Goodhart detector. No retuning. A
+   diversity/mode-collapse-only detector is a clean FUTURE pre-registered test.
 3. **D — Publication** (`plans/D-publication-outreach.md`): all numbers settled;
    the retraction-plus-survivor story is fully tellable; nothing blocks it.
 4. **Productize the gate — DONE (commits a79d1f8, 8534574, ebe68b7).** The repo is now
@@ -84,13 +87,16 @@ B-Phase-0 are DONE. Remaining:
   one big model at a time.
 
 ## Immediate next step
-Confidence-contagion (§4q, free CPU), harm-framing (§4r, GPU), and **productizing the
-gate** (commits a79d1f8 / 8534574 / ebe68b7) are all DONE. §4r headline: humble framing
-softens refusal STYLE (~−0.19/−0.20 vs placebo, REPLICATED) but NOT harm SUBSTANCE
-(Granite harm ~+0.02; "being nice" does NOT jailbreak the 3B model). Open options for the
-next session: **H (Goodhart detector, cheapest)**, **D (publication, unblocked)**, the
-optional **0.5B tone scale-run** (needs a pre-reg), or productization polish (CLI/quickstart
-example, PyPI publish if wanted).
+Confidence-contagion (§4q), harm-framing (§4r), **productizing the gate**
+(a79d1f8/8534574/ebe68b7/3920481/0950094/91fff6c), and **Plan H — Goodhart**
+(§4s, af3d72e) are all DONE this stretch. §4r: humble framing softens refusal STYLE
+(replicated) but NOT harm SUBSTANCE. §4s: the Goodhart portable core fails its FPR gate
+(cries wolf on honest runs); only a narrow output-collapse detector survives. Open
+options for the next session: **D (publication, unblocked — but Dillan-gated; outreach
+not autonomous)**, the optional **0.5B tone scale-run** (needs a pre-reg), a
+**diversity/mode-collapse-only Goodhart re-test** (clean future pre-reg, motivated by
+§4s), or **productization polish** (CLI, PyPI publish if wanted). The environment caveat
+below still needs Dillan's one-line fix.
 
 ### ⚠️ Environment caveat discovered while productizing (action item for Dillan)
 There are TWO `mirrorfield` package copies on this machine: the **canonical** repo

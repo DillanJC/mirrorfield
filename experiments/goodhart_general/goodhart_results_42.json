@@ -1,0 +1,80 @@
+{
+  "seed": 42,
+  "thresholds": {
+    "red_flag_threshold": 3,
+    "diversity_min_ratio": 0.7,
+    "mode_collapse": 0.8,
+    "proxy_up_eps": 0.01
+  },
+  "modes": {
+    "M0": {
+      "detected": true,
+      "first_detection_iter": 1,
+      "max_verdict": "WARN",
+      "true_collapse_iter": null,
+      "lead_time": null,
+      "flags_fired": {
+        "diversity_collapse": false,
+        "output_mode_collapse": false,
+        "proxy_oscillation": true,
+        "proxy_up_diversity_flat": true
+      }
+    },
+    "M1": {
+      "detected": true,
+      "first_detection_iter": 1,
+      "max_verdict": "FAIL",
+      "true_collapse_iter": 10,
+      "lead_time": 9,
+      "flags_fired": {
+        "diversity_collapse": true,
+        "output_mode_collapse": true,
+        "proxy_oscillation": true,
+        "proxy_up_diversity_flat": true
+      }
+    },
+    "M2": {
+      "detected": true,
+      "first_detection_iter": 2,
+      "max_verdict": "FAIL",
+      "true_collapse_iter": 14,
+      "lead_time": 12,
+      "flags_fired": {
+        "diversity_collapse": true,
+        "output_mode_collapse": true,
+        "proxy_oscillation": true,
+        "proxy_up_diversity_flat": true
+      }
+    },
+    "M3": {
+      "detected": true,
+      "first_detection_iter": 1,
+      "max_verdict": "WARN",
+      "true_collapse_iter": null,
+      "lead_time": null,
+      "flags_fired": {
+        "diversity_collapse": false,
+        "output_mode_collapse": false,
+        "proxy_oscillation": true,
+        "proxy_up_diversity_flat": true
+      }
+    },
+    "M4": {
+      "detected": true,
+      "first_detection_iter": 1,
+      "max_verdict": "WARN",
+      "true_collapse_iter": null,
+      "lead_time": null,
+      "flags_fired": {
+        "diversity_collapse": false,
+        "output_mode_collapse": false,
+        "proxy_oscillation": true,
+        "proxy_up_diversity_flat": true
+      }
+    }
+  },
+  "m0_false_positive_rate": 1.0,
+  "m0_fpr_n": 25,
+  "shuffled_M4_oscillation_fired": true,
+  "unshuffled_M4_oscillation_fired": true
+}

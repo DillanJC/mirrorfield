@@ -680,6 +680,34 @@ a surface/style shift toward a default, not a change in substance).
 
 Results: `harm_framing_results.json` (aggregates only; raw completions gitignored).
 
+### §4s. Plan H — Goodhart detector's portable core does NOT generalize blind (FPR gate failed, replicated)
+
+Pre-registered (`goodhart_general/PREREGISTRATION.md`, af3d72e). De-geometried the
+Track-5 metric-gaming detector to its **4 portable flags** (the other 5 are bolted to
+dead geometry/intervention machinery — see `MECHANISM.md`) and ran a **BLIND** version
+(observes the optimized proxy + outputs, NEVER the true objective) across 5 frozen
+gaming modes (M0 honest control / M1 self-silencing / M2 mode-collapse / M3 proxy-overfit
+/ M4 oscillation; true = ground truth for scoring only).
+
+**M0 false-positive rate = 1.0 on both seeds** → the pre-registered FPR gate (≤0.15)
+fails as hard as possible: the portable core raises a flag on EVERY honest run, so it is
+**unusable as specified**. Localization (pre-committed raw flags): the 2 proxy-trajectory
+flags fire on everything incl. honest — `proxy_up_diversity_flat` fires *structurally*
+("optimized metric up while output diversity is flat" = the profile of normal
+improvement; a mis-specified de-geometrization of the original `pr_up_quality_flat`), and
+`proxy_oscillation` reads noise (shuffled-temporal control fires too). The 2 OUTPUT-based
+flags (`diversity_collapse`, `output_mode_collapse`) fired ONLY on the collapse modes
+M1/M2 and stayed quiet on M0/M3/M4.
+
+**Verdict:** the Track-5 catch did NOT generalize into a usable geometry-free blind
+detector. What honestly survives is **NARROW** — an output repetition/collapse detector
+(clean on M0, catches M1/M2) that misses subtle proxy-overfit (M3) and oscillation (M4).
+Primitive C (SALVAGE_AUDIT) is thus a *collapse* detector, not a general Goodhart
+detector. **No threshold retuning** (the flag re-selection that would clean it up is
+future pre-registered work, explicitly NOT claimed here). Synthetic-benchmark caveat;
+`proxy_up_diversity_flat`'s false alarm is noise-independent (structural), so FPR≈1.0 is
+robust. Files: `goodhart_general/REPORT.md`, `goodhart_results_{42,1337}.json`.
+
 ---
 
 ## 5. Honest scorecard
