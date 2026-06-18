@@ -1,8 +1,27 @@
-# Mirrorfield AI — Evidence-First Boundary Evaluation
+# Mirrorfield — an honest, modest uncertainty gate for LLM outputs
 
-**Version:** v2.1 (Phase 0-E Complete + Track 4 & 5 Experiments)
-**Purpose:** Replayable, auditable AI model boundary stability evaluation
-**Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch 2.5.1 (CUDA 12.4)
+> **⚠️ Status (2026-06, v3.0 — please read first).** This project began as the
+> embedding-geometry "boundary evaluation" framework documented below (Phase 0–E,
+> Tracks 4–5). It then put that framework through its own *non-circular*
+> falsification — and **most of the geometry did not survive.** The
+> embedding-geometry add-on adds ≈0 predictive lift over standard log-prob signals
+> (ΔAUC ≈ 0); several headline results in the legacy sections below were circular
+> or measured the wrong thing. Read those numbers with that in mind.
+>
+> **What survived, and is now the actual tool:** a *modest* log-prob uncertainty
+> gate — from token margin/entropy it estimates how likely an answer is wrong
+> (live AUC ≈ 0.685; catches ~28% of errors at ~15% abstention), composed with a
+> harm classifier into a **SEND / VERIFY / HOLD** decision *before* an answer is
+> sent. It is honestly a ranking signal that improves the odds, not an oracle.
+>
+> - **Use it:** [`mirrorfield/mcp/README.md`](mirrorfield/mcp/README.md) · `pip install -e ".[mcp]"`
+> - **The full, honest research log** (everything tried — with what was falsified and why): [`WORK_MAP.md`](WORK_MAP.md)
+> - **Where things stand / resume point:** [`HANDOFF.md`](HANDOFF.md)
+>
+> The geometry-framework documentation below is kept for the record (and for
+> reproducing the falsification), **not** as a list of standing claims.
+
+**Platform:** Windows 11 | NVIDIA RTX 3060 Ti | PyTorch (CUDA 12.x)
 
 ---
 
