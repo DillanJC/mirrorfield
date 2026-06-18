@@ -112,3 +112,21 @@ v1.0.0** (pointing at the Experiment dir) registers a meta-path finder that maps
 (and/or `pip install -e .` from `C:\Users\User\mirrorfield`) so the canonical package wins.
 Tooling note: foreground Bash starts in the Experiment dir, so always `cd C:\Users\User\mirrorfield`
 first; verifying imports needs a cwd without a `mirrorfield/` subdir (or `python -P`).
+
+## Strategy / brainstorm (June — Dillan asked "what novel directions toward making AI safer?")
+Three new strategic docs (committed f17ca5f→4884283):
+- **`docs/NOVEL_SAFETY_DIRECTIONS.md`** — ~18 candidate directions across 7 themes, scored
+  (novelty/safety/feasibility/circularity) with concrete first experiments + a recommended
+  portfolio. Supersedes the Jan geometry `RESEARCH_ROADMAP.md` (now banner-flagged stale).
+- **`docs/PROPOSED_PREREGISTRATIONS.md`** — ready-to-lock DRAFT pre-regs for the 3 do-now
+  picks: **A1** verbalized-vs-internal confidence (top pick), **B1** refusal-boundary
+  stability, **C1** sycophancy. Pick one → copy to its experiment dir as PREREGISTRATION.md,
+  commit before data, run.
+- **`docs/EVALUATION_DISCIPLINE.md`** — the anti-circularity methodology + retraction case
+  studies (direction E1; the most ownable contribution).
+- **A1 feasibility smoke done** (`experiments/selfreport_confidence/smoke.py`): plumbing
+  works, BUT naive 0–100% confidence saturated at 100 on toy prompts → A1's locked pre-reg
+  must fix the elicitation for *variance* first (note in the proposals doc).
+**Recommended first move when Dillan returns:** lock + run **A1** (after the elicitation-
+variance fix) — cleanest, most novel, directly about whether we can trust models'
+self-reports. Run **B1**/**C1** cheap in parallel; accumulate **E1** as you go.
