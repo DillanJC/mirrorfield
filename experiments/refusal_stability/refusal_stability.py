@@ -83,7 +83,27 @@ def build_goals():
     return harm + ben
 
 
+def _load_jsonl(path):
+    rows = []
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    rows.append(json.loads(line))
+                except Exception:
+                    pass
+    return rows
+
+
 def phase1(goals):
+    # resumable: one JSON line per generation, flushed immediately (survives teardowns)
+    (HERE / "local_outputs").mkdir(exist_ok=True)
+    ckpt = HERE / "local_outputs" / "completions.jsonl"
+    done = {(r["id"], r["set"], r["w"]) for r in _load_jsonl(ckpt)}
+    total = len(goals) * 16
+    if len(done) >= total:
+        print(f"[B1] phase1 already complete ({len(done)}/{total})"); return
     import torch
     torch.manual_seed(SEED)
     from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -92,55 +112,66 @@ def phase1(goals):
     model = AutoModelForCausalLM.from_pretrained(
         path, torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32
     ).to("cuda" if torch.cuda.is_available() else "cpu").eval()
-    print(f"[B1] {len(goals)} goals x 8 wrappers x 2 sets = {len(goals)*16} generations")
-    raw = []
+    print(f"[B1] phase1: {len(done)}/{total} already done; resuming")
+    f = ckpt.open("a", encoding="utf-8"); n_new = 0
     for k, it in enumerate(goals):
         for setname, fns in WRAPPERS.items():
             for wi, fn in enumerate(fns):
-                prompt = fn(it["goal"])
-                ids = tok.apply_chat_template([{"role": "user", "content": prompt}],
+                if (it["id"], setname, wi) in done:
+                    continue
+                ids = tok.apply_chat_template([{"role": "user", "content": fn(it["goal"])}],
                                               add_generation_prompt=True, return_tensors="pt").to(model.device)
                 with torch.no_grad():
                     out = model.generate(ids, max_new_tokens=MAX_NEW, do_sample=False,
                                          pad_token_id=tok.eos_token_id)
                 txt = tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
-                low = txt.lower()
-                raw.append({"id": it["id"], "harmful": it["harmful"], "set": setname, "w": wi,
-                            "goal": it["goal"], "completion": txt,
-                            "refused": int(any(m in low for m in REFUSAL_MARKERS)),
-                            "n_tokens": int(out.shape[1] - ids.shape[1])})
+                f.write(json.dumps({"id": it["id"], "harmful": it["harmful"], "set": setname, "w": wi,
+                                    "goal": it["goal"], "completion": txt,
+                                    "refused": int(any(m in txt.lower() for m in REFUSAL_MARKERS)),
+                                    "n_tokens": int(out.shape[1] - ids.shape[1])}) + "\n")
+                f.flush(); n_new += 1
         if (k + 1) % 10 == 0:
-            print(f"  gen {k+1}/{len(goals)} goals")
-    (HERE / "local_outputs").mkdir(exist_ok=True)
-    (HERE / "local_outputs" / "completions.json").write_text(json.dumps(raw), encoding="utf-8")
-    return raw
+            print(f"  gen {k+1}/{len(goals)} goals (+{n_new} new)")
+    f.close()
+    print(f"  phase1 done (+{n_new} new)")
 
 
-def phase2(raw):
-    import granite_score as gs
-    gs.MODEL = local_model("ibm-granite/granite-guardian-3.1-2b")
-    g = gs.Granite()
-    scores = []
-    for k, r in enumerate(raw):
-        scores.append(g.score(r["goal"], r["completion"] or " "))
-        if (k + 1) % 150 == 0:
-            print(f"  granite {k+1}/{len(raw)}")
+def phase2():
+    comps = _load_jsonl(HERE / "local_outputs" / "completions.jsonl")
+    gpath = HERE / "local_outputs" / "granite.jsonl"
+    done = {(r["id"], r["set"], r["w"]) for r in _load_jsonl(gpath)}
+    todo = [c for c in comps if (c["id"], c["set"], c["w"]) not in done]
+    print(f"[B1] phase2: {len(done)} scored, {len(todo)} to score")
+    if todo:
+        import granite_score as gs
+        gs.MODEL = local_model("ibm-granite/granite-guardian-3.1-2b")
+        g = gs.Granite()
+        f = gpath.open("a", encoding="utf-8")
+        for k, c in enumerate(todo):
+            s = g.score(c["goal"], c["completion"] or " ")
+            f.write(json.dumps({"id": c["id"], "set": c["set"], "w": c["w"], "granite": s}) + "\n")
+            f.flush()
+            if (k + 1) % 150 == 0:
+                print(f"  granite {k+1}/{len(todo)}")
+        f.close()
+    gmap = {(r["id"], r["set"], r["w"]): r["granite"] for r in _load_jsonl(gpath)}
+    rows = [c for c in comps if (c["id"], c["set"], c["w"]) in gmap]
     np.savez(HERE / "refusal_rows.npz",
-             id=np.array([r["id"] for r in raw]),
-             harmful=np.array([r["harmful"] for r in raw]),
-             setname=np.array([r["set"] for r in raw]),
-             w=np.array([r["w"] for r in raw]),
-             refused=np.array([r["refused"] for r in raw]),
-             n_tokens=np.array([r["n_tokens"] for r in raw]),
-             granite=np.array(scores, float))
-    print(f"  -> saved refusal_rows.npz ({len(raw)} rows, aggregates only)")
+             id=np.array([r["id"] for r in rows]),
+             harmful=np.array([r["harmful"] for r in rows]),
+             setname=np.array([r["set"] for r in rows]),
+             w=np.array([r["w"] for r in rows]),
+             refused=np.array([r["refused"] for r in rows]),
+             n_tokens=np.array([r["n_tokens"] for r in rows]),
+             granite=np.array([gmap[(r["id"], r["set"], r["w"])] for r in rows], float))
+    print(f"  -> saved refusal_rows.npz ({len(rows)} rows, aggregates only)")
 
 
 def run():
-    raw = phase1(build_goals())
+    phase1(build_goals())
     import torch
     gc.collect(); torch.cuda.empty_cache()
-    phase2(raw)
+    phase2()
 
 
 def analyze():
