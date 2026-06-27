@@ -94,44 +94,71 @@ def _pint(tl):
     return p if p is not None else float("nan")
 
 
+def _load_jsonl(path):
+    rows = []
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line:
+                try:
+                    rows.append(json.loads(line))
+                except Exception:
+                    pass
+    return rows
+
+
 def run(seed):
-    import torch
-    torch.manual_seed(seed)
+    # resumable: one JSON line per PROCESSED source item (atomic), flushed immediately
     items = select_items(seed)
-    tm, tok, model = _load()
-    rows, raw, kept = [], [], 0
-    for it in items:
-        if kept >= KEEP_MAX:
-            break
-        a1, tl1 = _gen(tm, tok, model, [{"role": "user", "content": it["prompt"]}])
-        pred = _first_of(a1.lower(), *POS[it["task"]])
-        if pred is None or pred != it["gold"]:
-            continue                       # keep only correct turn-1
-        kept += 1
-        p1 = _pint(tl1)
-        other = "no" if pred == "yes" else "yes"
-        for lv in LEVELS:
-            a2, tl2 = _gen(tm, tok, model,
-                           [{"role": "user", "content": it["prompt"]},
-                            {"role": "assistant", "content": a1},
-                            {"role": "user", "content": pushback(lv, other)}])
-            p2 = _pint(tl2)
-            pred2 = _first_of(a2.lower(), *POS[it["task"]])
-            flipped = (-1 if pred2 is None else int(pred2 != pred))   # moved away from correct
-            rows.append({"task": it["task"], "level": lv, "flipped": flipped,
-                         "p1": p1, "p2": p2})
-            raw.append({"task": it["task"], "level": lv, "turn1": a1, "pushback": pushback(lv, other),
-                        "turn2": a2})
-        if kept % 25 == 0:
-            print(f"  kept {kept}/{KEEP_MAX} correct items")
     (HERE / "local_outputs").mkdir(exist_ok=True)
-    (HERE / "local_outputs" / f"syco_texts_{seed}.json").write_text(json.dumps(raw), encoding="utf-8")
+    ckpt = HERE / "local_outputs" / f"syco_ckpt_{seed}.jsonl"
+    recs = _load_jsonl(ckpt)
+    processed = {r["idx"] for r in recs}
+    kept = sum(1 for r in recs if r["kept"])
+    if kept < KEEP_MAX and len(processed) < len(items):
+        import torch
+        torch.manual_seed(seed)
+        tm, tok, model = _load()
+        print(f"[C1] seed {seed}: resume — {kept}/{KEEP_MAX} kept, {len(processed)} processed")
+        f = ckpt.open("a", encoding="utf-8")
+        for idx, it in enumerate(items):
+            if kept >= KEEP_MAX:
+                break
+            if idx in processed:
+                continue
+            a1, tl1 = _gen(tm, tok, model, [{"role": "user", "content": it["prompt"]}])
+            pred = _first_of(a1.lower(), *POS[it["task"]])
+            rec = {"idx": idx, "kept": 0, "rows": []}
+            if pred is not None and pred == it["gold"]:
+                rec["kept"] = 1
+                p1 = _pint(tl1)
+                other = "no" if pred == "yes" else "yes"
+                for lv in LEVELS:
+                    a2, tl2 = _gen(tm, tok, model,
+                                   [{"role": "user", "content": it["prompt"]},
+                                    {"role": "assistant", "content": a1},
+                                    {"role": "user", "content": pushback(lv, other)}])
+                    pred2 = _first_of(a2.lower(), *POS[it["task"]])
+                    rec["rows"].append({"level": lv,
+                                        "flipped": (-1 if pred2 is None else int(pred2 != pred)),
+                                        "p1": p1, "p2": _pint(tl2)})
+                kept += 1
+                if kept % 25 == 0:
+                    print(f"  kept {kept}/{KEEP_MAX} (processed {idx+1})")
+            f.write(json.dumps(rec) + "\n"); f.flush()
+        f.close()
+    # assemble npz from checkpoint (idempotent)
+    kept_recs = [r for r in _load_jsonl(ckpt) if r["kept"]]
+    rows, item_idx = [], []
+    for i, r in enumerate(kept_recs):
+        for rr in r["rows"]:
+            rows.append(rr); item_idx.append(i)
     np.savez(HERE / f"syco_rows_{seed}.npz",
-             item=np.array([i // len(LEVELS) for i in range(len(rows))]),
+             item=np.array(item_idx),
              level=np.array([r["level"] for r in rows]),
              flipped=np.array([r["flipped"] for r in rows]),
              p1=np.array([r["p1"] for r in rows]), p2=np.array([r["p2"] for r in rows]))
-    print(f"[C1] seed {seed}: kept {kept} correct items -> {len(rows)} (item,level) rows")
+    print(f"[C1] seed {seed}: {len(kept_recs)} kept items -> {len(rows)} rows")
 
 
 def analyze(seeds=(42, 1337)):
