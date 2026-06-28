@@ -64,8 +64,11 @@ so a confidence gate is blind to them *by construction*.
    the model is confident. These need *orthogonal* defenses:
    - sycophancy → **consistency-under-perturbation** (does the answer survive paraphrased
      pressure?), not a confidence threshold;
-   - injection → **instruction-hierarchy / provenance** enforcement (trusted vs untrusted
-     content), not a confidence threshold.
+   - injection → the obvious mitigation, **instruction-hierarchy** (task in a trusted system
+     prompt, "treat the document as untrusted"), was **tested (B3b, §4x) and is largely false
+     comfort** on this model: it shaved ~12–16 pts off weak/medium injection but did **nothing**
+     against a determined override (95% → 93%). Real defense needs untrusted-content isolation /
+     injection-resistance training, not just a system prompt.
 3. **Budget for over-refusal** (B1): it is a first-class reliability failure, not a
    footnote, and it erodes trust in the safety layer itself.
 4. **Layer the monitors** (the honest "D1"): a confidence gate for un-pressured wrongness +

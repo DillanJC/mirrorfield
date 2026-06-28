@@ -9,7 +9,7 @@ Method discipline: `docs/EVALUATION_DISCIPLINE.md`. Next directions:
 
 | dir | question | status — finding |
 |-----|----------|------------------|
-| `prompt_injection/` (B3) | does the model obey an injected "ignore instructions, output X" over the user's task? | **§4w** — massively susceptible (80% even polite → 96% override, replicated); hijack invisible to the confidence signal |
+| `prompt_injection/` (B3, B3b) | does the model obey an injected "ignore instructions, output X" over the user's task? does a system-prompt defense help? | **§4w** — massively susceptible (80% polite → 96% override; hijack invisible to confidence). **§4x** — instruction-hierarchy defense barely helps (still 93% under override) |
 | `sycophancy/` (C1) | does the model abandon a CORRECT answer under user pushback; does its confidence expose the cave? | **§4v** — yes, ~+20pt flips under ANY pushback (replicated); confidence does NOT expose it (model caves confidently) |
 | `refusal_stability/` (B1) | how consistently does it refuse the same harmful request across trivial rewords? | **§4u** — 90% reliability; 5/50 harmful goals (10%) have REPLICATED seams; 29% over-refusal on benign |
 | `selfreport_confidence/` (A1) | does the model's SPOKEN confidence match its correctness / its internal signal? | **§4t** — verbal is at CHANCE (AUC 0.51); internal log-prob signal beats it (0.64–0.66), replicated. "Read the signal, discount the speech." |
