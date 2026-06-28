@@ -138,7 +138,11 @@ Three new strategic docs (committed f17ca5f→4884283):
 - **C1 DONE — §4v.** Sycophancy real: any pushback flips correct→wrong ~+20pt vs placebo
   (replicated), not graded by strength; and the confidence signal does NOT expose the cave
   (model flips confidently). `experiments/sycophancy/` (amendment 1 fixed turn-2 parseability).
-- **Synthesis (not a single ensemble):** A1/B1/C1 live on different tasks/failure modes, so
+- **B3 DONE — §4w (prompt-injection).** 3B model massively susceptible: even a polite
+  injection 80%, override 96% (replicated, clean 0% control floor); and the hijack is
+  INVISIBLE to the confidence signal (p_int complied 0.843 ≈ clean 0.848) — same blind spot
+  as §4v. `experiments/prompt_injection/`.
+- **Synthesis (not a single ensemble):** A1/B1/C1/B3 live on different tasks/failure modes, so
   the honest D1 is a *pipeline/architecture* writeup, not one AUC — three complementary
   monitors: (i) internal-signal gate for un-pressured wrongness (but blind to sycophancy per
   §4v), (ii) refusal-consistency audit (§4u), (iii) sycophancy needs consistency-under-
