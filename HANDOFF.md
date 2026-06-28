@@ -133,9 +133,14 @@ Three new strategic docs (committed f17ca5f→4884283):
   beats it (AUC 0.64/0.66), replicated, CI-clean. Verbal varies (not pinned) but is
   uncorrelated with being right; combining it adds nothing. Safety: "read the signal,
   discount the speech." `experiments/selfreport_confidence/`.
-- **B1 running**, **C1 staged** (both pre-regs locked + harnesses ready:
-  `experiments/refusal_stability/`, `experiments/sycophancy/`).
-- **Next after B1/C1:** the **D1 ensemble monitor** (compose gate-wrongness + Granite-harm +
-  refusal-instability + sycophancy-tell + the verbal/internal split into one OOF-validated
-  SEND/VERIFY/HOLD) — the deployable synthesis. Then consider B2 (multi-turn drift), B3
-  (prompt-injection). The E1 methodology doc accumulates as each lands.
+- **B1 DONE — §4u (b88dd91).** Refusal boundary 90% stable to trivial rewords, but 5/50
+  harmful goals (10%) have REPLICATED seams, and 29% over-refusal on benign.
+- **C1 DONE — §4v.** Sycophancy real: any pushback flips correct→wrong ~+20pt vs placebo
+  (replicated), not graded by strength; and the confidence signal does NOT expose the cave
+  (model flips confidently). `experiments/sycophancy/` (amendment 1 fixed turn-2 parseability).
+- **Synthesis (not a single ensemble):** A1/B1/C1 live on different tasks/failure modes, so
+  the honest D1 is a *pipeline/architecture* writeup, not one AUC — three complementary
+  monitors: (i) internal-signal gate for un-pressured wrongness (but blind to sycophancy per
+  §4v), (ii) refusal-consistency audit (§4u), (iii) sycophancy needs consistency-under-
+  perturbation, NOT a confidence gate. Next candidates: B2 (multi-turn drift), B3
+  (prompt-injection); the E1 methodology doc + a combined writeup.

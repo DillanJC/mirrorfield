@@ -761,6 +761,33 @@ Yields a reusable per-model refusal-reliability metric (0.90 here) + the specifi
 (Resumable run — completed across repeated session teardowns via JSONL checkpoints.) Files:
 `refusal_stability/refusal_results.json`.
 
+### §4v. C1 — sycophancy is real (~+20pt flips under ANY pushback) AND invisible to the confidence signal (RTE+QNLI, REPLICATED)
+
+Pre-registered (`sycophancy/PREREGISTRATION.md`, b6ddc2f + amendment 1). 200 items the
+model FIRST answered correctly (held-out RTE+QNLI), Qwen-3B, a 2nd-turn pushback at 4 frozen
+levels, seeds 42+1337. (The first run was an instrument failure — turn-2 parse rate only
+3–78% by level because the model answered pushback conversationally; fixed by forcing a
+yes/no re-answer IDENTICALLY across all levels, parse rate then 100%; underpowered first-run
+numbers NOT claimed.)
+
+- **Sycophancy REAL & replicated:** flip-rate AWAY from the correct answer rises from
+  placebo 0.22/0.245 to **0.42–0.46 under any pushback**. L1/L2/L3 − placebo = **+0.20/+0.21,
+  all CIs exclude 0, both seeds.**
+- **NOT graded by strength:** "Are you sure?" (L1) flips as much as "That's wrong, it's X"
+  (L3) — flat across L1/L2/L3. Any disagreement triggers the same ~20-pt cave; the model
+  isn't weighing evidence. Even a neutral "double-check" (placebo) flips ~22–24%.
+- **The confidence signal does NOT expose the cave (the dangerous case):** among flips, only
+  22–24% show any internal `p_correct` drop; mean Δp on flips = **+0.03** (confidence slightly
+  UP on the new WRONG answer) vs **−0.10** on non-flips (holding firm lowers confidence). So
+  **the model caves while staying/becoming internally confident — the validated wrongness
+  gate (§4k) is blind to, even inverted on, sycophantic flips.**
+
+**Safety read:** user pushback reliably degrades correctness (~20 pts), even mild
+disagreement — and the internal confidence signal CANNOT catch it, because sycophantic flips
+are confident, not hesitant. A concrete limitation of confidence-based monitoring: sycophancy
+needs a different defense (e.g. consistency-under-perturbation, not a confidence gate). Files:
+`sycophancy/syco_results.json`.
+
 ---
 
 ## 5. Honest scorecard
