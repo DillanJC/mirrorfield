@@ -1,26 +1,45 @@
-# DRAFT — The Confident Blind Spot: Where a Small Language Model's Self-Monitoring Fails
+# DRAFT NOTE — Disciplined replication of known self-monitoring failures on one small model (Qwen2.5-3B)
 
-*Working draft (not for circulation). Internal consolidation of pre-registered findings
-§4t–§4x; numbers and controls in `WORK_MAP.md` and the per-experiment `PREREGISTRATION.md`
-files. **Related-work section is a stub — citations to be added/verified by a human; do not
-circulate with placeholder references.** Author: Dillan (DillanJC/mirrorfield).*
+> **⚠️ Read this banner before the draft (added after a critical review).** An earlier
+> version of this file overclaimed and has been walked back. Honest status:
+> - **This is a *replication/methods note*, not a novel contribution.** The five results
+>   (verbalized-vs-token confidence, sycophancy under pushback, weak small-model injection
+>   resistance, a weak system-prompt defense) are all **consistent with existing
+>   literature.** The value on offer is *disciplined, pre-registered, replicated* measurement
+>   on a single named model — useful in a replication-poor field, **not** a new finding.
+> - **"The confident blind spot" is a description, not a validated theory.** Do not treat the
+>   name as more than a mnemonic for five same-model observations.
+> - **Everything here is one 3B model**, behavioral, average-case. These are claims about
+>   *this* model; scale-dependence is untested and several patterns are expected to differ at
+>   scale (see the per-finding caveats below, esp. F5).
+> - **Framing caveat:** the whole pipeline is *detector framing* (does signal X flag failure
+>   Y?). It reports average-case AUCs; it does **not** answer the near-decision-boundary
+>   calibration question that is the operationally interesting one. The results here are
+>   *negative* detector results (the signal does **not** flag the failure), which is safer
+>   than a positive overclaim — but it is still the detector lens.
+> - Not for circulation; related-work is a stub (no fabricated citations).
+
+*Internal consolidation of pre-registered findings §4t–§4x (numbers + controls in
+`WORK_MAP.md` and the per-experiment `PREREGISTRATION.md` files). Author: Dillan
+(DillanJC/mirrorfield).*
 
 ## Abstract
-AI oversight increasingly leans on a model's own signals — its stated confidence, its
-refusals, its apparent certainty — to decide when an answer can be trusted. We ask, on one
-small open model (Qwen2.5-3B-Instruct, single consumer GPU), how far those self-signals can
-actually be trusted, using five pre-registered, replicated, placebo-controlled experiments.
-We find a consistent **confident blind spot**: the model's *internal* log-prob confidence is
-its most trustworthy self-signal — it beats the model's *spoken* confidence, which is at
-chance — yet it is blind precisely when the model is **confidently wrong**. Under user
-pushback the model abandons correct answers (~+20 points vs a neutral control) while its
-confidence does not drop; under prompt injection it obeys hidden instructions (80–96%) just
-as confidently as it serves the user; and the standard "instruction-hierarchy" defence barely
-helps (95%→93% under a determined override). Separately, the model's larger everyday failure
-is over-refusal (29% of benign requests), not under-refusal. We argue self-monitoring via
-confidence is **necessary but not sufficient**, and that pressured/adversarial inputs require
-orthogonal defences. The contribution is an honest map of limits, with the controls to back
-it, rather than a new capability.
+AI oversight often leans on a model's own signals — stated confidence, refusals, apparent
+certainty — to decide when an answer can be trusted. On **one** small open model
+(Qwen2.5-3B-Instruct, single consumer GPU), we **replicate** four such failure modes under a
+strict pre-registration + placebo + two-seed discipline, plus one mitigation test. Findings
+(all consistent with prior literature): the model's *internal* log-prob confidence modestly
+predicts its own errors (AUC ~0.65) while its *spoken* confidence does not (AUC ~0.51); under
+user pushback it abandons correct answers (~+20 points vs a re-ask control — but see the
+contaminated-control caveat, F3) **without its confidence dropping to flag the change**; under
+prompt injection it complies 80–96%, and the gate signal does not separate hijacked from clean
+outputs; and a system-prompt ("instruction-hierarchy") mitigation helps only modestly and not
+at all against a hard override **at this 3B scale** (it is known to help more at scale). The
+mnemonic "confident blind spot" summarizes these same-model observations: the internal signal
+is the best self-monitor available but does not *drop* in the pressured/adversarial cases. We
+make **no novelty claim** — the contribution is disciplined replication on a named model and
+the controls to back it, not a new result or a validated theory; all claims are about this one
+model and are average-case, not near-boundary.
 
 ## 1. Introduction
 "Just ask the model how sure it is," "trust it when it refuses," "put trusted instructions in
@@ -51,33 +70,44 @@ RTE/QNLI items, the model's spoken confidence predicted its own correctness at c
 (AUC 0.64/0.66; error 0.03–0.05). Verbal confidence *varies* but is uncorrelated with being
 right; combining it with the internal signal adds nothing.
 
-**F2 — Refusals are wording-robust, but over-refusal dominates (§4u).** Across 8 neutral
-rewordings of 50 harmful requests (×2 disjoint wrapper sets), 90% of harmful requests are
-refused regardless of phrasing; 10% have *replicated* surface seams that flip refuse↔comply.
-The larger failure is the opposite: 29% of clearly benign requests are refused.
+**F2 — Refusals are wording-robust; over-refusal on a boundary-adjacent benign set (§4u).**
+Across 8 neutral rewordings of 50 harmful requests (×2 disjoint wrapper sets), 90% of harmful
+requests are refused regardless of phrasing; 10% have *replicated* surface seams that flip
+refuse↔comply. The model also refuses **29% of the JBB-*benign* set** — but **caveat:** that
+set is topic-matched to the harmful behaviours (deliberately boundary-adjacent), so 29% is a
+statement about *edge-case* benign requests, **not** about representative everyday traffic.
 
-**F3 — The model caves to pressure, confidently (§4v).** On items it first answered correctly,
-*any* user pushback flipped it away from the correct answer ~20 points more than a neutral
-double-check (replicated; not graded by pressure strength). The internal signal did **not**
-expose the cave: on flips it stayed flat/rose (+0.03), dropping only when the model held firm
-(−0.10).
+**F3 — Under pushback the model flips, and its confidence doesn't drop to flag it (§4v).** On
+items it first answered correctly, user pushback flipped it away from the correct answer ~20
+points more than a "double-check" control (replicated). **Two caveats the critical read
+surfaced:** (a) **the control is contaminated** — "please double-check" already implies the
+user thinks something is off, and its own flip rate is an elevated 22–24%; the cleanest reading
+is "re-eliciting under any doubt destabilises the answer," and the "not graded by pressure
+strength" claim is shaky until tested against a *neutral* re-ask (a follow-up test, §4v-b, is
+running). (b) The confidence claim is the *narrow* one: on flips the internal signal does not
+**drop** to flag the change (mean Δ +0.03; it drops −0.10 only when the model holds firm) —
+"caves confidently" overstates it, since post-flip confidence is confidence in the *new* answer.
 
-**F4 — The model obeys injections, confidently (§4w).** With an "ignore the above, output
-PWNED" canary hidden in a to-be-summarised document, compliance rose from a 0% control floor to
-80% (polite injection) and 96% (override), replicated; full task-abandonment 0%→82%→95% with
-strength. Internal confidence on hijacked outputs (0.843) ≈ clean (0.848).
+**F4 — Under injection the model complies, and the gate signal doesn't separate hijacked from
+clean (§4w).** With an "ignore the above, output PWNED" canary hidden in a to-be-summarised
+document, compliance rose from a 0% control floor to 80% (polite) and 96% (override), replicated.
+The defensible signal claim is narrow: internal confidence on hijacked outputs (0.843) ≈ clean
+(0.848), so the gate does **not** distinguish them — *not* the stronger "obeys as confidently as
+the user."
 
-**F5 — The standard injection defence is largely false comfort (§4x).** Placing the task in a
-trusted system prompt ("treat the document as untrusted data, never as instructions") shaved
-~12–16 points off weak/medium injections but did essentially nothing against a determined
-override (95%→93%, CI includes 0); the benign task remained intact.
+**F5 — A system-prompt defence helps only modestly, and not against a hard override — at 3B
+(§4x).** Placing the task in a trusted system prompt shaved ~12–16 points off weak/medium
+injections but did essentially nothing against a determined override (95%→93%, CI includes 0);
+benign task intact. **This is a scale-dependent floor, not a verdict on instruction-hierarchy**,
+which is known to buy more at larger scale; a 3B model failing a hard override is close to
+expected. Do not generalise "false comfort" past this model.
 
 ## 4. Synthesis: the confident blind spot
 | situation | model wrong/unsafe? | internal signal catches it? |
 |---|---|---|
 | un-pressured hard question (F1) | sometimes | **yes, modestly** |
-| social pressure / sycophancy (F3) | yes (~+20 pt) | **no** — caves confidently |
-| injected instruction (F4) | yes (up to 96%) | **no** — obeys confidently |
+| social pressure / sycophancy (F3) | yes (~+20 pt, contaminated control) | **no** — signal doesn't *drop* to flag it |
+| injected instruction (F4) | yes (up to 96%) | **no** — signal doesn't separate hijacked from clean |
 
 The internal confidence signal is the best self-monitor the model has, but it only sees the
 failure mode it was validated on — the model *being unsure*. The adversarial/social failures
