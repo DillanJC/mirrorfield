@@ -152,8 +152,16 @@ Three new strategic docs (committed f17ca5f→4884283):
   model. Critical-read corrections applied (do not re-inflate): "false comfort" → scale-
   dependent floor; "confidently wrong" → narrow "signal doesn't change to flag it"; 29%
   over-refusal is on boundary-adjacent JBB-benign, not normal traffic; the §4v "double-check"
-  placebo was contaminated (clean re-ask re-run via amendment 2 in progress); the whole frame
-  is average-case *detector* framing, not the near-boundary calibration question.
+  placebo was contaminated (fixed via amendment 2 — §4v corrected); the §4t–§4x frame was
+  average-case *detector* framing.
+- **§4y boundary-stratified calibration — the live post-retraction question, ANSWERED.** On
+  Qwen-3B/RTE+QNLI the gate's good aggregate ECE (0.03) HID near-boundary overconfidence: in
+  the torn region (lowest raw-margin quintile) calibration degrades to ~+0.22 overconfidence
+  (p_int ~0.79 vs accuracy ~0.55, replicated), exactly where the model is most likely wrong;
+  the raw margin discriminates fine, so it's the calibration mapping that fails near the
+  boundary. The compressed p_int axis masked it; the raw-margin re-gen resolved it.
+  **Actionable:** trust p_int LESS in the low-margin region — candidate gate improvement.
+  `experiments/boundary_calibration/`.
 - **Synthesis (not a single ensemble):** A1/B1/C1/B3 live on different tasks/failure modes, so
   the honest D1 is a *pipeline/architecture* writeup, not one AUC — three complementary
   monitors: (i) internal-signal gate for un-pressured wrongness (but blind to sycophancy per
