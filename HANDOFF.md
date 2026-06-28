@@ -142,11 +142,15 @@ Three new strategic docs (committed f17ca5f→4884283):
   injection 80%, override 96% (replicated, clean 0% control floor); and the hijack is
   INVISIBLE to the confidence signal (p_int complied 0.843 ≈ clean 0.848) — same blind spot
   as §4v. `experiments/prompt_injection/`.
-- **CAPSTONE WRITEUP: `docs/SELF_MONITORING_LIMITS.md`** — the four findings synthesized:
-  the internal log-prob signal is the best self-monitor (beats the model's words, A1) but is
-  BLIND to sycophancy (§4v) and injection (§4w) because the model is confidently wrong;
-  over-refusal (§4u) rivals under-refusal. Layered defenses, not one signal. (The seed of a
-  paper.)
+- **REPLICATION NOTE (walked back after a critical review): `docs/SELF_MONITORING_LIMITS.md`
+  + `docs/PAPER_DRAFT.md`.** The internal log-prob signal beats the model's *words* (A1) but
+  does NOT *drop* to flag sycophancy (§4v) or *separate* hijacked-from-clean under injection
+  (§4w). **NOT a novel contribution** — disciplined replication of known phenomena on ONE 3B
+  model. Critical-read corrections applied (do not re-inflate): "false comfort" → scale-
+  dependent floor; "confidently wrong" → narrow "signal doesn't change to flag it"; 29%
+  over-refusal is on boundary-adjacent JBB-benign, not normal traffic; the §4v "double-check"
+  placebo was contaminated (clean re-ask re-run via amendment 2 in progress); the whole frame
+  is average-case *detector* framing, not the near-boundary calibration question.
 - **Synthesis (not a single ensemble):** A1/B1/C1/B3 live on different tasks/failure modes, so
   the honest D1 is a *pipeline/architecture* writeup, not one AUC — three complementary
   monitors: (i) internal-signal gate for un-pressured wrongness (but blind to sycophancy per
