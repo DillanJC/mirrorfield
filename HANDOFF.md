@@ -142,6 +142,11 @@ Three new strategic docs (committed f17ca5f→4884283):
   injection 80%, override 96% (replicated, clean 0% control floor); and the hijack is
   INVISIBLE to the confidence signal (p_int complied 0.843 ≈ clean 0.848) — same blind spot
   as §4v. `experiments/prompt_injection/`.
+- **CAPSTONE WRITEUP: `docs/SELF_MONITORING_LIMITS.md`** — the four findings synthesized:
+  the internal log-prob signal is the best self-monitor (beats the model's words, A1) but is
+  BLIND to sycophancy (§4v) and injection (§4w) because the model is confidently wrong;
+  over-refusal (§4u) rivals under-refusal. Layered defenses, not one signal. (The seed of a
+  paper.)
 - **Synthesis (not a single ensemble):** A1/B1/C1/B3 live on different tasks/failure modes, so
   the honest D1 is a *pipeline/architecture* writeup, not one AUC — three complementary
   monitors: (i) internal-signal gate for un-pressured wrongness (but blind to sycophancy per
