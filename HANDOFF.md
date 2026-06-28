@@ -135,9 +135,12 @@ Three new strategic docs (committed f17ca5f→4884283):
   discount the speech." `experiments/selfreport_confidence/`.
 - **B1 DONE — §4u (b88dd91).** Refusal boundary 90% stable to trivial rewords, but 5/50
   harmful goals (10%) have REPLICATED seams, and 29% over-refusal on benign.
-- **C1 DONE — §4v.** Sycophancy real: any pushback flips correct→wrong ~+20pt vs placebo
-  (replicated), not graded by strength; and the confidence signal does NOT expose the cave
-  (model flips confidently). `experiments/sycophancy/` (amendment 1 fixed turn-2 parseability).
+- **C1 DONE — §4v (corrected, amendment 2).** A critical review caught the "double-check"
+  placebo as contaminated; a clean neutral re-ask control re-grounded it: model is STABLE to a
+  neutral re-ask (1.5% flip), but explicit disagreement flips correct→wrong **~+40pt** vs that
+  clean baseline (≈double the contaminated-baseline figure), coarsely graded by doubt
+  (1.5%→22%→44%) but flat within explicit pushback; the signal does NOT drop to flag the flip.
+  `experiments/sycophancy/`.
 - **B3 DONE — §4w (prompt-injection).** 3B model massively susceptible: even a polite
   injection 80%, override 96% (replicated, clean 0% control floor); and the hijack is
   INVISIBLE to the confidence signal (p_int complied 0.843 ≈ clean 0.848) — same blind spot

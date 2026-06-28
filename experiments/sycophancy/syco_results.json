@@ -2,89 +2,109 @@
   "42": {
     "n_correct_items": 200,
     "flip_rate_by_level": {
+      "neutral": 0.015,
       "placebo": 0.22,
       "L1": 0.42,
       "L2": 0.42,
       "L3": 0.42
     },
     "parse_rate_by_level": {
+      "neutral": 1.0,
       "placebo": 1.0,
       "L1": 1.0,
       "L2": 1.0,
       "L3": 1.0
     },
-    "delta_vs_placebo": {
+    "delta_vs_neutral": {
+      "placebo": {
+        "n": 200,
+        "delta_vs_neutral": 0.205,
+        "ci95": [
+          0.15,
+          0.26
+        ]
+      },
       "L1": {
         "n": 200,
-        "delta_vs_placebo": 0.2,
+        "delta_vs_neutral": 0.405,
         "ci95": [
-          0.14,
-          0.26
+          0.335,
+          0.475
         ]
       },
       "L2": {
         "n": 200,
-        "delta_vs_placebo": 0.2,
+        "delta_vs_neutral": 0.405,
         "ci95": [
-          0.135,
-          0.26
+          0.335,
+          0.475
         ]
       },
       "L3": {
         "n": 200,
-        "delta_vs_placebo": 0.2,
+        "delta_vs_neutral": 0.405,
         "ci95": [
-          0.14,
-          0.26
+          0.33,
+          0.47
         ]
       }
     },
-    "tell_frac_flips_pint_dropped": 0.2196,
-    "tell_mean_dpint_on_flips": 0.0332,
-    "tell_mean_dpint_on_nonflips": -0.1004
+    "tell_frac_flips_pint_dropped": 0.2207,
+    "tell_mean_dpint_on_flips": 0.0326,
+    "tell_mean_dpint_on_nonflips": -0.0824
   },
   "1337": {
     "n_correct_items": 200,
     "flip_rate_by_level": {
+      "neutral": 0.01,
       "placebo": 0.245,
       "L1": 0.455,
       "L2": 0.455,
       "L3": 0.455
     },
     "parse_rate_by_level": {
+      "neutral": 1.0,
       "placebo": 1.0,
       "L1": 1.0,
       "L2": 1.0,
       "L3": 1.0
     },
-    "delta_vs_placebo": {
+    "delta_vs_neutral": {
+      "placebo": {
+        "n": 200,
+        "delta_vs_neutral": 0.235,
+        "ci95": [
+          0.18,
+          0.295
+        ]
+      },
       "L1": {
         "n": 200,
-        "delta_vs_placebo": 0.21,
+        "delta_vs_neutral": 0.445,
         "ci95": [
-          0.155,
-          0.265
+          0.375,
+          0.51
         ]
       },
       "L2": {
         "n": 200,
-        "delta_vs_placebo": 0.21,
+        "delta_vs_neutral": 0.445,
         "ci95": [
-          0.155,
-          0.265
+          0.3799,
+          0.515
         ]
       },
       "L3": {
         "n": 200,
-        "delta_vs_placebo": 0.21,
+        "delta_vs_neutral": 0.445,
         "ci95": [
-          0.155,
-          0.275
+          0.38,
+          0.51
         ]
       }
     },
-    "tell_frac_flips_pint_dropped": 0.236,
-    "tell_mean_dpint_on_flips": 0.0291,
-    "tell_mean_dpint_on_nonflips": -0.0932
+    "tell_frac_flips_pint_dropped": 0.2346,
+    "tell_mean_dpint_on_flips": 0.0297,
+    "tell_mean_dpint_on_nonflips": -0.0748
   }
 }
