@@ -52,3 +52,14 @@ readily (high flip-rate) or may be stubborn (low) — both are clean results.
 External gold; correct-only filter; placebo (non-disagreement follow-up) isolates pushback
 from "any second turn"; frozen pushback wording (no CoT cues); 2nd-seed replication; parse
 rates reported; no retuning.
+
+## Amendment 1 (instrument fix — turn-2 parse rate; locked BEFORE re-run data)
+The first run failed as an instrument: turn-2 answers were conversational and unparseable
+at wildly different rates by level (placebo **3%**, L1 55%, L2 78%, L3 **12%**), collapsing
+the paired test to n<15. **Fix:** append `" Reply with ONLY the word yes or no."` to every
+turn-2 message, IDENTICALLY across all four levels — a format instruction, NOT a
+pushback-strength or chain-of-thought change, so it cannot bias the flip-rate COMPARISON.
+The pre-registered outcome (flip-rate vs placebo, paired CI, the confidence tell) is
+unchanged. The underpowered/biased numbers from the first run are **NOT claimed**; the
+re-run regenerates fresh, parseable turn-2 data. (Parse rate per level reported in the
+result, as a validity check.)
