@@ -1,0 +1,268 @@
+{
+  "42": {
+    "n": 500,
+    "aggregate_accuracy": 0.834,
+    "aggregate_mean_pint": 0.8373,
+    "bins": [
+      {
+        "bin": "abstain-tail",
+        "range": [
+          0.625,
+          0.7763
+        ],
+        "n": 12,
+        "mean_pint": 0.681,
+        "accuracy": 0.5,
+        "acc_ci": [
+          0.2538,
+          0.7462
+        ],
+        "gap": 0.181,
+        "interpretable": false,
+        "gap_verdict": null
+      },
+      {
+        "bin": "verify-1",
+        "range": [
+          0.7763,
+          0.8
+        ],
+        "n": 146,
+        "mean_pint": 0.7904,
+        "accuracy": 0.7466,
+        "acc_ci": [
+          0.6703,
+          0.8102
+        ],
+        "gap": 0.0439,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "verify-2",
+        "range": [
+          0.8,
+          0.82
+        ],
+        "n": 27,
+        "mean_pint": 0.8113,
+        "accuracy": 0.9259,
+        "acc_ci": [
+          0.7663,
+          0.9794
+        ],
+        "gap": -0.1146,
+        "interpretable": false,
+        "gap_verdict": null
+      },
+      {
+        "bin": "verify-3",
+        "range": [
+          0.82,
+          0.845
+        ],
+        "n": 46,
+        "mean_pint": 0.8363,
+        "accuracy": 0.7826,
+        "acc_ci": [
+          0.6443,
+          0.8774
+        ],
+        "gap": 0.0537,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "verify-4",
+        "range": [
+          0.845,
+          0.8684
+        ],
+        "n": 207,
+        "mean_pint": 0.8632,
+        "accuracy": 0.8841,
+        "acc_ci": [
+          0.8333,
+          0.9208
+        ],
+        "gap": -0.0208,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "present",
+        "range": [
+          0.8684,
+          0.95
+        ],
+        "n": 60,
+        "mean_pint": 0.9002,
+        "accuracy": 0.95,
+        "acc_ci": [
+          0.863,
+          0.9829
+        ],
+        "gap": -0.0498,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "high-tail",
+        "range": [
+          0.95,
+          1.001
+        ],
+        "n": 2,
+        "mean_pint": 1.0,
+        "accuracy": 0.5,
+        "acc_ci": [
+          0.0945,
+          0.9055
+        ],
+        "gap": 0.5,
+        "interpretable": false,
+        "gap_verdict": null
+      }
+    ],
+    "band_n": 426,
+    "within_band_slope": 1.5972,
+    "slope_ci95": [
+      0.5053,
+      2.6799
+    ],
+    "slope_verdict": "RISING"
+  },
+  "1337": {
+    "n": 500,
+    "aggregate_accuracy": 0.78,
+    "aggregate_mean_pint": 0.8336,
+    "bins": [
+      {
+        "bin": "abstain-tail",
+        "range": [
+          0.625,
+          0.7763
+        ],
+        "n": 13,
+        "mean_pint": 0.6709,
+        "accuracy": 0.5385,
+        "acc_ci": [
+          0.2914,
+          0.7679
+        ],
+        "gap": 0.1324,
+        "interpretable": false,
+        "gap_verdict": null
+      },
+      {
+        "bin": "verify-1",
+        "range": [
+          0.7763,
+          0.8
+        ],
+        "n": 152,
+        "mean_pint": 0.7905,
+        "accuracy": 0.6711,
+        "acc_ci": [
+          0.5929,
+          0.7407
+        ],
+        "gap": 0.1194,
+        "interpretable": true,
+        "gap_verdict": "OVERCONF"
+      },
+      {
+        "bin": "verify-2",
+        "range": [
+          0.8,
+          0.82
+        ],
+        "n": 38,
+        "mean_pint": 0.8088,
+        "accuracy": 0.7368,
+        "acc_ci": [
+          0.5799,
+          0.8503
+        ],
+        "gap": 0.0719,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "verify-3",
+        "range": [
+          0.82,
+          0.845
+        ],
+        "n": 53,
+        "mean_pint": 0.8353,
+        "accuracy": 0.7736,
+        "acc_ci": [
+          0.6447,
+          0.8655
+        ],
+        "gap": 0.0617,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "verify-4",
+        "range": [
+          0.845,
+          0.8684
+        ],
+        "n": 188,
+        "mean_pint": 0.863,
+        "accuracy": 0.8564,
+        "acc_ci": [
+          0.7991,
+          0.8994
+        ],
+        "gap": 0.0066,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "present",
+        "range": [
+          0.8684,
+          0.95
+        ],
+        "n": 54,
+        "mean_pint": 0.9022,
+        "accuracy": 0.9259,
+        "acc_ci": [
+          0.8245,
+          0.9708
+        ],
+        "gap": -0.0237,
+        "interpretable": true,
+        "gap_verdict": "HOLDS"
+      },
+      {
+        "bin": "high-tail",
+        "range": [
+          0.95,
+          1.001
+        ],
+        "n": 2,
+        "mean_pint": 0.9893,
+        "accuracy": 0.5,
+        "acc_ci": [
+          0.0945,
+          0.9055
+        ],
+        "gap": 0.4893,
+        "interpretable": false,
+        "gap_verdict": null
+      }
+    ],
+    "band_n": 431,
+    "within_band_slope": 2.5491,
+    "slope_ci95": [
+      1.3332,
+      3.723
+    ],
+    "slope_verdict": "RISING"
+  }
+}
