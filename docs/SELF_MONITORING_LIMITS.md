@@ -1,17 +1,28 @@
-# Can a small model police itself? Four findings on the limits of self-monitoring
+# Can a small model police itself? Replicated observations on the limits of self-monitoring
 
-*A synthesis of four pre-registered, replicated experiments on Qwen2.5-3B-Instruct (one
-RTX 3060 Ti, no paid API), each controlled to avoid the circular traps catalogued in
-`EVALUATION_DISCIPLINE.md`. The unifying question: **how far can a model's own signals be
-trusted to tell when it is about to be wrong, manipulated, or hijacked?** Full method +
-numbers: `WORK_MAP.md` §4t–§4w; per-experiment `PREREGISTRATION.md` files.*
+> **⚠️ Scope banner (added after a critical review).** These are **replications of known
+> phenomena on ONE 3B model**, not novel findings and not a validated theory. Read with:
+> (1) all claims are about Qwen2.5-3B, average-case, behavioral — **scale-dependence is
+> untested** and several patterns are expected to differ at scale; (2) the "confidently"
+> phrasing is narrowed below to the defensible claim — *the confidence signal does not drop /
+> does not separate*, not "the model is confidently wrong" (post-flip confidence is confidence
+> in the new answer); (3) the sycophancy control was contaminated (see §3) — a clean re-ask
+> control is being measured; (4) the over-refusal number is on a boundary-adjacent benign set,
+> not normal traffic; (5) this is **detector framing** (does signal X flag failure Y?) — it
+> reports average-case results, not the near-decision-boundary calibration that is the
+> operationally interesting question. The value here is *disciplined replication*, not a result.
 
-## The one-line thesis
-**A model's internal log-prob confidence is the best self-monitor it has — and it is
-blind in exactly the adversarial and social situations where safety matters most.** It
-catches *un-pressured* uncertainty; it does **not** catch a model that caves to pressure
-or obeys an injected instruction, because in both cases the model does the wrong thing
-*confidently*.
+*A synthesis of pre-registered, replicated experiments on Qwen2.5-3B-Instruct (one RTX 3060 Ti,
+no paid API), each controlled per `EVALUATION_DISCIPLINE.md`. Full method + numbers:
+`WORK_MAP.md` §4t–§4x; per-experiment `PREREGISTRATION.md` files.*
+
+## The one-line thesis (narrow form)
+On this 3B model, the **internal log-prob signal is the best self-monitor available** (it beats
+the model's *spoken* confidence), but it **does not change to flag** the pressured/adversarial
+failures: under pushback the signal does not *drop*, and under injection it does not *separate*
+hijacked from clean. It catches *un-pressured* uncertainty; it is not a usable alarm for
+sycophancy or injection. (Stronger phrasings like "confidently wrong by construction" overstate
+this — see the banner.)
 
 ## The four findings
 
@@ -65,10 +76,13 @@ so a confidence gate is blind to them *by construction*.
    - sycophancy → **consistency-under-perturbation** (does the answer survive paraphrased
      pressure?), not a confidence threshold;
    - injection → the obvious mitigation, **instruction-hierarchy** (task in a trusted system
-     prompt, "treat the document as untrusted"), was **tested (B3b, §4x) and is largely false
-     comfort** on this model: it shaved ~12–16 pts off weak/medium injection but did **nothing**
-     against a determined override (95% → 93%). Real defense needs untrusted-content isolation /
-     injection-resistance training, not just a system prompt.
+     prompt, "treat the document as untrusted"), was tested (B3b, §4x): it shaved ~12–16 pts off
+     weak/medium injection but did nothing against a determined override **at this 3B scale**
+     (95% → 93%). This is a **scale-dependent floor, not a verdict on instruction-hierarchy** —
+     which is known to help more at larger scale; a 3B model failing a hard override is close to
+     expected. The point is only that on a small model the system-prompt patch is not sufficient
+     on its own; real defense also needs untrusted-content isolation / injection-resistance
+     training.
 3. **Budget for over-refusal** (B1): it is a first-class reliability failure, not a
    footnote, and it erodes trust in the safety layer itself.
 4. **Layer the monitors** (the honest "D1"): a confidence gate for un-pressured wrongness +
