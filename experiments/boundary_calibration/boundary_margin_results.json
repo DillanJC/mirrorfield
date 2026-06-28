@@ -1,0 +1,210 @@
+{
+  "42": {
+    "reproduces_A1_pint_maxabsdiff": 0.0,
+    "n": 500,
+    "margin_range": [
+      2.139,
+      12.409
+    ],
+    "margin_std": 1.236,
+    "quintiles": [
+      {
+        "q": 1,
+        "margin_range": [
+          2.139,
+          4.733
+        ],
+        "n": 100,
+        "mean_margin": 4.064,
+        "mean_pint": 0.7918,
+        "accuracy": 0.58,
+        "acc_ci": [
+          0.4821,
+          0.672
+        ],
+        "gap_pint_minus_acc": 0.2118,
+        "calib_holds": false
+      },
+      {
+        "q": 2,
+        "margin_range": [
+          4.733,
+          5.403
+        ],
+        "n": 100,
+        "mean_margin": 5.063,
+        "mean_pint": 0.8214,
+        "accuracy": 0.83,
+        "acc_ci": [
+          0.7445,
+          0.8911
+        ],
+        "gap_pint_minus_acc": -0.0086,
+        "calib_holds": true
+      },
+      {
+        "q": 3,
+        "margin_range": [
+          5.403,
+          5.96
+        ],
+        "n": 100,
+        "mean_margin": 5.651,
+        "mean_pint": 0.833,
+        "accuracy": 0.91,
+        "acc_ci": [
+          0.8377,
+          0.9519
+        ],
+        "gap_pint_minus_acc": -0.077,
+        "calib_holds": false
+      },
+      {
+        "q": 4,
+        "margin_range": [
+          5.96,
+          6.609
+        ],
+        "n": 100,
+        "mean_margin": 6.295,
+        "mean_pint": 0.8549,
+        "accuracy": 0.91,
+        "acc_ci": [
+          0.8377,
+          0.9519
+        ],
+        "gap_pint_minus_acc": -0.0551,
+        "calib_holds": true
+      },
+      {
+        "q": 5,
+        "margin_range": [
+          6.609,
+          12.409
+        ],
+        "n": 100,
+        "mean_margin": 7.456,
+        "mean_pint": 0.8854,
+        "accuracy": 0.94,
+        "acc_ci": [
+          0.8752,
+          0.9722
+        ],
+        "gap_pint_minus_acc": -0.0546,
+        "calib_holds": true
+      }
+    ],
+    "discrimination_Q5_Q1": {
+      "acc_Q5_minus_Q1": 0.36,
+      "ci95": [
+        0.26,
+        0.47
+      ],
+      "verdict": "RISING (margin discriminates correctness)"
+    }
+  },
+  "1337": {
+    "reproduces_A1_pint_maxabsdiff": 0.0,
+    "n": 500,
+    "margin_range": [
+      2.329,
+      10.313
+    ],
+    "margin_std": 1.281,
+    "quintiles": [
+      {
+        "q": 1,
+        "margin_range": [
+          2.329,
+          4.447
+        ],
+        "n": 100,
+        "mean_margin": 3.843,
+        "mean_pint": 0.7879,
+        "accuracy": 0.53,
+        "acc_ci": [
+          0.4329,
+          0.6249
+        ],
+        "gap_pint_minus_acc": 0.2579,
+        "calib_holds": false
+      },
+      {
+        "q": 2,
+        "margin_range": [
+          4.447,
+          5.216
+        ],
+        "n": 100,
+        "mean_margin": 4.853,
+        "mean_pint": 0.8117,
+        "accuracy": 0.79,
+        "acc_ci": [
+          0.7002,
+          0.8583
+        ],
+        "gap_pint_minus_acc": 0.0217,
+        "calib_holds": true
+      },
+      {
+        "q": 3,
+        "margin_range": [
+          5.216,
+          5.858
+        ],
+        "n": 100,
+        "mean_margin": 5.552,
+        "mean_pint": 0.8329,
+        "accuracy": 0.78,
+        "acc_ci": [
+          0.6893,
+          0.85
+        ],
+        "gap_pint_minus_acc": 0.0529,
+        "calib_holds": true
+      },
+      {
+        "q": 4,
+        "margin_range": [
+          5.858,
+          6.5
+        ],
+        "n": 100,
+        "mean_margin": 6.183,
+        "mean_pint": 0.8525,
+        "accuracy": 0.9,
+        "acc_ci": [
+          0.8256,
+          0.9448
+        ],
+        "gap_pint_minus_acc": -0.0475,
+        "calib_holds": true
+      },
+      {
+        "q": 5,
+        "margin_range": [
+          6.5,
+          10.314
+        ],
+        "n": 100,
+        "mean_margin": 7.383,
+        "mean_pint": 0.8832,
+        "accuracy": 0.9,
+        "acc_ci": [
+          0.8256,
+          0.9448
+        ],
+        "gap_pint_minus_acc": -0.0168,
+        "calib_holds": true
+      }
+    ],
+    "discrimination_Q5_Q1": {
+      "acc_Q5_minus_Q1": 0.37,
+      "ci95": [
+        0.25,
+        0.49
+      ],
+      "verdict": "RISING (margin discriminates correctness)"
+    }
+  }
+}

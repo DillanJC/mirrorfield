@@ -848,6 +848,41 @@ false comfort** on a 3B model; real defense needs untrusted-content isolation / 
 resistance training / keeping untrusted text out of the instruction-following path. Files:
 `prompt_injection/inj_results.json`.
 
+### §4y. Boundary-stratified calibration — the gate is OVERCONFIDENT in the torn region; aggregate ECE hid it (Qwen-3B, RTE+QNLI, REPLICATED)
+
+Pre-registered (`boundary_calibration/PREREGISTRATION.md`, cc62bd8), two arms, answering the
+live post-retraction question: does the log-prob confidence track correctness *near the
+decision boundary*, not on average. **Scope:** all claims are about Qwen2.5-3B on RTE+QNLI.
+
+**Option 1 — calibrated `p_int` axis (no generation).** Within the verify band (85% of items),
+slope of correct~`p_int` = **1.60 [0.51, 2.68] / 2.55 [1.33, 3.72] → RISING, replicated**: the
+signal's variation IS informative there (the aggregate ECE 0.03 isn't a flat signal). Slope >1
+⇒ `p_int` *compresses* the true accuracy spread. The genuinely-torn (low-`p_int`) tail was
+n≤13 → **underpowered, not interpreted.** [This DEFIED the pre-registered
+underpowered-by-compression prior — the slope resolved RISING. Logged as a prior-miss.]
+
+**Option 2 — raw mean-margin axis (re-gen; reproduces A1 `p_int` to max-abs-diff 0.0 ⇒
+identical generation).** The margin has real spread (std **1.24** vs `p_int`'s 0.047). Quintile
+bins (n=100 each):
+- **Near-boundary (lowest-margin quintile, model most torn): calibration DEGRADES into
+  overconfidence** — `p_int` ≈ 0.79 vs actual accuracy **0.58 / 0.53**, gap **+0.21 / +0.26**,
+  accuracy Wilson-CI excludes `p_int`, **REPLICATED.**
+- Mid/high-margin quintiles: calibration mostly **HOLDS** (small gaps, CI contains `p_int`).
+- **The raw margin strongly DISCRIMINATES correctness:** acc(Q5) − acc(Q1) =
+  **+0.36 [0.26, 0.47] / +0.37 [0.25, 0.49]**, RISING, replicated (torn ~55% vs confident ~92%).
+  So the *signal* is informative; it's the *calibration mapping* that fails near the boundary.
+
+**Answer to the live question (on this model):** calibration that looks fine in aggregate
+(ECE 0.03) does **NOT** hold near the decision boundary — it is **overconfident by ~+0.22 in
+the genuinely-torn region, exactly where the model is most likely wrong** (accuracy ~55% while
+the gate claims ~79%). The compressed `p_int` axis (Option 1) **MASKED** this — it read
+"rising / mostly holds"; only the higher-resolution raw-margin axis (Option 2) resolved it.
+**Implication for the v3.0 gate (on this model):** the calibrated `p_int` should be trusted
+LESS in the low-margin region than its value claims; a deployable gate would want to abstain
+more aggressively there, or refit calibration with weight on the torn tail. This is the first
+result here that is genuinely about *where it matters* rather than average-case detector AUC.
+Files: `boundary_calibration/boundary_pint_results.json`, `boundary_margin_results.json`.
+
 ---
 
 ## 5. Honest scorecard
