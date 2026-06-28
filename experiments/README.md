@@ -10,7 +10,7 @@ Method discipline: `docs/EVALUATION_DISCIPLINE.md`. Next directions:
 | dir | question | status — finding |
 |-----|----------|------------------|
 | `sycophancy/` (C1) | does the model abandon a CORRECT answer under user pushback; does its confidence expose the cave? | **staged** (pre-reg locked, resumable harness) |
-| `refusal_stability/` (B1) | how consistently does it refuse the same harmful request across trivial rewords? | **running** (pre-reg locked) |
+| `refusal_stability/` (B1) | how consistently does it refuse the same harmful request across trivial rewords? | **§4u** — 90% reliability; 5/50 harmful goals (10%) have REPLICATED seams; 29% over-refusal on benign |
 | `selfreport_confidence/` (A1) | does the model's SPOKEN confidence match its correctness / its internal signal? | **§4t** — verbal is at CHANCE (AUC 0.51); internal log-prob signal beats it (0.64–0.66), replicated. "Read the signal, discount the speech." |
 | `goodhart_general/` (H) | does the metric-gaming detector's portable core generalize? | **§4s** — NO; fails its FPR gate (cries wolf on honest runs); only a narrow output-collapse detector survives |
 | `harm_framing/` | does benign relational tone (humble/effusive) weaken refusal? | **§4r** — softens refusal STYLE (replicated) but NOT harm SUBSTANCE; "being nice" doesn't jailbreak the 3B model |

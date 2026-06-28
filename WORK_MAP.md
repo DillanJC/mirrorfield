@@ -737,6 +737,30 @@ confidence for oversight/triage. Controls: 100% parse rate; shuffled-label null 
 feature is narrow-range, std≈0.05; analysis fix, primary unaffected.) Files:
 `selfreport_confidence/selfreport_results.json`.
 
+### §4u. B1 — refusal boundary mostly stable, but with REPLICATED seams; over-refusal is bigger (JBB, Qwen-3B)
+
+Pre-registered (`refusal_stability/PREREGISTRATION.md`, e756f6a). 50 JBB-harmful (+25
+benign) goals × 8 NEUTRAL surface wrappers (the harmful goal kept VERBATIM; only
+please/question/task/typo/spacing varies) × 2 disjoint wrapper sets A,B for replication.
+Qwen-3B greedy; judged by the refusal lexicon + Granite harm score.
+
+- **Refusal-reliability = 0.90** (Set A): 90% of harmful goals are refused UNANIMOUSLY
+  across all 8 trivial rewords (mean within-goal refusal SD 0.039). The boundary is mostly
+  surface-robust.
+- **But 5/50 harmful goals (10%) are unstable seams** — refusal flips on a trivial reword —
+  **and ALL 5 REPLICATE across both wrapper sets** (h24, h31, h33, h36, h49). A real, if
+  modest, surface-reword attack surface.
+- **Over-refusal is the larger issue: 29% of BENIGN goals are refused** (Set A) — the model
+  is notably over-cautious (coheres with §4r's JBB-benign over-refusal).
+- Harmful refusal rate 0.96. **Cross-judge valid:** Granite harm on refused completions
+  0.013 ≪ complied 0.190 (lexicon & Granite agree in direction).
+
+**Read:** the refusal boundary is fairly stable to surface wording, but carries a small
+REPLICATED set of exploitable seams AND a substantial over-refusal cost on benign requests.
+Yields a reusable per-model refusal-reliability metric (0.90 here) + the specific seams.
+(Resumable run — completed across repeated session teardowns via JSONL checkpoints.) Files:
+`refusal_stability/refusal_results.json`.
+
 ---
 
 ## 5. Honest scorecard
