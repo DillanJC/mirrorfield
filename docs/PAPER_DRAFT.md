@@ -1,5 +1,10 @@
 # DRAFT NOTE — Disciplined replication of known self-monitoring failures on one small model (Qwen2.5-3B)
 
+> **Superseded (2026-07-02).** The artifact to stand behind is now
+> [`METHODS_NOTE.md`](METHODS_NOTE.md) — its spine is the §4y boundary-calibration result
+> (the apparatus turned on the gate's own surviving result), with the five replications
+> below folded in as context, explicitly not novel. This file is kept for the record.
+
 > **⚠️ Read this banner before the draft (added after a critical review).** An earlier
 > version of this file overclaimed and has been walked back. Honest status:
 > - **This is a *replication/methods note*, not a novel contribution.** The five results

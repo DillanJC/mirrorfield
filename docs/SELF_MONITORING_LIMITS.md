@@ -65,14 +65,15 @@ confidence on hijacked outputs 0.843 ≈ clean 0.848).
 | situation | is the model wrong/unsafe? | does the *internal signal* catch it? |
 |---|---|---|
 | un-pressured hard question (A1) | sometimes | **yes, modestly** (AUC ~0.65) |
-| social pressure / sycophancy (C1) | yes, +20pt | **no** — caves confidently |
-| injected instruction (B3) | yes, up to 96% | **no** — obeys confidently |
+| social pressure / sycophancy (C1) | yes, ~+40pt vs clean re-ask | **no** — signal doesn't *drop* to flag it |
+| injected instruction (B3) | yes, up to 96% | **no** — signal doesn't *separate* hijacked from clean |
 
 The internal confidence signal is **necessary but not sufficient**. It is the most
 trustworthy self-monitor a model has (it beats the model's own words), but it only sees the
-failure mode it was validated on — *the model being unsure*. The dangerous cases —
-sycophancy and injection — are precisely the ones where the model is **confidently wrong**,
-so a confidence gate is blind to them *by construction*.
+failure mode it was validated on — *the model being unsure*. The pressured/adversarial
+cases — sycophancy and injection — are precisely the ones where the signal does not
+*change* to flag the failure, so a confidence gate cannot catch them (the narrow claim;
+see the banner).
 
 ## Implications for safe design
 1. **Don't trust verbalized confidence** for triage or oversight (A1).
