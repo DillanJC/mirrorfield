@@ -85,5 +85,5 @@ opencode.json
 .opencode/
 nul
 
-# Plan E: raw harmful-benchmark completions never enter git
-experiments/harm_gate/local_outputs/
+# Raw generations (incl. harmful-benchmark completions) never enter git — any experiment
+local_outputs/
