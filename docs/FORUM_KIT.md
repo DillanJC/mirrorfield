@@ -91,3 +91,8 @@ decision boundary' be predictable rather than accidental?"
       doesn't.)
 - [ ] Push the repo (your call, after this checklist) so what people clone matches what
       you say.
+- [ ] Field-positions doc (kept OUTSIDE this public repo, deliberately) — carried
+      separately. Register discipline: the note is receipts, the positions are
+      conversation; lead with receipts, and label positions as positions. Where a
+      position has a repo receipt (architecture-over-control ← B3b; the audit gap ←
+      B3's signal-doesn't-separate), cite the receipt with its "on this model" scope.
