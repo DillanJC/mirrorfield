@@ -60,7 +60,8 @@ Every number here reconciles to `WORK_MAP.md` / `docs/METHODS_NOTE.md`.*
 ## Other ready threads (condensed from the state doc appendix)
 
 - The retraction-as-methodology story (the apparatus, not the gate, is the contribution).
-- The circularity auditor as a parked build + open collaboration invite.
+- The circularity auditor as a parked build + open collaboration invite — one-page
+  design sketch to hand over: `CIRCULARITY_AUDITOR_SKETCH.md`.
 - Parallax Triangulation + the Fugu delta — paragraph below (researched 2026-07-04;
   Dillan: fact-check the Parallax half against your own notes before using).
 

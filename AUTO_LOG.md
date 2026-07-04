@@ -131,5 +131,13 @@ source first.
 three pre-registered passes (§4y + Amendments 1–2) over the same 1,000 saved rows is
 this dataset's limit — a fourth pass would be the garden of forking paths wearing a
 pre-registration costume. Next analyses require fresh data (GPU, Dillan-gated).
-Session totals: 12 commits this auto stretch, 0 pushed, 0 GPU, 0 concluded verdicts,
-5 candidate verdicts queued for Dillan (audit, Platt, Amendment-2 A/me/br).
+**U16 — circularity-auditor one-pager** (`docs/CIRCULARITY_AUDITOR_SKETCH.md`): three
+buildable tiers, the auditor's own failure modes named first, the collaboration ask
+concrete (specimen corpus + theory + second builder); linked from FORUM_KIT.
+Could-be-fooling-itself: a design sketch by the AI whose loop the tool would audit —
+tier-2's stake-free constraint is stated but unproven.
+
+Session totals: 13 commits this auto stretch, 0 pushed, 0 GPU, 0 concluded verdicts,
+5 candidate verdicts queued for Dillan (audit, Platt, Amendment-2 A/me/br). All 32
+repo tests pass. Work remaining is Dillan-gated (verdicts, voice passes, GPU runs,
+archive decision, push) — stopping here is the discipline, not fatigue.
