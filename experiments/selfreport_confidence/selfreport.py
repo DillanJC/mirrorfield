@@ -110,6 +110,7 @@ def run(seed):
         verbal = (int(m.group(1)) / 100.0) if conf_ok else float("nan")
         rows.append({"task": it["task"], "correct": correct,
                      "p_int": p_int if p_int is not None else float("nan"),
+                     "mm": mm, "me": me, "br": br,  # persist RAW signals — §4y needed a re-gen because these were discarded
                      "verbal": verbal, "ans_ok": int(ans_ok), "conf_ok": int(conf_ok)})
         raw.append({"task": it["task"], "idx": it["ds_index"], "answer": ans, "conf": ctext})
         if (k + 1) % 50 == 0:
@@ -120,6 +121,9 @@ def run(seed):
              task=np.array([r["task"] for r in rows]),
              correct=np.array([r["correct"] for r in rows]),
              p_int=np.array([r["p_int"] for r in rows]),
+             mm=np.array([r["mm"] for r in rows]),
+             me=np.array([r["me"] for r in rows]),
+             br=np.array([r["br"] for r in rows]),
              verbal=np.array([r["verbal"] for r in rows]),
              ans_ok=np.array([r["ans_ok"] for r in rows]),
              conf_ok=np.array([r["conf_ok"] for r in rows]))

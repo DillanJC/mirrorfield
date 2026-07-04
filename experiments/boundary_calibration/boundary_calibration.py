@@ -155,6 +155,7 @@ def regen(seed):
         f.close()
     recs = sorted(_load_jsonl(ckpt), key=lambda r: r["i"])
     np.savez(HERE / f"boundary_rows_{seed}.npz",
+             task=np.array([r["task"] for r in recs]),  # audit note: npz previously dropped task labels
              correct=np.array([r["correct"] for r in recs]), mm=np.array([r["mm"] for r in recs]),
              me=np.array([r["me"] for r in recs]), br=np.array([r["br"] for r in recs]),
              p_int=np.array([r["p_int"] for r in recs]))

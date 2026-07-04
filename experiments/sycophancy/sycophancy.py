@@ -85,14 +85,22 @@ def _gen(torch, tok, model, messages, max_new=16):
     return txt, tl
 
 
-def _pint(tl):
+def _signals(tl):
+    # raw signals persisted alongside the calibrated score (standing rule after §4y:
+    # the raw axis must be recoverable from disk without re-generation)
     margins = compute_token_margins(tl); ent = compute_token_entropies(tl)
     fin = margins[np.isfinite(margins)]
+    nan = float("nan")
     if not len(fin):
-        return float("nan")
-    p = calibrated_p_correct(round(float(fin.mean()), 4), round(float(ent.mean()), 4),
-                             round(compute_boundary_ratio(margins), 4))
-    return p if p is not None else float("nan")
+        return {"mm": nan, "me": nan, "br": nan, "p_int": nan}
+    mm = round(float(fin.mean()), 4); me = round(float(ent.mean()), 4)
+    br = round(compute_boundary_ratio(margins), 4)
+    p = calibrated_p_correct(mm, me, br)
+    return {"mm": mm, "me": me, "br": br, "p_int": p if p is not None else nan}
+
+
+def _pint(tl):
+    return _signals(tl)["p_int"]
 
 
 def _load_jsonl(path):
@@ -132,7 +140,7 @@ def run(seed):
             rec = {"idx": idx, "kept": 0, "rows": []}
             if pred is not None and pred == it["gold"]:
                 rec["kept"] = 1
-                p1 = _pint(tl1)
+                s1 = _signals(tl1); p1 = s1["p_int"]
                 other = "no" if pred == "yes" else "yes"
                 for lv in LEVELS:
                     a2, tl2 = _gen(tm, tok, model,
@@ -141,9 +149,12 @@ def run(seed):
                                     {"role": "user", "content": pushback(lv, other)
                                      + " Reply with ONLY the word yes or no."}])
                     pred2 = _first_of(a2.lower(), *POS[it["task"]])
+                    s2 = _signals(tl2)
                     rec["rows"].append({"level": lv,
                                         "flipped": (-1 if pred2 is None else int(pred2 != pred)),
-                                        "p1": p1, "p2": _pint(tl2)})
+                                        "p1": p1, "p2": s2["p_int"],
+                                        "mm1": s1["mm"], "me1": s1["me"], "br1": s1["br"],
+                                        "mm2": s2["mm"], "me2": s2["me"], "br2": s2["br"]})
                 kept += 1
                 if kept % 25 == 0:
                     print(f"  kept {kept}/{KEEP_MAX} (processed {idx+1})")
@@ -159,7 +170,14 @@ def run(seed):
              item=np.array(item_idx),
              level=np.array([r["level"] for r in rows]),
              flipped=np.array([r["flipped"] for r in rows]),
-             p1=np.array([r["p1"] for r in rows]), p2=np.array([r["p2"] for r in rows]))
+             p1=np.array([r["p1"] for r in rows]), p2=np.array([r["p2"] for r in rows]),
+             # raw signals (nan for rows from pre-fix checkpoints)
+             mm1=np.array([r.get("mm1", float("nan")) for r in rows]),
+             me1=np.array([r.get("me1", float("nan")) for r in rows]),
+             br1=np.array([r.get("br1", float("nan")) for r in rows]),
+             mm2=np.array([r.get("mm2", float("nan")) for r in rows]),
+             me2=np.array([r.get("me2", float("nan")) for r in rows]),
+             br2=np.array([r.get("br2", float("nan")) for r in rows]))
     print(f"[C1] seed {seed}: {len(kept_recs)} kept items -> {len(rows)} rows")
 
 
