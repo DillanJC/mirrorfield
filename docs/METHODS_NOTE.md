@@ -156,6 +156,17 @@ torn region should be low; a refit including torn-region data should close the g
 temperature-scaling) should be checked for the same tail behavior before the story is
 believed.
 
+> **[Added in the 2026-07-04 auto session — Dillan: keep or cut.]** The baseline check
+> was run under a pre-locked amendment (`AMENDMENT_1_PLATT_BASELINE.md`, lock `f0c5b7f`;
+> logits weren't persisted, so Platt scaling on the saved raw margin stands in for
+> temperature scaling). Cross-seed held-out, both directions: a fresh single-feature map
+> fit *with torn-region data available* lands inside the torn quintile's accuracy
+> interval (gaps +0.09/+0.04) where the frozen calibrator is off by +0.26/+0.21 on the
+> same rows — **candidate verdict FRESH-MAP-CALIBRATED**, consistent with (still not
+> confirmation of) this hypothesis. Caveats: one direction passes by only 0.007, and the
+> seeds are same-distribution — no drift test. The deployed gate is unchanged; the §7
+> refit protocol still applies in full.
+
 ## 7. Implication, and future work — named, not run
 
 The scoped implication: **on this model and task family, treat the gate's reported

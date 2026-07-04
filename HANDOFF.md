@@ -4,6 +4,32 @@
 `ORIENTATION.md`, `WORK_MAP.md` (§4a–§4p), and `plans/README.md`. Repo is public
 (github.com/DillanJC/mirrorfield); everything below is committed/pushed.*
 
+## ⚡ DELTA — auto session 2026-07-04 (Dillan at work; full trail in `AUTO_LOG.md`)
+
+Forum is 7–8 July. Done while he was away (each unit committed separately):
+- **`docs/METHODS_NOTE.md`** — the forum artifact, drafted (§4y spine, audit-integrated);
+  **waiting on Dillan's edit pass**, title call, and the audit-acceptance strike-through.
+- **§4y circularity audit** (`experiments/boundary_calibration/CIRCULARITY_AUDIT.md`):
+  no 0.947-shape; 4 rival explanations tested, none rescues the gate. Candidate verdict.
+- **Amendment 1 (locked f0c5b7f, then run):** Platt-on-margin baseline, cross-seed
+  held-out → **FRESH-MAP-CALIBRATED (candidate)** — fresh simple map fits the torn tail
+  (+0.09/+0.04) where the frozen calibrator fails (+0.26/+0.21). Consistent with the
+  sparse-tail HYPOTHESIS; not a fix, not the refit; one direction passes by only 0.007.
+- **Persistence fix:** all live harnesses now persist raw mm/me/br (+task). Compile- and
+  logic-verified; NOT run-verified (no GPU in auto) — first --run/--regen on the complete
+  checkpoints rebuilds npz without generation.
+- **Hygiene:** gitignore now covers ALL `local_outputs/`; stale system-Python editable
+  install of `geometric-safety-features` uninstalled (venv was clean; §4y unaffected —
+  two of my own probes were cwd artifacts, caught; see AUTO_LOG U3). Old experiment
+  FOLDER still exists — archiving is Dillan's call.
+- **New docs:** `docs/FORUM_KIT.md` (60s story + Murfet questions, his edit),
+  `docs/FRINGE_LEADS.md` (X1–X7 leads), `plans/J-second-model-transfer.md` (DRAFT, not
+  locked), `CLAUDE.md`/`PLAN.md`/`AUTO_LOG.md` (auto-mode kit).
+- **Dillan's queue:** (1) edit METHODS_NOTE + accept/reject audit + Platt verdicts;
+  (2) FORUM_KIT voice pass + pick the Murfet question; (3) rebuild npz (one --run per
+  harness, skips GPU); (4) archive-or-keep the old folder; (5) push to GitHub if wanted —
+  nothing was pushed.
+
 ## Who & how (non-negotiable)
 Dillan: non-coder, AI does all implementation; explain in plain language. Goal:
 **stop harmful outputs before they're sent; safety for humans AND AI.** Project
