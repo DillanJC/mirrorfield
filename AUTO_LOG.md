@@ -126,3 +126,10 @@ prose.
 §5.5.2 bliss attractor). Could-be-fooling-itself: verified existence + headline claims
 via search snippets, not full-text reads; a replication pre-reg must read the primary
 source first.
+
+**U15 — README current-work pointer + HANDOFF delta extended. ANALYSIS STOP declared:**
+three pre-registered passes (§4y + Amendments 1–2) over the same 1,000 saved rows is
+this dataset's limit — a fourth pass would be the garden of forking paths wearing a
+pre-registration costume. Next analyses require fresh data (GPU, Dillan-gated).
+Session totals: 12 commits this auto stretch, 0 pushed, 0 GPU, 0 concluded verdicts,
+5 candidate verdicts queued for Dillan (audit, Platt, Amendment-2 A/me/br).

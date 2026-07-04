@@ -17,6 +17,10 @@
 > - **Use it:** [`mirrorfield/mcp/README.md`](mirrorfield/mcp/README.md) · `pip install -e ".[mcp]"`
 > - **The full, honest research log** (everything tried — with what was falsified and why): [`WORK_MAP.md`](WORK_MAP.md)
 > - **Where things stand / resume point:** [`HANDOFF.md`](HANDOFF.md)
+> - **Current work (July 2026):** the same discipline, turned on the surviving gate —
+>   its aggregate calibration hides a near-boundary failure (overconfident ~+0.22 in the
+>   torn region, replicated + audited, *on this model*): [`docs/METHODS_NOTE.md`](docs/METHODS_NOTE.md)
+>   · methods checklist: [`docs/SAFETY_CLAIM_SMELL_TEST.md`](docs/SAFETY_CLAIM_SMELL_TEST.md)
 >
 > The geometry-framework documentation below is kept for the record (and for
 > reproducing the falsification), **not** as a list of standing claims.

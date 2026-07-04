@@ -25,9 +25,21 @@ Forum is 7–8 July. Done while he was away (each unit committed separately):
 - **New docs:** `docs/FORUM_KIT.md` (60s story + Murfet questions, his edit),
   `docs/FRINGE_LEADS.md` (X1–X7 leads), `plans/J-second-model-transfer.md` (DRAFT, not
   locked), `CLAUDE.md`/`PLAN.md`/`AUTO_LOG.md` (auto-mode kit).
-- **Dillan's queue:** (1) edit METHODS_NOTE + accept/reject audit + Platt verdicts;
-  (2) FORUM_KIT voice pass + pick the Murfet question; (3) rebuild npz (one --run per
-  harness, skips GPU); (4) archive-or-keep the old folder; (5) push to GitHub if wanted —
+- **Extended session (same day, on Dillan's "keep going" instruction):** WORK_MAP §4z
+  logged (audit + amendments); **related work in METHODS_NOTE verified with links** incl.
+  the multicalibration positioning correction (the phenomenon is known — we claim the
+  instance/demonstration); Fugu-vs-Parallax paragraph in FORUM_KIT; reliability figure
+  (`boundary_calibration/boundary_reliability.png`); **Amendment 2** (locked ddaed33):
+  entropy stratifier SAME-PATTERN (failure not margin-specific), verbal confidence flat
+  everywhere (MIXED — broken-clock warning logged); field guide DRAFT + 12-question
+  smell test in docs/; 10 new tests passing; plans index updated; FRINGE_LEADS X2
+  citations verified. **Analysis STOP declared:** three pre-registered passes over the
+  same 1,000 §4y rows is the limit — further mining of this dataset erodes
+  pre-registration; next analyses need fresh data (Dillan-gated GPU).
+- **Dillan's queue:** (1) edit METHODS_NOTE + accept/reject the audit, Platt, and
+  Amendment-2 candidate verdicts; (2) FORUM_KIT voice pass + pick the Murfet question;
+  (3) rebuild npz (one --run per harness, skips GPU); (4) archive-or-keep the old
+  folder; (5) field-guide voice sections when ready; (6) push to GitHub if wanted —
   nothing was pushed.
 
 ## Who & how (non-negotiable)
