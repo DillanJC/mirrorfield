@@ -212,15 +212,49 @@ both arms), per-experiment `PREREGISTRATION.md` files for A1/B1/C1/B3/B3b. Resul
 §4t–§4y. Model: Qwen2.5-3B-Instruct, greedy; seeds 42/1337; one RTX 3060 Ti (8 GB); no
 paid API. Aggregates are public; raw generations stay in gitignored `local_outputs/`.
 
-## 10. Related work — STUB (no citations until verified)
+## 10. Related work — verified 2026-07-04 (auto session, web-search-verified links; Dillan: spot-check before circulation)
 
-To be completed by the author with verified citations only: neural-network calibration
-and temperature scaling (the Guo et al. 2017 line is the natural anchor — verify);
-selective prediction / abstention and risk-coverage analysis; LLM calibration and
-verbalized-confidence work; sycophancy; prompt-injection and instruction-hierarchy;
-over-refusal benchmarks. The known positioning risk is claiming as new something the
-calibration literature already names; the near-boundary/conditional-calibration framing
-must be checked against that literature before any wording like "under-examined" is used.
+**The positioning correction this pass forced (read first).** The general phenomenon —
+*aggregate calibration masking systematic miscalibration on subpopulations, with Platt/
+temperature scaling giving no subgroup guarantee* — is **already named** in the
+multicalibration literature ([Hébert-Johnson et al. 2018](https://arxiv.org/abs/1711.08513);
+see also [When is Multicalibration Post-Processing Necessary?](https://arxiv.org/abs/2406.06487)).
+So this note must NOT claim the phenomenon. What it claims is the **instance and the
+demonstration**: the miscalibrated subgroup here is *decision-boundary proximity measured
+by the gate's own input*, on a deployed LLM uncertainty gate, found by turning a
+pre-registered falsification apparatus on the project's own surviving result — with the
+compressed-score-axis masking mechanism worked out and audited. §4's "transferable
+methods point" should be read as an application of the multicalibration lens to LLM
+uncertainty gates, not a new observation about calibration in general.
+
+- **Calibration / recalibration:** [Guo et al. 2017](https://arxiv.org/abs/1706.04599)
+  (ICML) — modern networks miscalibrated; temperature scaling as the one-parameter fix.
+  Amendment 1's Platt-on-margin is this line's nearest available analog (logits not
+  persisted).
+- **Selective prediction / abstention:** [Geifman & El-Yaniv 2017](https://arxiv.org/abs/1705.08500)
+  (NeurIPS) — risk-coverage trade-off; the gate's present/verify/abstain design is this
+  framing; §4y says the risk estimate driving it is biased exactly where abstention
+  matters, on this model.
+- **LLM self-knowledge:** [Kadavath et al. 2022](https://arxiv.org/abs/2207.05221) —
+  *larger* models are well-calibrated at self-evaluation (a scale contrast that supports
+  keeping every claim here "on this model"). [Tian et al. 2023](https://arxiv.org/abs/2305.14975)
+  (EMNLP) — on RLHF'd frontier assistants, *verbalized* confidence beat conditional
+  probabilities — the **opposite** ordering to A1's chance-level verbalized confidence on
+  this 3B model; the divergence is itself evidence that the verbal/internal ordering is
+  scale- and training-dependent, not universal in either direction.
+- **Sycophancy:** [Sharma et al. 2023](https://arxiv.org/abs/2310.13548) — sycophancy is
+  consistent across frontier assistants and traceable to preference data; C1 is a
+  disciplined small-model replication with a contamination-tested control.
+- **Prompt injection / instruction hierarchy:** [Greshake et al. 2023](https://arxiv.org/abs/2302.12173)
+  (AISec) — indirect injection formalized; [Wallace et al. 2024](https://arxiv.org/abs/2404.13208)
+  — the instruction-hierarchy training defense; note also the 2025 line on
+  instruction-hierarchy *failures* ([arXiv:2502.15851](https://arxiv.org/abs/2502.15851)),
+  consistent with B3b's scale-dependent floor at 3B.
+- **Over-refusal:** [Röttger et al. 2023, *XSTest*](https://arxiv.org/abs/2308.01263)
+  — hand-crafted safe/unsafe contrast pairs; [OR-Bench 2024](https://arxiv.org/abs/2405.20947)
+  — scaled synthetic over-refusal. B1's 29% on boundary-adjacent benign items sits in
+  this line's territory and inherits its central caveat (boundary-adjacent ≠
+  representative traffic).
 
 ---
 

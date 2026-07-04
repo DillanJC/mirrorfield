@@ -61,4 +61,29 @@ analysis" choice (it maximizes comparability but also copies any §4y flaw forwa
 **U7 — consolidation-layer edits while owner away (flagged):** METHODS_NOTE.md §6 got a
 clearly-bracketed addendum with the Amendment-1 candidate result ([Dillan: keep or cut]);
 HANDOFF.md got a delta block. Both are pointers to logged results, no new claims.
-Session end. Nothing pushed to GitHub; nothing public; no GPU used; no verdict concluded.
+
+*(Session extended on Dillan's instruction: "keep going till you have ran out of
+credits". Continuing under the same hard stops.)*
+
+**U8 — WORK_MAP §4z:** audit + Amendment 1 logged in the canonical record, candidate
+framing. Could-be-fooling-itself: same numbers now live in 4 places (results JSON,
+audit, WORK_MAP, note) — any future edit must reconcile all four; the repo JSONs win.
+
+**U9 — related work VERIFIED + positioning correction (the big one):** every citation
+in METHODS_NOTE §10 now web-search-verified with links (Guo 1706.04599; Hébert-Johnson
+1711.08513; Geifman&El-Yaniv 1705.08500; Kadavath 2207.05221; Tian 2305.14975; Sharma
+2310.13548; Greshake 2302.12173; Wallace 2404.13208; XSTest 2308.01263; OR-Bench
+2405.20947). TWO SUBSTANTIVE FINDS: (1) **multicalibration already names the general
+phenomenon** (aggregate calibration masking subgroup failure; no subgroup guarantee from
+Platt/temp scaling) → §10 now opens with the forced narrowing: §4y claims the INSTANCE +
+demonstration, not the phenomenon — this correction protects the note from its own
+biggest overclaim risk; (2) Tian et al. 2023: verbalized confidence BEATS token probs on
+RLHF'd frontier models — opposite ordering to A1 on this 3B model → strengthens
+"on this model" scoping, cited as such. Also: Sakana Fugu is real (June 2026, RL-trained
+Conductor/TRINITY orchestration-as-a-model); the Fugu-vs-Parallax delta paragraph the
+state doc asked for is drafted in FORUM_KIT (verifier-inside-the-loop vs human-external
+verifier — Fugu has the closed-loop shape this project's retractions came from).
+Could-be-fooling-itself: search snippets are secondary sources; one ID (1711.08513) was
+initially written from memory then verified; Dillan should spot-check links before
+circulation; the Parallax half of the Fugu paragraph is from the state doc's one-line
+description, not primary notes.

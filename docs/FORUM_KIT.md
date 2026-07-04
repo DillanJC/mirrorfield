@@ -61,8 +61,26 @@ Every number here reconciles to `WORK_MAP.md` / `docs/METHODS_NOTE.md`.*
 
 - The retraction-as-methodology story (the apparatus, not the gate, is the contribution).
 - The circularity auditor as a parked build + open collaboration invite.
-- Parallax Triangulation + the Fugu delta (one paragraph exists as a to-do — verify
-  before raising it unprompted).
+- Parallax Triangulation + the Fugu delta — paragraph below (researched 2026-07-04;
+  Dillan: fact-check the Parallax half against your own notes before using).
+
+### The Fugu / Parallax paragraph (draft)
+
+> Sakana AI's **Fugu** (unveiled June 2026; [sakana.ai/fugu](https://sakana.ai/fugu/))
+> is multi-agent orchestration delivered as a single model: an RL-trained coordinator
+> ("Conductor," plus the TRINITY thinker/worker/verifier roles) that learns how to
+> delegate across a pool of frontier models and synthesize one answer. The overlap with
+> Parallax Triangulation is real — both use multiple models and cross-model
+> disagreement/synthesis. The delta is what the coordination is *for* and where the
+> verifier sits. Fugu optimizes task performance, with verification run *inside* the
+> loop by a trained role — the system grades its own coordination, which is precisely
+> the closed-loop shape this project's retractions came from. Parallax is hand-authored
+> and transparent, treats **contradiction between models as the signal to surface**
+> rather than a disagreement to resolve internally, and keeps the integrator/verifier
+> **human and external**. One is commercial orchestration that hides the seams; the
+> other is epistemic tooling whose entire value is showing you the seams. If Fugu's
+> line of work wins commercially, the Parallax niche — falsifiability support for a
+> human researcher — remains unoccupied.
 - Governance angle: audit-grade evaluation discipline as a tool for training-run auditing.
 
 ## Checklist (before you leave)
