@@ -1,0 +1,159 @@
+{
+  "fit42_eval1337": {
+    "coef": 0.7293,
+    "intercept": -2.3116,
+    "n_fit": 500,
+    "n_eval": 500,
+    "quintiles": [
+      {
+        "q": 1,
+        "n": 100,
+        "accuracy": 0.53,
+        "acc_ci": [
+          0.4329,
+          0.6249
+        ],
+        "platt_mean_p": 0.6178,
+        "platt_gap": 0.0878,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.7879,
+        "frozen_gap": 0.2579
+      },
+      {
+        "q": 2,
+        "n": 100,
+        "accuracy": 0.79,
+        "acc_ci": [
+          0.7002,
+          0.8583
+        ],
+        "platt_mean_p": 0.7721,
+        "platt_gap": -0.0179,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8117,
+        "frozen_gap": 0.0217
+      },
+      {
+        "q": 3,
+        "n": 100,
+        "accuracy": 0.78,
+        "acc_ci": [
+          0.6893,
+          0.85
+        ],
+        "platt_mean_p": 0.8495,
+        "platt_gap": 0.0695,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8329,
+        "frozen_gap": 0.0529
+      },
+      {
+        "q": 4,
+        "n": 100,
+        "accuracy": 0.9,
+        "acc_ci": [
+          0.8256,
+          0.9448
+        ],
+        "platt_mean_p": 0.8993,
+        "platt_gap": -0.0007,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8525,
+        "frozen_gap": -0.0475
+      },
+      {
+        "q": 5,
+        "n": 100,
+        "accuracy": 0.9,
+        "acc_ci": [
+          0.8256,
+          0.9448
+        ],
+        "platt_mean_p": 0.9499,
+        "platt_gap": 0.0499,
+        "platt_calib_holds": false,
+        "frozen_mean_pint": 0.8832,
+        "frozen_gap": -0.0168
+      }
+    ]
+  },
+  "fit1337_eval42": {
+    "coef": 0.6113,
+    "intercept": -1.9785,
+    "n_fit": 500,
+    "n_eval": 500,
+    "quintiles": [
+      {
+        "q": 1,
+        "n": 100,
+        "accuracy": 0.58,
+        "acc_ci": [
+          0.4821,
+          0.672
+        ],
+        "platt_mean_p": 0.6217,
+        "platt_gap": 0.0417,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.7918,
+        "frozen_gap": 0.2118
+      },
+      {
+        "q": 2,
+        "n": 100,
+        "accuracy": 0.83,
+        "acc_ci": [
+          0.7445,
+          0.8911
+        ],
+        "platt_mean_p": 0.7528,
+        "platt_gap": -0.0772,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8214,
+        "frozen_gap": -0.0086
+      },
+      {
+        "q": 3,
+        "n": 100,
+        "accuracy": 0.91,
+        "acc_ci": [
+          0.8377,
+          0.9519
+        ],
+        "platt_mean_p": 0.8134,
+        "platt_gap": -0.0966,
+        "platt_calib_holds": false,
+        "frozen_mean_pint": 0.833,
+        "frozen_gap": -0.077
+      },
+      {
+        "q": 4,
+        "n": 100,
+        "accuracy": 0.91,
+        "acc_ci": [
+          0.8377,
+          0.9519
+        ],
+        "platt_mean_p": 0.8659,
+        "platt_gap": -0.0441,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8549,
+        "frozen_gap": -0.0551
+      },
+      {
+        "q": 5,
+        "n": 100,
+        "accuracy": 0.94,
+        "acc_ci": [
+          0.8752,
+          0.9722
+        ],
+        "platt_mean_p": 0.9238,
+        "platt_gap": -0.0162,
+        "platt_calib_holds": true,
+        "frozen_mean_pint": 0.8854,
+        "frozen_gap": -0.0546
+      }
+    ]
+  },
+  "verdict_candidate": "FRESH-MAP-CALIBRATED"
+}
