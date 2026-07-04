@@ -918,6 +918,22 @@ same-distribution (no drift test); mm-only map. Files:
 `boundary_calibration/platt_baseline.py`, `platt_baseline_results.json`,
 `AMENDMENT_1_PLATT_BASELINE.md`.
 
+**Amendment 2 (locked ddaed33 BEFORE analysis) — verbal confidence near the boundary +
+me/br stratifiers (CPU-only, saved rows; CANDIDATE verdicts).**
+(1) **Entropy stratifier → SAME-PATTERN:** the torn-quintile overconfidence replicates
+through the mean-entropy lens (internal gap **+0.157/+0.224**, accuracy CI excludes the
+score, both seeds) — the §4y failure is not specific to the margin axis (me correlates
+with mm; robustness, not independence). Boundary-ratio → MIXED (heavy value ties collapse
+its quantile bins; too coarse to stratify cleanly).
+(2) **Verbal confidence → MIXED, with a trap worth recording:** in the torn quintile the
+*spoken* confidence (~0.71/0.72) is numerically LESS overconfident than the gate
+(gap +0.13/+0.19 vs +0.21/+0.26). Do NOT headline "verbal beats internal near the
+boundary" — the full table shows verbal is ~flat ≈0.65–0.79 across ALL quintiles
+(consistent with its chance AUC, §4t): overconfident where the model fails, badly
+UNDERconfident (−0.20 to −0.28) where it succeeds. A broken clock is nearer the truth in
+one bin. Verbal-missing = 0/500 both seeds (no selection issue). Files:
+`verbal_boundary.py`, `verbal_boundary_results.json`, `AMENDMENT_2_VERBAL_AND_STRATIFIERS.md`.
+
 ---
 
 ## 5. Honest scorecard

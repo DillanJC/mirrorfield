@@ -87,3 +87,22 @@ Could-be-fooling-itself: search snippets are secondary sources; one ID (1711.085
 initially written from memory then verified; Dillan should spot-check links before
 circulation; the Parallax half of the Fugu paragraph is from the state doc's one-line
 description, not primary notes.
+
+**U10 — reliability figure** (`boundary_reliability.png` + `make_figure.py`): pure
+visualization of logged §4y/§4z numbers, referenced from the note (bracketed).
+Could-be-fooling-itself: a figure implies a narrative; axes/annotations were checked
+against the JSONs; no smoothing anywhere.
+
+**U11 — Amendment 2 run (locked ddaed33 first): verbal-near-boundary + me/br
+stratifiers.** Verdicts (candidates): A = MIXED — verbal is numerically LESS
+overconfident in the torn bin (+0.13/+0.19 vs internal +0.21/+0.26) BUT only because
+spoken confidence is flat ~0.7 everywhere (underconfident −0.2..−0.28 where the model is
+right) — logged with the explicit anti-headline warning (broken-clock effect); B: me →
+SAME-PATTERN (+0.157/+0.224, CI-excluded, both seeds — the conditional failure is not
+margin-axis-specific), br → MIXED (quantile bins collapse under ties). verbal_missing
+0/500 both seeds. Logged in WORK_MAP §4z.
+Could-be-fooling-itself: me/br correlate with mm (robustness not independence — stated
+in the lock); two empty br bins mean the br verdict is about instrument coarseness, not
+the phenomenon; the verbal comparison uses the same rows as §4y, so it inherits any §4y
+quirk. One implementation bug (empty-bin crash) was fixed BEFORE any results were seen —
+no criteria were touched.
