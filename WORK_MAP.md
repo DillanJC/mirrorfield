@@ -883,7 +883,7 @@ more aggressively there, or refit calibration with weight on the torn tail. This
 result here that is genuinely about *where it matters* rather than average-case detector AUC.
 Files: `boundary_calibration/boundary_pint_results.json`, `boundary_margin_results.json`.
 
-### §4z. §4y audited + Platt baseline — audit finds no circularity; a fresh simple map fits the torn tail (CANDIDATE verdicts, Dillan to conclude; from the 2026-07-04 auto session)
+### §4z. §4y audited + Platt baseline — audit finds no circularity; a fresh simple map fits the torn tail (verdicts ACCEPTED by Dillan 2026-07-04; from the auto session)
 
 **Audit (`boundary_calibration/CIRCULARITY_AUDIT.md`, commit 2a4d75f).** §4y checked
 against the v3.0 failure shape before the methods note leaned on it: **no target/method
@@ -919,7 +919,7 @@ same-distribution (no drift test); mm-only map. Files:
 `AMENDMENT_1_PLATT_BASELINE.md`.
 
 **Amendment 2 (locked ddaed33 BEFORE analysis) — verbal confidence near the boundary +
-me/br stratifiers (CPU-only, saved rows; CANDIDATE verdicts).**
+me/br stratifiers (CPU-only, saved rows; verdicts ACCEPTED by Dillan 2026-07-04).**
 (1) **Entropy stratifier → SAME-PATTERN:** the torn-quintile overconfidence replicates
 through the mean-entropy lens (internal gap **+0.157/+0.224**, accuracy CI excludes the
 score, both seeds) — the §4y failure is not specific to the margin axis (me correlates

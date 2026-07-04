@@ -133,7 +133,7 @@ Because the stratifier (raw margin) is itself a gate feature, and because this p
 has been burned by circularity before, the analysis was audited against the retraction's
 failure shape before this note was written
 (`experiments/boundary_calibration/CIRCULARITY_AUDIT.md`, commit `2a4d75f`; diagnostics
-reproducible, no GPU; **author's acceptance of the audit verdict pending**):
+reproducible, no GPU; verdict accepted by the author 2026-07-04):
 
 - **No shared target/method assumption.** Correctness is external gold end-to-end;
   no path from labels to features. Binning by a gate input and asking whether the score's

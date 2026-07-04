@@ -109,7 +109,7 @@ shrunk it. The finding is, if anything, conservative on this axis.
 - The RTE-only torn-region slice stays underpowered.
 - The refit and its held-out protocol remain future work, untouched.
 
-## Bottom line (candidate verdict — Dillan concludes)
+## Bottom line (verdict ACCEPTED by Dillan, 2026-07-04)
 
 No 0.947-shape circularity. Four rival explanations tested — parse selection, task mix,
 isotonic-floor clipping, marginal-vs-conditional confusion — and none rescues the gate;

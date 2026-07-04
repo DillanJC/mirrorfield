@@ -141,3 +141,14 @@ Session totals: 13 commits this auto stretch, 0 pushed, 0 GPU, 0 concluded verdi
 5 candidate verdicts queued for Dillan (audit, Platt, Amendment-2 A/me/br). All 32
 repo tests pass. Work remaining is Dillan-gated (verdicts, voice passes, GPU runs,
 archive decision, push) — stopping here is the discipline, not fatigue.
+
+## Dillan's return (2026-07-04, same day)
+
+**All five candidate verdicts ACCEPTED by Dillan** (audit; Platt FRESH-MAP-CALIBRATED;
+Amendment-2 entropy SAME-PATTERN / verbal MIXED / br MIXED) — acceptance recorded in
+CIRCULARITY_AUDIT.md, METHODS_NOTE.md §5, WORK_MAP §4z. **npz rebuild authorized and
+run** (system Python — the mirrorfield venv lacks `datasets`; note for env hygiene):
+all 8 npz rebuilt through the new assembly code, generation skipped as predicted;
+regression check = every analysis re-run, ZERO changes in any results JSON. The
+persistence fix is run-verified end-to-end. Old-folder archive deferred until after
+the forum (his call); push deferred until after his edit pass (his call).
