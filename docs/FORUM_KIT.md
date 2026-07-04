@@ -41,27 +41,22 @@ Every number here reconciles to `WORK_MAP.md` / `docs/METHODS_NOTE.md`.*
 > overconfident by ~0.22 exactly in the region where the model is most often wrong —
 > replicated on two seeds, and invisible to the aggregate metric.
 
-## The Murfet / Timaeus question ([FILL] resolved — three options, pick one)
+## The Murfet / Timaeus question — ★ PICKED (Dillan, 2026-07-04): the methods one
 
-1. **The direct one:** "My calibrator seems to fail by extrapolating into a sparse
-   low-margin tail — it's well-fit where data is dense and flat-lines where it's thin.
-   Does singular learning theory / developmental interpretability say anything about
-   *where* a learned map should fail — could 'calibration degrades near the decision
-   boundary' be a predictable consequence of the loss landscape rather than an accident?"
-2. **The methods one:** "You study how structure *develops* during training. I work
-   entirely behaviorally, post-hoc, with pre-registration as my only defense against
-   fooling myself. What would a devinterp-informed version of my boundary-calibration
-   test look like — is there a quantity you'd measure instead of my raw token margin?"
-3. **The collaboration one:** "The most valuable thing I could build next is a
-   conceptual-circularity auditor — tooling that catches target-and-method sharing an
-   assumption, the failure that cost me my headline result. Is that a problem your
-   community has language for, and would anyone there want to poke holes in it?"
+> "You study how structure *develops* during training. I work entirely behaviorally,
+> post-hoc, with pre-registration as my only defense against fooling myself. What would
+> a devinterp-informed version of my boundary-calibration test look like — is there a
+> quantity you'd measure instead of my raw token margin?"
+
+Why this one: you can *use* the answer (it invites him to redesign your test — the
+natural follow-up is "would you show me?"), and it's honest about who you are. Backup
+if the conversation is already deep in theory: "Does singular learning theory say
+anything about *where* a learned map should fail — could 'calibration degrades near the
+decision boundary' be predictable rather than accidental?"
 
 ## Other ready threads (condensed from the state doc appendix)
 
 - The retraction-as-methodology story (the apparatus, not the gate, is the contribution).
-- The circularity auditor as a parked build + open collaboration invite — one-page
-  design sketch to hand over: `CIRCULARITY_AUDITOR_SKETCH.md`.
 - Parallax Triangulation + the Fugu delta — paragraph below (researched 2026-07-04;
   Dillan: fact-check the Parallax half against your own notes before using).
 
@@ -86,10 +81,13 @@ Every number here reconciles to `WORK_MAP.md` / `docs/METHODS_NOTE.md`.*
 
 ## Checklist (before you leave)
 
-- [ ] `docs/METHODS_NOTE.md` — your edit pass done; print or load on phone.
+- [x] `docs/METHODS_NOTE.md` — reviewed + finalized 2026-07-04 (numbers reconciled to
+      the result files the same day); print or load on phone.
+- [x] Pick ONE Murfet question — done: the methods one (above).
 - [ ] Repo link + Zenodo DOI checked live and pinned ([FILL: DOI]).
 - [ ] 60-second story rehearsed *out loud* twice.
-- [ ] Pick ONE Murfet question above.
 - [ ] Decide in advance what you're asking for: feedback on the note, a hole poked in
-      the audit, or a collaborator for the auditor. (Asking for one thing lands; asking
-      for everything doesn't.)
+      the audit, or a collaborator. (Asking for one thing lands; asking for everything
+      doesn't.)
+- [ ] Push the repo (your call, after this checklist) so what people clone matches what
+      you say.

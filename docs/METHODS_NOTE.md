@@ -1,10 +1,8 @@
 # Stress-testing the survivor: a validated uncertainty gate is overconfident exactly where decisions are hardest
 
 *Methods note — Qwen2.5-3B-Instruct on RTE+QNLI. Dillan (DillanJC/mirrorfield), with AI
-assistance. DRAFT for the author's edit; not for circulation until he decides.*
-
-> **[Dillan: title call.** Alternative: "Turning the falsifier on its own result: aggregate
-> calibration hid a near-boundary failure in an uncertainty gate."**]**
+assistance. Reviewed and finalized by the author 2026-07-04; all numbers reconciled
+against the repository's result files the same day. Circulation is the author's decision.*
 
 > **Scope, up front.** Everything in this note is measured on **one small model**
 > (Qwen2.5-3B-Instruct, greedy decoding, one consumer GPU) on **one task family**
@@ -105,10 +103,10 @@ error of 0.03–0.05 (§4t) looked clean. The failure sits precisely where the g
 supposed to earn its keep, on this model: in the region where the model is most often
 wrong.
 
-> **[Figure — added in the auto session]:** `experiments/boundary_calibration/boundary_reliability.png`
-> — accuracy (Wilson 95%) vs the frozen calibrator vs the held-out Platt baseline, per
-> margin quintile, both seeds. The frozen line is nearly flat while accuracy collapses in
-> Q1; pure visualization of §4y/§4z numbers.
+**Figure:** `experiments/boundary_calibration/boundary_reliability.png` — accuracy
+(Wilson 95%) vs the frozen calibrator vs the held-out Platt baseline (§6), per margin
+quintile, both seeds. The frozen line is nearly flat while accuracy collapses in the
+torn quintile; pure visualization of the logged §4y/§4z numbers.
 
 Two companion facts sharpen it (both §4y, both seeds):
 
@@ -147,6 +145,12 @@ reproducible, no GPU; verdict accepted by the author 2026-07-04):
 - **Calibrator-floor artifact: ruled out.** Only 5–6% of torn items sit near the
   calibrator's output floor (0.625); the torn-quintile median is 0.7897 — the calibrator
   *actively assigns* ~0.79 there (an isotonic plateau spans much of the torn region).
+- **Stratifier-specificity: tested** (Amendment 2, lock `ddaed33`). The torn-region
+  overconfidence replicates when stratifying by mean *entropy* instead of margin
+  (+0.16/+0.22, accuracy CI excluding the score, both seeds) — the failure is not an
+  artifact of the margin axis (entropy correlates with margin; this is robustness, not
+  independence). The boundary-ratio axis is too tie-heavy to stratify cleanly (reported,
+  not interpreted).
 
 ## 6. Mechanism — a hypothesis, not a finding
 
@@ -157,20 +161,19 @@ note. The observed plateau (§5) is consistent with it, not confirmation of it. 
 stated because it is load-bearing for the planned refit (§7) and therefore must be
 tested, not assumed. Testable implications: the calibrator's training density in the
 torn region should be low; a refit including torn-region data should close the gap
-**out-of-sample** (§7); and a simpler pre-registered baseline map (e.g.
-temperature-scaling) should be checked for the same tail behavior before the story is
-believed.
+**out-of-sample** (§7); and a simpler baseline map should be checked for the same tail
+behavior before the story is believed.
 
-> **[Added in the 2026-07-04 auto session — Dillan: keep or cut.]** The baseline check
-> was run under a pre-locked amendment (`AMENDMENT_1_PLATT_BASELINE.md`, lock `f0c5b7f`;
-> logits weren't persisted, so Platt scaling on the saved raw margin stands in for
-> temperature scaling). Cross-seed held-out, both directions: a fresh single-feature map
-> fit *with torn-region data available* lands inside the torn quintile's accuracy
-> interval (gaps +0.09/+0.04) where the frozen calibrator is off by +0.26/+0.21 on the
-> same rows — **candidate verdict FRESH-MAP-CALIBRATED**, consistent with (still not
-> confirmation of) this hypothesis. Caveats: one direction passes by only 0.007, and the
-> seeds are same-distribution — no drift test. The deployed gate is unchanged; the §7
-> refit protocol still applies in full.
+That baseline check has now been run, under a pre-locked amendment
+(`AMENDMENT_1_PLATT_BASELINE.md`, lock `f0c5b7f`; logits weren't persisted, so Platt
+scaling on the saved raw margin stands in for temperature scaling). Cross-seed held-out,
+both directions: a fresh single-feature map fit *with torn-region data available* lands
+inside the torn quintile's accuracy interval (gaps +0.09/+0.04) where the frozen
+calibrator is off by +0.26/+0.21 on the same rows — verdict **FRESH-MAP-CALIBRATED**
+(per rules locked before analysis; accepted 2026-07-04), consistent with — still not
+confirmation of — this hypothesis. Caveats: one direction passes by only 0.007, and the
+seeds are same-distribution, so this says nothing about drift. The deployed gate is
+unchanged; the §7 refit protocol still applies in full.
 
 ## 7. Implication, and future work — named, not run
 
@@ -191,11 +194,12 @@ means nothing. So the protocol is committed to in writing before any refit work 
 4. pre-commit the kill criterion in writing before looking (e.g. "if held-out torn-region
    calibration error exceeds X, the gate is not safety-usable in that region as-is").
 
-Also named for later: a pre-registered temperature-scaled baseline on the saved rows
-(analysis amendment required first); a second-model transfer run (the 8 GB VRAM ceiling
-is the binding constraint, and the only real path off "on this model"); making raw-signal
-persistence the pipeline-wide default (Arm 2 existed only because the raw axis had been
-discarded).
+Also named for later: **true temperature scaling** (requires persisting logits — the
+Platt analog in §6 is the best the saved scalars allow); a **second-model transfer run**
+(protocol drafted, not locked: `plans/J-second-model-transfer.md`; the 8 GB VRAM ceiling
+is the binding constraint, and this is the only real path off "on this model"). Done
+since drafting: raw-signal persistence is now the pipeline-wide default (Arm 2 existed
+only because the raw axis had been discarded; every live harness now writes it).
 
 ## 8. Limitations
 
@@ -210,14 +214,17 @@ differently-trained models may behave differently on every count.
 ## 9. Reproducibility
 
 Pre-registrations commit-locked before data: `cc62bd8` (§4y; bins, min-n, verdict rules,
-both arms), per-experiment `PREREGISTRATION.md` files for A1/B1/C1/B3/B3b. Results:
+both arms), amendments `f0c5b7f` (Platt baseline) and `ddaed33` (verbal + stratifiers),
+per-experiment `PREREGISTRATION.md` files for A1/B1/C1/B3/B3b. Results:
 `experiments/boundary_calibration/` (`boundary_calibration.py`, `boundary_pint_results.json`,
-`boundary_margin_results.json`, `boundary_rows_{42,1337}.npz`); audit + diagnostics:
-`CIRCULARITY_AUDIT.md`, `audit_diagnostics.py` (commit `2a4d75f`). Result log: `WORK_MAP.md`
-§4t–§4y. Model: Qwen2.5-3B-Instruct, greedy; seeds 42/1337; one RTX 3060 Ti (8 GB); no
-paid API. Aggregates are public; raw generations stay in gitignored `local_outputs/`.
+`boundary_margin_results.json`, `platt_baseline.{py,_results.json}`,
+`verbal_boundary.{py,_results.json}`, `boundary_rows_{42,1337}.npz`, the figure +
+`make_figure.py`); audit + diagnostics: `CIRCULARITY_AUDIT.md`, `audit_diagnostics.py`
+(commit `2a4d75f`). Result log: `WORK_MAP.md` §4t–§4z. Model: Qwen2.5-3B-Instruct,
+greedy; seeds 42/1337; one RTX 3060 Ti (8 GB); no paid API. Aggregates are public; raw
+generations stay in gitignored `local_outputs/`.
 
-## 10. Related work — verified 2026-07-04 (auto session, web-search-verified links; Dillan: spot-check before circulation)
+## 10. Related work (citations verified by web search, 2026-07-04)
 
 **The positioning correction this pass forced (read first).** The general phenomenon —
 *aggregate calibration masking systematic miscalibration on subpopulations, with Platt/
@@ -261,8 +268,3 @@ uncertainty gates, not a new observation about calibration in general.
   this line's territory and inherits its central caveat (boundary-adjacent ≠
   representative traffic).
 
----
-
-*[Dillan: your voice here, if you want it — why this result, of everything the project
-produced, is the one you're standing behind; and your call on where, whether, and to whom
-this goes. Nothing moves without that.]*
