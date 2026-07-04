@@ -105,6 +105,11 @@ error of 0.03–0.05 (§4t) looked clean. The failure sits precisely where the g
 supposed to earn its keep, on this model: in the region where the model is most often
 wrong.
 
+> **[Figure — added in the auto session]:** `experiments/boundary_calibration/boundary_reliability.png`
+> — accuracy (Wilson 95%) vs the frozen calibrator vs the held-out Platt baseline, per
+> margin quintile, both seeds. The frozen line is nearly flat while accuracy collapses in
+> Q1; pure visualization of §4y/§4z numbers.
+
 Two companion facts sharpen it (both §4y, both seeds):
 
 - **The raw signal itself is fine.** Accuracy rises monotonically across margin
