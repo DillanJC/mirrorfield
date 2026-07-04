@@ -1,4 +1,11 @@
-# Project Plans — nine directions, side by side
+# Project Plans — ten directions, side by side
+
+> **Status update (2026-07-04, auto session):** Plan I (red-team) is DONE — the gate is
+> NOT brittle to confidence-injection (WORK_MAP §4o). Plan H (Goodhart portable core)
+> ran and FAILED its false-positive gate — only the narrow collapse detector survives
+> (§4s). **Plan J added:** second-model transfer of the §4y boundary-calibration finding
+> (`J-second-model-transfer.md`) — DRAFT, not locked; criteria + GPU run wait for
+> Dillan. The original "chosen next" note below is kept for the record.
 
 > ▶ **CHOSEN NEXT (2026-06-13): Plan I — red-team the gate.** Pre-registration
 > first, then execute. The most goal-relevant unanswered question: can an adversary
