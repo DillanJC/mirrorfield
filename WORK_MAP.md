@@ -883,6 +883,41 @@ more aggressively there, or refit calibration with weight on the torn tail. This
 result here that is genuinely about *where it matters* rather than average-case detector AUC.
 Files: `boundary_calibration/boundary_pint_results.json`, `boundary_margin_results.json`.
 
+### §4z. §4y audited + Platt baseline — audit finds no circularity; a fresh simple map fits the torn tail (CANDIDATE verdicts, Dillan to conclude; from the 2026-07-04 auto session)
+
+**Audit (`boundary_calibration/CIRCULARITY_AUDIT.md`, commit 2a4d75f).** §4y checked
+against the v3.0 failure shape before the methods note leaned on it: **no target/method
+shared assumption** (correctness = external gold end-to-end). Four rival explanations
+tested on the saved rows (diagnostics reproducible, `audit_diagnostics.py`, no GPU):
+parse-failure selection **ruled out** (0/500 both seeds); task-mix confound **tested** —
+the torn quintile is QNLI-heavy, but the overconfidence **replicates within QNLI alone**
+(+0.196/+0.334, n≥70/seed; RTE-only slice positive both seeds but n≤30 → underpowered,
+not interpreted); calibrator-floor artifact **ruled out** (only 5–6% of Q1 at ≤0.65;
+Q1 median = 0.7897 — an isotonic *plateau*, actively assigned); and the matched-score
+margin split makes the compression concrete: among items with `p_int` ≥ 0.78 (≈97.5% of
+all items), the low-margin half runs 0.75/0.68 accuracy vs the high-margin half's
+0.93/0.89 — **one score value, ~20 points of real risk spread**. Wording precision
+adopted in the note: state the claim *conditionally* (items the gate's own margin marks
+as torn have acc ~0.55 while the gate reports ~0.79), since marginal score-binned
+calibration can hold on the compressed axis — that is exactly how aggregate ECE hid it.
+
+**Amendment 1 — Platt-on-margin baseline (locked f0c5b7f BEFORE analysis; CPU-only,
+saved rows; a *diagnostic*, explicitly NOT the parked refit).** Question: is the torn
+failure specific to the *frozen* calibrator, or does a minimal single-feature map fit
+*with torn data available* calibrate the tail out-of-sample? Cross-seed held-out, both
+directions: logistic(correct~mm) fit on one seed, evaluated on the other's mm-quintiles.
+Result → **FRESH-MAP-CALIBRATED (per locked rules; candidate).** Torn-quintile gap of
+the fresh map **+0.088 / +0.042** (accuracy CI contains the prediction, both directions)
+vs the frozen calibrator's **+0.258 / +0.212** on the same rows. Reading, at the
+amendment's pre-registered ceiling: *consistent with* the sparse/stale-tail arm of the
+mechanism HYPOTHESIS (§ methods note §6) — the raw signal was always sufficient; the
+frozen mapping plateaus where its training data was thin. **Not a validated fix; the
+deployed gate and the §7 refit protocol are untouched.** Honest caveats, logged in
+AUTO_LOG: the fit42→eval1337 pass is thin (0.007 from the CI edge); seeds are
+same-distribution (no drift test); mm-only map. Files:
+`boundary_calibration/platt_baseline.py`, `platt_baseline_results.json`,
+`AMENDMENT_1_PLATT_BASELINE.md`.
+
 ---
 
 ## 5. Honest scorecard
