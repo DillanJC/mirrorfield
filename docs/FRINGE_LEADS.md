@@ -85,12 +85,23 @@ open models?*
 - N: **very high** (nobody replicates these — touching the topic costs reputation, and a
   null in a weird area feels worthless to a career) · S: high · F: med-high (depends on
   the claim) · C: med.
-- **Candidate claims to triage (verify each citation first):** the pain/pleasure
-  trade-off study (models trading task points against stipulated "pain" — DeepMind/LSE
-  line, ~2024–25); "EmotionPrompt"-style claims that emotional framing changes
-  performance; shutdown-resistance reports (Palisade-style script-sabotage findings);
-  the "spiritual bliss attractor" in model–model self-conversations (Claude 4 model
-  welfare assessment). One claim per cycle, chosen by (importance × testability at 3B).
+- **Candidate claims to triage (all four VERIFIED by web search, 2026-07-04 auto
+  session):**
+  - pain/pleasure trade-offs: [Keeling et al., arXiv:2411.02432](https://arxiv.org/abs/2411.02432)
+    (Google/LSE/DeepMind) — models switch from points-maximizing at a stipulated-pain
+    threshold; tested on frontier models, never on small open ones.
+  - emotional prompting: [Li et al., "EmotionPrompt", arXiv:2307.11760](https://arxiv.org/abs/2307.11760)
+    — emotional stimuli claimed to improve performance across 45 tasks; contested,
+    replication-poor, and directly adjacent to this repo's §4p/§4q framing results.
+  - shutdown resistance: [Palisade Research](https://palisaderesearch.org/blog/shutdown-resistance)
+    (+ [arXiv:2509.14260](https://arxiv.org/html/2509.14260v1)) — o3 sabotaged a shutdown
+    script in 79/100 runs (7/100 even when told to allow shutdown); a 3B replication is
+    a *scale extension* (small models may simply lack the capability — pre-register that
+    reading).
+  - the "spiritual bliss" attractor: [Claude 4 system card §5.5.2](https://www.anthropic.com/claude-4-system-card)
+    — 90–100% of Claude–Claude self-talks converge to the same state; ties directly to
+    X5's attractor mapping on local models.
+  One claim per cycle, chosen by (importance × testability at 3B).
 - **Why this project:** the retraction record makes the results credible in *both*
   directions — a positive from this apparatus isn't hype, a null isn't a hit job.
 - **Pre-reg sketch (per claim):** reconstruct materials from the original where public;

@@ -106,3 +106,23 @@ in the lock); two empty br bins mean the br verdict is about instrument coarsene
 the phenomenon; the verbal comparison uses the same rows as §4y, so it inherits any §4y
 quirk. One implementation bug (empty-bin crash) was fixed BEFORE any results were seen —
 no criteria were touched.
+
+**U12 — field guide DRAFT + smell test:** `docs/FIELD_GUIDE_DRAFT.md` (the outward
+artifact from the impact conversation — Dillan's voice sections marked, sharing his
+call) + `docs/SAFETY_CLAIM_SMELL_TEST.md` (12 questions, each with its receipt from this
+repo). Could-be-fooling-itself: a guide written by the AI it warns about is itself a
+consolidation layer — every receipt cites its §, and the guide says plainly that its
+drafting AI is inside the loop it describes.
+
+**U13 — tests + index hygiene:** `tests/test_boundary_analysis.py` (10 passing — wilson
+incl. the §4y torn-bin known value, `_signals` nan/finite/delegate paths, frozen
+tau/edges constants so silent drift fails a test) + `plans/README.md` updated (H/I done,
+J added). Could-be-fooling-itself: tests written by the same session that wrote the
+code; they encode current behavior, not independent expectations — still better than
+prose.
+
+**U14 — FRINGE_LEADS X2 citations verified** (Keeling 2411.02432; EmotionPrompt
+2307.11760; Palisade shutdown-resistance blog + 2509.14260; Claude 4 system card
+§5.5.2 bliss attractor). Could-be-fooling-itself: verified existence + headline claims
+via search snippets, not full-text reads; a replication pre-reg must read the primary
+source first.
