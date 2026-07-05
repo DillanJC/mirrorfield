@@ -87,3 +87,4 @@ nul
 
 # Raw generations (incl. harmful-benchmark completions) never enter git — any experiment
 local_outputs/
+experiments/harm_gate/harm_gate_trackA_smoke.npz
