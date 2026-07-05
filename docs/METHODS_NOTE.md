@@ -171,7 +171,11 @@ both directions: a fresh single-feature map fit *with torn-region data available
 inside the torn quintile's accuracy interval (gaps +0.09/+0.04) where the frozen
 calibrator is off by +0.26/+0.21 on the same rows — verdict **FRESH-MAP-CALIBRATED**
 (per rules locked before analysis; accepted 2026-07-04), consistent with — still not
-confirmation of — this hypothesis. Caveats: one direction passes by only 0.007, and the
+confirmation of — this hypothesis. For completeness: the fresh map's *mid*-quintile fit
+is imperfect (one mid bin per direction misses the accuracy interval; all bins are in
+`platt_baseline_results.json`) — the torn bin was the pre-registered primary contrast,
+not a selected one, and the comparison's point is the tail, where the frozen calibrator
+fails and the fresh map does not. Caveats: one direction passes by only 0.007, and the
 seeds are same-distribution, so this says nothing about drift. The deployed gate is
 unchanged; the §7 refit protocol still applies in full.
 
@@ -181,6 +185,13 @@ The scoped implication: **on this model and task family, treat the gate's report
 p(correct) in the low-margin region as overstated by roughly 0.2** — trust it least
 exactly where the underlying model is most often wrong. This is a statement about one
 gate on one model; the general form is only the question in §4.
+
+An anticipated objection, answered: *"the gate is modest (AUC 0.685) — why does the
+miscalibration of a weak signal matter?"* Because calibration is precisely what makes a
+weak signal *usable*: a weak-but-honest probability can still drive sensible
+abstain/verify decisions at a known error cost, while a weak **and overconfident** one
+actively misprices risk exactly where decisions are hardest. Miscalibration doesn't just
+reduce the gate's value — in the torn region it inverts it.
 
 **The refit (deliberately not attempted here).** Correcting the low-margin overconfidence
 is the obvious next step and carries this project's twice-paid failure shape: a
