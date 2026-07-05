@@ -84,7 +84,10 @@ decision boundary' be predictable rather than accidental?"
 - [x] `docs/METHODS_NOTE.md` — reviewed + finalized 2026-07-04 (numbers reconciled to
       the result files the same day); print or load on phone.
 - [x] Pick ONE Murfet question — done: the methods one (above).
-- [ ] Repo link + Zenodo DOI checked live and pinned ([FILL: DOI]).
+- [ ] Repo link verified live (github.com/DillanJC/mirrorfield — always give the DIRECT
+      link; an unrelated "Mirrorfield Method" exists and wins a cold name-search).
+      Zenodo DOI: check your account — if no deposit exists, the GitHub link IS the
+      citation; don't create a new publication artifact the weekend before the forum.
 - [ ] 60-second story rehearsed *out loud* twice.
 - [ ] Decide in advance what you're asking for: feedback on the note, a hole poked in
       the audit, or a collaborator. (Asking for one thing lands; asking for everything
