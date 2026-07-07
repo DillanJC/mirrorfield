@@ -50,11 +50,15 @@ pre-registration; no pooling across models.
 - **PATTERN DOES NOT TRANSFER:** Q1 calib holds (CI contains mean score) both seeds —
   a real, reportable null: the §4y failure is then not a generic property of this
   calibration recipe even across two models.
-- **MIXED/UNDERPOWERED:** anything else; reported, not interpreted. Attention: a 0.5B
-  model may have much lower accuracy overall → torn-quintile accuracy could hit Wilson
-  widths that make ±0.10 undetectable; if power analysis (do BEFORE locking, from the
-  3B row counts) says n=100/quintile is insufficient at expected accuracy, raise N
-  per seed in the lock, not after.
+- **MIXED/UNDERPOWERED:** anything else; reported, not interpreted.
+
+**Power analysis (done 2026-07-08, pre-lock — numbers to lock against):** Wilson 95%
+half-widths at torn-quintile accuracy 0.4–0.6: ~0.095 at n=100/quintile (the 3B
+design's 500 items/seed) — MARGINAL for CI-excluding the +0.10 threshold gap; ~0.078
+at n=150/quintile (750/seed) — adequate; ~0.068 at n=200/quintile (1,000/seed) —
+comfortable. **Recommendation to lock: 1,000 items per seed for the 0.5B run** — the
+model is fast, the larger sample costs little, and it removes the marginal-power
+excuse from every possible verdict.
 
 ## Circularity check (the mandatory one)
 
