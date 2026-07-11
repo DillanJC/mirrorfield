@@ -155,6 +155,20 @@ his judgment, none is a commitment; the essay especially must pass his edit befo
 eyes see it (it trades on his story). Forum debrief was never captured (his dump never
 came) — the template waits; details are decaying.
 
+**Extended (same day, "work until the 13th"):** (a) R-OS proofing sweep — programmatic
+scan of all 87 pages: CLEAN except the p1 "Author Name" placeholder (Dillan must check
+the live Kindle listing; only real defect found). (b) **TORN built + verified**
+(`Games\Torn\torn.html`): calibration game — log scoring rule, adaptive difficulty
+hunting the player's torn region, reliability bars, §4y story as the payoff; verified
+by driving 12 rounds synchronously (a 95%-bluffing random guesser bled to −155, i.e.
+the scoring rule works); one parse-killing escape bug found and fixed during
+verification. (c) **ObserverNode Episode 1 scripted** (dead-conspiracy autopsy paired
+with a true one — the both-ways method as brand). Could-be-fooling-itself: TORN's
+"torn region" analogy is pedagogy, not measurement — the game demonstrates the
+CONCEPT, it is not evidence about humans; the ep-1 script asserts historical facts
+(MKUltra dates, Church Committee) from model memory — Dillan should fact-check before
+recording.
+
 ## Dillan's return (2026-07-04, same day)
 
 **All five candidate verdicts ACCEPTED by Dillan** (audit; Platt FRESH-MAP-CALIBRATED;
