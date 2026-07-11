@@ -33,6 +33,11 @@ pre-registration; no pooling across models.
    fit a fresh scaler→logistic→isotonic on a **separate calibration split** (fresh items,
    its own seed, e.g. 500 items seed 7), freeze it, THEN run the evaluation items. The
    calibration split and evaluation samples never mix (the §4h out-of-fold lesson).
+   **De-overlap clause (2026-07-12, from the refit hostile review):** seed sampling
+   draws from shared pools, so different seeds OVERLAP (e.g. 42∩1337 = 40/500) — and
+   greedy decoding makes overlapping items identical across splits. The lock must
+   specify: evaluation items are filtered by (task, ds_index) against the calibration
+   split before generation, and the exclusion count is reported.
 2. **Evaluation:** the A1 answer pass, unchanged prompts/parsing, on the same item pools:
    500 RTE+QNLI items × seeds 42/1337 (fresh selection for this model is fine; the
    comparison is of *patterns*, not per-item values). Persist raw mm/me/br + task from

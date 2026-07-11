@@ -21,7 +21,16 @@ never saw**, without breaking aggregate calibration or discrimination?
 - **Evaluation data (does not exist yet — that's the point):** fresh A1-style answer
   passes, **new seeds 7 and 2024**, 500 RTE+QNLI items each, generated AFTER this lock,
   with the refit calibrator already frozen. The evaluation rows never touch any fitting
-  step. Persist raw signals + task labels (now the harness default).
+  step. Persist raw signals + task labels + **ds_index** (now the harness default).
+- **De-overlap clause (added 2026-07-12 after a pre-lock hostile review):** seed
+  sampling draws from shared pools, so seeds 7/2024 overlap the training items by
+  61/500 and 73/500 respectively — and under greedy decoding an overlapping item is
+  IDENTICAL in train and eval, letting the calibrator be graded on rows it memorized
+  (bias toward GAP-CLOSES by construction). Therefore: **items present in the
+  training set (by task + ds_index, recomputed deterministically from seeds 42/1337)
+  are EXCLUDED from evaluation before generation.** Expected eval n ≈ 435±/seed
+  (~87/quintile — still above min-n 30). The runner enforces this; the exclusion
+  count is reported in the results.
 
 ## The correction (pre-specified — no post-hoc switching)
 
@@ -60,7 +69,8 @@ as-is**, and that statement goes into the root README's status banner — not a 
   this task family, in-distribution").
 - The isotonic refit sees the torn tail now, so *in-training* improvement is guaranteed
   and meaningless — only the fresh-seed numbers exist as evidence.
-- Two fresh seeds under greedy decoding = two disjoint item samples, not sampling
+- Two fresh seeds under greedy decoding = two largely-disjoint item samples (7∩2024
+  overlap exists too and is fine — they're analyzed separately), not sampling
   variance (same honest framing as §4y).
 - Success does NOT validate deployment at large: it validates one recalibration on one
   model. The second-model question is Plan J, separately.

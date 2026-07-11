@@ -215,8 +215,13 @@ only because the raw axis had been discarded; every live harness now writes it).
 ## 8. Limitations
 
 One small open model; one task family; behavioral, not mechanistic. Every interpreted
-claim above is replicated across two seeds — which here means two disjoint 500-item
-samples under deterministic greedy decoding, not sampling variance. Tails below the
+claim above is replicated across two seeds — which here means two *largely* disjoint
+500-item samples under deterministic greedy decoding, not sampling variance.
+(Correction 2026-07-12, caught in a pre-lock review of follow-up work: the two seeds
+share 40/500 items — 8% — because sampling draws from shared pools. Overlapping items
+contribute identically to both seeds under greedy decoding, so the independent
+replication rests on the 92%; the torn-region result is unaffected in direction and
+approximate magnitude, but "disjoint" was inaccurate as written and we say so.) Tails below the
 pre-registered min-n are reported, never interpreted (Arm 1's abstain tail; the RTE-only
 torn slice). The mechanism in §6 is a hypothesis. The five §2 results are replications of
 known phenomena and claim no novelty. Scale-dependence is untested throughout: larger or

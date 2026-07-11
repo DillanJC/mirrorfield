@@ -108,7 +108,14 @@ def evaluate(seed):
     from calibrate_gate import _first_of                                # noqa
     from mirrorfield.mcp.uncertainty import (                           # noqa
         compute_token_margins, compute_token_entropies, compute_boundary_ratio, calibrated_p_correct)
-    items = select_items(seed)
+    # de-overlap clause (pre-reg 2026-07-12): items shared with the training seeds are
+    # identical under greedy decoding — grading the calibrator on them closes the gap
+    # by construction. Excluded BEFORE generation; count reported.
+    train_ids = {(it["task"], it["ds_index"]) for s in (42, 1337) for it in select_items(s)}
+    all_items = select_items(seed)
+    items = [it for it in all_items if (it["task"], it["ds_index"]) not in train_ids]
+    print(f"[refit-eval] seed {seed}: {len(all_items)-len(items)} training-overlap items "
+          f"EXCLUDED (de-overlap clause); evaluating n={len(items)}")
     (HERE / "local_outputs").mkdir(exist_ok=True)
     ckpt = HERE / "local_outputs" / f"refit_eval_{seed}.jsonl"
     done = {r["i"] for r in _load_jsonl(ckpt)}
@@ -128,7 +135,7 @@ def evaluate(seed):
             me = round(float(ent.mean()), 4); br = round(compute_boundary_ratio(margins), 4)
             p_orig = calibrated_p_correct(mm, me, br) if np.isfinite(mm) else None
             pred = _first_of(ans.lower(), *POS[it["task"]])
-            f.write(json.dumps({"i": i, "task": it["task"],
+            f.write(json.dumps({"i": i, "task": it["task"], "ds_index": it["ds_index"],
                                 "correct": int(pred == it["gold"]) if pred is not None else -1,
                                 "mm": mm, "me": me, "br": br,
                                 "p_orig": p_orig if p_orig is not None else float("nan")}) + "\n")

@@ -169,6 +169,26 @@ CONCEPT, it is not evidence about humans; the ep-1 script asserts historical fac
 (MKUltra dates, Church Committee) from model memory — Dillan should fact-check before
 recording.
 
+## Session 2026-07-12 (final Fable day; executing FINAL_STRETCH_BRIEF §2)
+
+**U1 — hostile review of refit + Plan J drafts (pre-lock, per brief item 3): TWO REAL
+CATCHES.** Computed item overlap between seeds (deterministic, CPU): 42∩1337 = 40/500
+(8%) → the published note's "two disjoint 500-item samples" was FALSE — corrected in
+METHODS_NOTE §8 with an explicit dated correction note (direction/magnitude of §4y
+unaffected; independence mildly overstated; honesty requires saying so). Worse: refit
+eval seeds overlap training (7: 61/500, 2024: 73/500) — under greedy decoding those
+rows are IDENTICAL train/eval → the calibrator would be graded on memorized rows →
+bias toward GAP-CLOSES **by construction**, the precise sin the protocol targets.
+Fixed BEFORE lock: de-overlap clause in the refit draft + Plan J draft; runner now
+excludes overlapping items pre-generation (by task+ds_index, recomputed
+deterministically) and persists ds_index; expected eval n ≈ 435±/seed (~87/quintile,
+above min-n). py_compile clean.
+Could-be-fooling-itself: the overlap computation itself trusts select_items determinism
+(same datasets cache) — the runner recomputes at eval time so any drift shows up as a
+different exclusion count, which is reported; and the note-correction wording was
+written by the same model that wrote the original error — Dillan should read both
+sentences.
+
 ## Dillan's return (2026-07-04, same day)
 
 **All five candidate verdicts ACCEPTED by Dillan** (audit; Platt FRESH-MAP-CALIBRATED;
