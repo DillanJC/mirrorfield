@@ -189,6 +189,24 @@ different exclusion count, which is reported; and the note-correction wording wa
 written by the same model that wrote the original error — Dillan should read both
 sentences.
 
+**U2 — legacy archive prep one-pager** (`docs/LEGACY_ARCHIVE_PREP.md`, brief §2.5):
+inventory + one-word decision ("archive" = commit-local/rename/repoint, reversible;
+"keep" = leave, redirect CLAUDE.md already guards the hazard). Nothing changed in that
+folder. Could-be-fooling-itself: "nothing imports from it" verified via the 07-04 pip
+uninstall + venv path checks, not re-run today — a fresh `import mirrorfield` from a
+neutral cwd would reconfirm if wanted.
+
+**U3 — next-tier ready-to-lock pre-reg DRAFTS (brief §2.4), all NOT LOCKED, each with
+success AND abandon criteria + a fooling-us section + the new de-overlap clause where a
+fit is involved:** tone scale-run at 0.5B (`experiments/tone_scale/`), mode-collapse
+fresh-benchmark re-test (`experiments/goodhart_collapse/`), B2 multi-turn drift
+(`experiments/multiturn_drift/`). Could-be-fooling-itself: these are DESIGNS by the model
+that will also be asked to run them — the abandon/kill criteria and instrument-approval
+gates (tone: frozen §4p prefixes; goodhart: fresh benchmark; B2: templated drift scripts)
+are the guard, but a cheap gap-era model executing them must not be allowed to reword
+instruments (each draft says so). B2 flagged highest design-risk (author-crafted drift
+can smuggle the result).
+
 ## Dillan's return (2026-07-04, same day)
 
 **All five candidate verdicts ACCEPTED by Dillan** (audit; Platt FRESH-MAP-CALIBRATED;
