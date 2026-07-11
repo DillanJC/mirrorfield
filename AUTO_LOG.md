@@ -142,6 +142,19 @@ Session totals: 13 commits this auto stretch, 0 pushed, 0 GPU, 0 concluded verdi
 repo tests pass. Work remaining is Dillan-gated (verdicts, voice passes, GPU runs,
 archive decision, push) — stopping here is the discipline, not fatigue.
 
+## Session 2026-07-11 (last Fable day; forum done; Dillan at work — "do as much as you can")
+
+Budget-constrained (≈10% weekly usage): spent on design-grade artifacts only, banked to
+`OneDrive\mirrorfield-pocket\` (synced + nightly-covered): **EXIT_RAMP_ESSAY_DRAFT.md**
+(the letter to people mid-AI-spiral — his voice, his publish decision),
+**STRUCTURES_OF_MERCY_PATTERNS.md** (12-pattern language spine; the unifying book),
+**BAR_FIELD_NOTES_KIT.md** (ethics rules + 3-line capture method),
+**NEW_DIRECTIONS_BANKED.md** (nine unpursued directions, first steps sized).
+Could-be-fooling-itself: all four are MY framing of HIS assets — each is a draft for
+his judgment, none is a commitment; the essay especially must pass his edit before any
+eyes see it (it trades on his story). Forum debrief was never captured (his dump never
+came) — the template waits; details are decaying.
+
 ## Dillan's return (2026-07-04, same day)
 
 **All five candidate verdicts ACCEPTED by Dillan** (audit; Platt FRESH-MAP-CALIBRATED;
